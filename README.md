@@ -8,74 +8,82 @@
 
 # 📚 **Index**
 
-- [1️⃣ Introduction](#1️⃣-introduction)
-- [2️⃣ Essential Features](#2️⃣-essential-features)
-- [3️⃣ Good to Have Features](#3️⃣-good-to-have-features)
-- [4️⃣ If I Have Time](#4️⃣-if-i-have-time)
-- [5️⃣ Technologies Used](#5️⃣-technologies-used)
-  - [🔹 Core Technologies (MERN Stack)](#🔹-core-technologies-mern-stack)
-  - [🔹 Tools](#🔹-tools)
-  - [🔹 Libraries](#🔹-libraries)
-  - [🔹 Frontend Frameworks and UI Libraries](#🔹-frontend-frameworks-and-ui-libraries)
-- [6️⃣ Next Steps](#6️⃣-next-steps)
+- [1️⃣ Introduction](#1-introduction)
+- [2️⃣ MoSCoW Method](#2-moscow-method)
+  - [🔑 Must Have (M)](#must-have-m)
+  - [✅ Should Have (S)](#should-have-s)
+  - [🌟 Could Have (C)](#could-have-c)
+  - [❌ Won't Have (W)](#wont-have-w)
+- [3️⃣ Technologies Used](#3-technologies-used)
+  - [🔹 Core Technologies (MERN Stack)](#core-technologies-mern-stack)
+  - [🔹 Tools](#tools)
+  - [🔹 Libraries](#libraries)
+  - [🔹 Frontend Frameworks and UI Libraries](#frontend-frameworks-and-ui-libraries)
+- [4️⃣ Next Steps](#4-next-steps)
 
 ---
 
-# 1️⃣ **Introduction** 🌍
+# 1️⃣ **Introduction** 🌍 <a id="1-introduction"></a>
 
 **Giving-Block** is a web platform designed to foster community support within neighborhoods. It allows residents to post tasks they are willing to do for others voluntarily. Community members can also browse available tasks posted by others and offer their assistance. Real-time communication is enabled using **Socket.io**, allowing users to connect instantly with task posters, ensuring efficient coordination and collaboration.
 
 ---
 
-# 2️⃣ **Essential Features** 🔑
+<br><br><br><br>
 
-These are the **must-have features** for the platform to function efficiently.
+# 2️⃣ **MoSCoW Method** 🎯 <a id="2-moscow-method"></a>
 
-| **Feature**                            | **Description**                                                                                                     |
-| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| **User Authentication & Profile page** | Users can sign up/login with JWT, and have user profiles with basic information like name and contact preferences.  |
-| **Task Posting System**                | Users can create, edit, and delete tasks, categorize them, and set task status ("Open" or "Completed").             |
-| **Real-Time Chat**                     | Users can message each other via **Socket.io** in real-time.                                                        |
-| **User Roles & Permissions**           | Users can be Task Posters or Task Helpers. Posters see available helpers, and helpers see open tasks to offer help. |
-| **File Uploads**                       | Users can upload task images for better task clarity using **Multer**. and images for their personal profile        |
-| **Task Browsing & Discovery**          | Search tasks using keywords, and filter by category and urgency.                                                    |
-| **Security Features**                  | Includes input validation and password encryption with **Bcrypt**.                                                  |
+## 🔑 [Must Have (M)](#must-have-m) <a id="must-have-m"></a>
+
+These features are essential for the platform's basic functionality and cannot be launched without them.
+
+- [ ] **User Authentication & Profile page**: Essential for users to sign up/login securely using JWT, and manage their profiles.
+- [ ] **Task Posting System**: Core feature allowing users to post, edit, and delete tasks with proper categorization and task status.
+- [ ] **Real-Time Chat**: Enables real-time communication through **Socket.io**, ensuring efficient coordination between task posters and helpers.
+- [ ] **File Uploads**: Allows users to upload task-related images for clarity, and profile images as well, using **Multer**.
+- [ ] **Profile Pictures**: Users can upload profile images, with automatic resizing and compression using **Sharp**.
+
+- [ ] **Task Browsing & Discovery**: Allows users to search, filter, and discover tasks based on keywords, category, and urgency.
+- [ ] **Security Features**: Ensures safe user interactions with password encryption (**Bcrypt**).
+      <br><br>
+
+## ✅ [Should Have (S)](#should-have-s) <a id="should-have-s"></a>
+
+These features are important but not critical for the initial launch. They can be added later without affecting the core functionality.
+
+- [ ] **User Feedback & Ratings**: Builds trust by allowing users to rate and review each other after completing tasks.
+- [ ] **Task Bidding / Application System**: Allows users to apply for tasks with a message, supporting multiple helpers for a single task.
+- [ ] **Task Management Dashboard**: Provides users with an overview of their active, completed, and canceled tasks.
+- [ ] **Admin Dashboard (Superuser)**: Allows administrators to manage users, moderate content, and view platform analytics.
+- [ ] **In-App Payments (Optional)**: Enables tipping or payment through **PayPal**, making it easier for users to compensate helpers.
+- [ ] **Real-Time Notifications**: Keeps users informed with notifications about key actions, such as task updates or new messages.
+- [ ] **Location-Based Discovery**: Helps users find tasks near their location, prioritizing tasks nearby for better engagement.
+
+- [ ] **User Roles & Permissions**: Differentiates between Task Posters and Helpers, enhancing user flow by showing relevant tasks.
+      <br><br>
+
+## 🌟 [Could Have (C)](#could-have-c) <a id="could-have-c"></a>
+
+These are nice-to-have features that can enhance the user experience but can be postponed for later versions if time is limited.
+
+- [ ] **Gamification**: Introduces a badge system and a leaderboard for top helpers, encouraging engagement.
+      <br><br>
+
+## ❌ [Won't Have (W)](#wont-have-w) <a id="wont-have-w"></a>
+
+These features are considered out of scope for now and will not be part of the initial release. They are nice but not essential for the first iteration.
+
+- [ ] **Localization / Multilingual Support**: Broadens platform accessibility by supporting multiple languages.
+- [ ] **Mobile App**: Creates a **PWA** or **React Native** app, offering a mobile-friendly experience.
+- [ ] **Dark Mode / Theme Customization**: Provides a toggle between light and dark themes, improving user experience.
 
 ---
 
-# 3️⃣ **Good to Have Features** ✅
+<br><br><br><br>
 
-These features are **useful but not critical** for the platform's initial launch. They can be added to improve the user experience.
+# 3️⃣ **Technologies Used** 🛠️ <a id="3-technologies-used"></a>
 
-| **Feature**                           | **Description**                                                                                              |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| **User Feedback & Ratings**           | Users can rate and review each other after task completion to establish trust.                               |
-| **Task Bidding / Application System** | Users can apply to tasks with a message and support multiple helpers on one task.                            |
-| **Task Management Dashboard**         | View active, completed, and canceled tasks in a dashboard. Includes a task history log.                      |
-| **Admin Dashboard (Superuser)**       | Admins can manage users, delete inappropriate posts, moderate flagged tasks, and view platform analytics.    |
-| **In-App Payments (Optional)**        | Users can tip helpers or make payments via **Stripe** or **PayPal**.                                         |
-| **Real-Time Notifications**           | Users receive notifications for important actions (e.g., someone responds to a task, task completion, etc.). |
-| **Location-Based Discovery**          | Use geolocation to prioritize nearby tasks and improve task discovery.                                       |
-| **Profile Pictures**                  | Users can upload profile pictures, compressed and resized using **Sharp**.                                   |
-
----
-
-# 4️⃣ **If I Have Time** ⏳
-
-These are the **nice-to-have features** that can be implemented if there is extra time available after the essential and good-to-have features.
-
-| **Feature**                             | **Description**                                                                    |
-| --------------------------------------- | ---------------------------------------------------------------------------------- |
-| **Gamification**                        | Users earn badges for completing tasks and appear on a leaderboard of top helpers. |
-| **Localization / Multilingual Support** | Supports multiple languages for broader user accessibility.                        |
-| **Mobile App**                          | Create a **PWA** or **React Native** app for mobile-friendly user experience.      |
-| **Dark Mode / Theme Customization**     | Users can toggle between light and dark themes for better accessibility.           |
-
----
-
-# 5️⃣ **Technologies( that will ) Used** 🛠️
-
-## 🔹 **Core Technologies (MERN Stack)**
+## 🔹 **Core Technologies (MERN Stack)** <a id="core-technologies-mern-stack"></a>
 
 The **MERN** stack powers the backend and frontend of Giving-Block, providing a full-stack JavaScript solution.
 
@@ -86,7 +94,7 @@ The **MERN** stack powers the backend and frontend of Giving-Block, providing a 
 
 ---
 
-## 🔹 **Tools**
+## 🔹 **Tools** <a id="tools"></a>
 
 - ![NPM](https://img.shields.io/badge/NPM-cc3534?style=flat&logo=npm&logoColor=white) - Package manager for JavaScript, used to manage dependencies.
 - ![Multer](https://img.shields.io/badge/Multer-ff4b00?style=flat&logo=express&logoColor=white) - Middleware for handling file uploads.
@@ -95,7 +103,7 @@ The **MERN** stack powers the backend and frontend of Giving-Block, providing a 
 
 ---
 
-## 🔹 **Libraries**
+## 🔹 **Libraries** <a id="libraries"></a>
 
 - ![Bcrypt](https://img.shields.io/badge/Bcrypt-8a8a8a?style=flat&logo=python&logoColor=white) - Library for hashing passwords and enhancing security.
 - ![CORS](https://img.shields.io/badge/CORS-4285F4?style=flat&logo=googlechrome&logoColor=white) - Middleware for handling cross-origin requests.
@@ -103,8 +111,18 @@ The **MERN** stack powers the backend and frontend of Giving-Block, providing a 
 
 ---
 
-## 🔹 **Frontend Frameworks and UI Libraries**
+## 🔹 **Frontend Frameworks and UI Libraries** <a id="frontend-frameworks-and-ui-libraries"></a>
 
 - ![Bootstrap](https://img.shields.io/badge/Bootstrap-563d7c?style=flat&logo=bootstrap&logoColor=white) - Framework for responsive and mobile-first web design.
+- ![MaterialUI](https://img.shields.io/badge/Bootstrap-563d7c?style=flat&logo=bootstrap&logoColor=white) - React UI framework that provides pre-built, customizable components following Google's Material Design guidelines.
 
 ---
+
+<br><br><br><br>
+
+# 4️⃣ **Next Steps** 🚀 <a id="4-next-steps"></a>
+
+- Implement the **Must Have (M)** features first to ensure the core functionality.
+- Once the platform is functional, focus on the **Should Have (S)** features.
+- **Could Have (C)** features can be explored once the primary features are stable and fully operational.
+- Features in the **Won't Have (W)** section will not be part of the initial release but can be considered for future updates.
