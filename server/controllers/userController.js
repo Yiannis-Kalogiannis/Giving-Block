@@ -1,6 +1,7 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const User = require('../schemas/usersSchema');
 
 const saltRounds = +process.env.SALT_ROUNDS;
@@ -66,12 +67,12 @@ if (!email || !password) {
 
 
 
-/ _________________create new user and save in DB for register_______________
+// _________________create new user and save in DB for register_______________
 
 const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
 
-let addNewUser = async (req, res) => {
-  const { firstName, lastName, email, password, } = req.body;
+let userRegister = async (req, res) => {
+  const { firstName, lastName, email, password, username, bio, profilePicture } = req.body;
   try {
     if (!firstName || !lastName || !email || !password) {
       return res.status(400).json({ message: "All fields are required!!" });
@@ -91,11 +92,11 @@ let addNewUser = async (req, res) => {
     }
 
 
-     //  Handle the uploaded image (optional)
-     let profileImage = null;
-     if (req.file) {
-       profileImage = req.file.filename; // The filename assigned by multer
-      }
+    //  //  Handle the uploaded image (optional)
+    //  let profileImage = null;
+    //  if (req.file) {
+    //    profileImage = req.file.filename; // The filename assigned by multer
+    //   }
 
     const hashPassword = await bcrypt.hash(password, saltRounds);
     const newUser = {
@@ -103,7 +104,9 @@ let addNewUser = async (req, res) => {
       lastName,
       email,
       password: hashPassword,
-      image: profileImage,
+      profilePicture,
+      bio,
+      username,
     };
     const createdUser = await User.create(newUser);
 
@@ -113,9 +116,8 @@ let addNewUser = async (req, res) => {
       lastName: createdUser.lastName,
       image: createdUser.image,
       id: createdUser._id,
+      username: createdUser.username,
     };
-
-    let token = jwt.sign(payload, process.env.SECRET_KEY);
 
     // console.log(token);
 
@@ -124,10 +126,15 @@ let addNewUser = async (req, res) => {
     return res.status(201).json({
       message: "User created successfully",
       user: createdUser,
-      token,
     });
   } catch (error) {
     console.log(`Error: ${error}`);
     res.status(500).json({ message: `backend: Failed to create a new user` });
   }
 };
+
+
+
+
+
+module.exports = { getAllUsers, userLogin, userRegister };

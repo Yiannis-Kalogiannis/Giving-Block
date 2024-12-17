@@ -30,13 +30,14 @@ const userSchema = new mongoose.Schema({
     },
     profilePicture: {
         type: String,
-        default: '',
+        default: null,
     },
     bio: {
         type: String,
         trim: true,
-        default: '',
+        default: null,
     },
+}, {
     timestamps: true
 });
 

@@ -21,8 +21,9 @@ const servicesSchema = new mongoose.Schema({
     image: {
         type: String,
         required: false
-    },
-    timestamps: true
+    }
+}, {
+    timestamps: true 
 });
 
 module.exports = mongoose.model('Service', servicesSchema);
