@@ -15,7 +15,7 @@ app.use(cors());
 
 // User routes
 app.use('/users', userRoutes);
-// app.use('services', )
+app.use('/services', serviceRoutes);
 
 // Static files for uploads
 console.log(path.join(__dirname, 'uploads'));

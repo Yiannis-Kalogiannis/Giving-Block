@@ -9,7 +9,11 @@ const serviceSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  userId: {
+  category: {
+    type: String,
+    required: true,
+  },
+  userId: { // Reference to User model
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
@@ -21,8 +25,6 @@ const serviceSchema = new mongoose.Schema({
   image: {
     type: String,
     default: '../assets/images/default-image.png',
-    type: String,
-    required: false,
   },
   address: {
     type: String,
@@ -44,9 +46,7 @@ const serviceSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-}, {
-  timestamps: true,
-});
+}, { timestamps: true });
 
 const Service = mongoose.model('Service', serviceSchema);
 
