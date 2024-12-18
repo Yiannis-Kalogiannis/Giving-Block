@@ -6,7 +6,7 @@ const User = require('../schemas/usersSchema');
 
 const saltRounds = +process.env.SALT_ROUNDS;
 
-// _________________get all users (for admin uses, i won't use it here)_______________
+// ___________________________get all users (for admin uses, and maybe for chat functionality)___________________________
 let getAllUsers = async (req, res) => {
   try {
     const allUsers = await User.find();
@@ -19,13 +19,24 @@ let getAllUsers = async (req, res) => {
   }
 };
 
-//_________________delete all users (for admin uses, i won't use it here)____________________
-let deleteAllUsers = {
-  //code here
-}
+// ___________________________delete all users (for admin uses, i won't use it here)___________________________
+let deleteAllUsers = async (req, res) => {
+  try {
+    const result = await User.deleteMany();
 
-//____________ user login ____________
+    res.status(200).json({
+      message: "All users deleted successfully",
+      deletedCount: `${result.deletedCount} users deleted`,
+    });
+  } catch (error) {
+    console.log(`Error deleting user: ${error}`);
+    res
+      .status(500)
+      .json({ message: "backend: Error deleting user, try again later!" });
+  }
+};
 
+// ___________________________user login___________________________
 let userLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -36,7 +47,7 @@ let userLogin = async (req, res) => {
       return res.status(400).json({ message: 'Both field are required' });
     }
 
-    // email  check
+    // email check
     if (!registeredUser) {
       return res.status(404).json({ message: "User doesn't exist" });
     }
@@ -69,8 +80,7 @@ let userLogin = async (req, res) => {
   }
 };
 
-// _________________register new user_______________
-
+// ___________________________register new user___________________________
 const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
 
 let userRegister = async (req, res) => {
@@ -134,7 +144,7 @@ let userRegister = async (req, res) => {
     return res.status(201).json({
       message: 'User created successfully',
       user: createdUser, //return the created user
-      userId: createdUser._id
+      userId: createdUser._id,
     });
   } catch (error) {
     console.log(`Error: ${error}`);
@@ -142,17 +152,25 @@ let userRegister = async (req, res) => {
   }
 };
 
-
-//_________________update user profile____________________
+// ___________________________update user profile___________________________
 let userUpdate = async (req, res) => {
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/; // Password validation regex
   try {
     const id = req.params.id; // Get user ID from request parameters
-    const { firstName, lastName, email, newPassword, bio, profilePicture, username, oldPassword } = req.body; // Destructure request body
+    const {
+      firstName,
+      lastName,
+      email,
+      newPassword,
+      bio,
+      profilePicture,
+      username,
+      oldPassword,
+    } = req.body; // Destructure request body
     const oldUser = await User.findById({ _id: id }); // Find user by ID
 
     // Check if user exists
-    if (!oldUser) { 
+    if (!oldUser) {
       console.log(`User does not exist`);
       return res.status(404).json({ message: 'User does not exist' });
     }
@@ -160,14 +178,18 @@ let userUpdate = async (req, res) => {
     // Validate new password
     if (!passwordRegex.test(newPassword)) {
       return res.status(422).json({
-        message: "Password must be at least 8 characters and contain both letters and numbers!",
+        message:
+          'Password must be at least 8 characters and contain both letters and numbers!',
       });
     }
 
     // Check if old password is correct
-    const isPasswordCorrect = await bcrypt.compare(oldPassword, oldUser.password);
+    const isPasswordCorrect = await bcrypt.compare(
+      oldPassword,
+      oldUser.password
+    );
     if (!isPasswordCorrect) {
-      return res.status(401).json({ message: "Old password incorrect" });
+      return res.status(401).json({ message: 'Old password incorrect' });
     }
 
     // Hash new password
@@ -202,38 +224,43 @@ let userUpdate = async (req, res) => {
     }
 
     // Update user data
-    const finalData = await User.findByIdAndUpdate({ _id: id }, updatedUser, { new: true }); // Return updated user data
+    const finalData = await User.findByIdAndUpdate({ _id: id }, updatedUser, {
+      new: true,
+    }); // Return updated user data
     console.log(finalData);
-    res.status(200).json({ message: 'User updated successfully', user: finalData });
+    res
+      .status(200)
+      .json({ message: 'User updated successfully', user: finalData });
   } catch (error) {
     console.log(`Error updating user: ${error}`);
-    res.status(500).json({ message: "backend: Error updating user, try again later!" });
+    res
+      .status(500)
+      .json({ message: 'backend: Error updating user, try again later!' });
   }
 };
 
+// ___________________________get user by id___________________________
+let getUserById = async (req, res) => {
+  try {
+    const id = req.params.id;
 
-//_________________get user by id____________________
-  let getUserById = async (req, res) => {
-    try {
-      const id = req.params.id;
-  
-      const user = await User.findById({ _id: id });
-  
-      if (!user) {
-        return res.status(404).json({ message: "User doesn't exist" });
-      }
-      return res.status(200).json({ message: "Here is the user!", user });
-    } catch (error) {
-      console.log(`Error: ${error}`);
-      res.status(500).json(`backend: User not found, please try again later`);
+    const user = await User.findById({ _id: id });
+
+    if (!user) {
+      return res.status(404).json({ message: "User doesn't exist" });
     }
-  };
+    return res.status(200).json({ message: 'Here is the user!', user });
+  } catch (error) {
+    console.log(`Error: ${error}`);
+    res.status(500).json(`backend: User not found, please try again later`);
+  }
+};
 
-
-
-
-
-
-
-
-module.exports = { getAllUsers, userLogin, userRegister, userUpdate, getUserById };
+module.exports = {
+  getAllUsers,
+  userLogin,
+  userRegister,
+  userUpdate,
+  getUserById,
+  deleteAllUsers
+};
