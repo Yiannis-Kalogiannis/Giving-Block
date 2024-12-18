@@ -81,9 +81,9 @@ let userLogin = async (req, res) => {
 };
 
 // ___________________________register new user___________________________
-const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
 
 let userRegister = async (req, res) => {
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
   const {
     firstName,
     lastName,
@@ -256,11 +256,32 @@ let getUserById = async (req, res) => {
   }
 };
 
+let deleteUser = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const userToDelete = await User.findByIdAndDelete({ _id: id });
+    if (!userToDelete) {
+      console.log(`User does not exist`);
+      res.status(404).json({ message: "You are not authorized" });
+    }
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (error) {
+    console.log(`Error deleting user: ${error}`);
+    res
+      .status(500)
+      .json({ message: "backend: Error deleting user, try again later!" });
+  }
+};
+
+
+
 module.exports = {
   getAllUsers,
   userLogin,
   userRegister,
   userUpdate,
   getUserById,
-  deleteAllUsers
+  deleteAllUsers,
+  deleteUser,
 };
