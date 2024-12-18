@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const Service = require('../schemas/servicesSchema.jsx');
 
+
+// ___________________________create a service___________________________
 let createService = async (req, res) => {
     // Destructure the request body to get the service details
     const { title, body, category, image, address, city, country, zip, phone, status } = req.body;
@@ -57,8 +59,58 @@ let createService = async (req, res) => {
 
 
 // __________get all services__________
+let getAllServices = async (req, res) => {
+    try {
+        // Find all services in the database
+        const services = await Service.find();
+        // Return a success response with the services
+        return res.status(200).json({ services });
+    } catch (error) {
+        // Log the error and return a server error response
+        console.log(`Error: ${error}`);
+        res.status(500).json({ error: error.message });
+    }
+}
 
 // __________update a service__________
+
+// In the updateService function:
+const updateService = async (req, res) => {
+    const serviceId = req.params.id;
+    const userId = req.user._id;  // Extract the user ID from the request object
+
+    const { title, body, category, image, address, city, country, zip, phone, status } = req.body;
+  
+    try {
+        const service = await Service.findById(serviceId);
+        if (!service) {
+            return res.status(404).json({ message: 'Service not found' });
+        }
+
+        // Compare service userId with the logged-in userId (_id)
+        if (service.userId.toString() !== userId.toString()) {
+            return res.status(403).json({ message: `You don't have access to this service` });
+        }
+
+        const updatedService = await Service.findByIdAndUpdate(
+            serviceId,
+            { title, body, category, image, address, city, country, zip, phone, status },
+            { new: true }
+        );
+        
+        return res.status(200).json({
+            message: 'Service updated successfully',
+            service: updatedService,
+        });
+    } catch (error) {
+        console.log(`Error: ${error}`);
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
+
+
 
 // __________delete a service__________
 
@@ -71,4 +123,4 @@ let createService = async (req, res) => {
 // __________get service by category__________
 
 
-module.exports = { createService };
+module.exports = { createService, getAllServices, updateService };
