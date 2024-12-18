@@ -1,10 +1,11 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path'); 
-const userRoutes = require("./routes/userRoutes.js");
+const userRoutes = require("./routes/userRoutes.jsx");
+const serviceRoutes = require("./routes/serviceRoutes.jsx");
 
 
-const connection = require('./config/connection.js');
+const connection = require('./config/connection.jsx');
 const port = 8080;
 
 // middleware
@@ -14,6 +15,7 @@ app.use(cors());
 
 // User routes
 app.use('/users', userRoutes);
+// app.use('services', )
 
 // Static files for uploads
 console.log(path.join(__dirname, 'uploads'));

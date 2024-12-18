@@ -183,8 +183,104 @@ To set up the server for the Giving-Block platform, follow these steps:
 ---
 
 ## 5️⃣ API Documentation 🔧
+# API Documentation
 
-blank
+## Private Routes
+
+### Update User
+- **Endpoint:** `/updateUser/:id`
+- **Method:** `PUT`
+- **Description:** Updates a user by their ID.
+- **Parameters:**
+      - `id` (URL parameter): The ID of the user to update.
+- **Request Body:**
+
+      - `firstName` (string): The first name of the user.
+      - `lastName` (string): The last name of the user.
+      - `email` (string): The email of the user.
+      - `newPassword` (string): The new password for the user.
+      - `bio` (string): The bio of the user.
+      - `profilePicture` (string): The profile picture of the user.
+      - `username` (string): The username of the user.
+      - `oldPassword` (string): The old password of the user.
+
+- **Responses:**
+
+      - `200 OK`: User updated successfully.
+      - `400 Bad Request`: Email or username already exists.
+      - `401 Unauthorized`: Old password incorrect.
+      - `404 Not Found`: User does not exist.
+      - `422 Unprocessable Entity`: Password validation failed.
+      - `500 Internal Server Error`: Error updating user.
+
+### Get User by ID
+- **Endpoint:** `/getUserById/:id`
+- **Method:** `GET`
+- **Description:** Retrieves a user by their ID.
+- **Parameters:**
+      - `id` (URL parameter): The ID of the user to retrieve.
+- **Responses:**
+
+      - `200 OK`: User retrieved successfully.
+      - `404 Not Found`: User doesn't exist.
+      - `500 Internal Server Error`: Error retrieving user.
+
+### Get All Users
+- **Endpoint:** `/getAllUsers`
+- **Method:** `GET`
+- **Description:** Retrieves all users.
+- **Responses:**
+
+      - `200 OK`: Users retrieved successfully.
+      - `500 Internal Server Error`: Error retrieving users.
+
+### Delete All Users
+- **Endpoint:** `/deleteAllUsers`
+- **Method:** `DELETE`
+- **Description:** Deletes all users.
+- **Responses:**
+
+      - `200 OK`: All users deleted successfully.
+      - `500 Internal Server Error`: Error deleting users.
+
+## Public Routes
+
+### User Login
+- **Endpoint:** `/login`
+- **Method:** `POST`
+- **Description:** Logs in a user.
+- **Request Body:**
+
+      - `email` (string): The email of the user.
+      - `password` (string): The password of the user.
+- **Responses:**
+
+      - `200 OK`: User logged in successfully.
+      - `400 Bad Request`: Both fields are required.
+      - `401 Unauthorized`: Password incorrect.
+      - `404 Not Found`: User doesn't exist.
+      - `500 Internal Server Error`: Error logging in user.
+
+### User Register
+- **Endpoint:** `/register`
+- **Method:** `POST`
+- **Description:** Registers a new user.
+- **Middleware:** `upload` (Handles image upload)
+- **Request Body:**
+
+      - `firstName` (string): The first name of the user.
+      - `lastName` (string): The last name of the user.
+      - `email` (string): The email of the user.
+      - `password` (string): The password of the user.
+      - `username` (string): The username of the user.
+      - `bio` (string): The bio of the user.
+      - `profilePicture` (string): The profile picture of the user.
+- **Responses:**
+
+      - `201 Created`: User created successfully.
+      - `400 Bad Request`: All fields are required or email/username already exists.
+      - `500 Internal Server Error`: Error creating user.
+
 
 ## 6️⃣ Database Design 📊
 

@@ -10,7 +10,8 @@ const {
   getUserById,
   deleteAllUsers,
   deleteUser,  
-} = require('../controllers/userController');
+} = require('../controllers/userController.jsx');
+const  verifyToken  = require('../middleware/auth.jsx');
 
 // _________private routes_________
 
