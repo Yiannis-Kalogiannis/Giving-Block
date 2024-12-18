@@ -5,16 +5,18 @@ const upload = require('../middleware/upload.image.jsx');
 const {
     getAllUsers,
     userLogin,
-    userRegister
+    userRegister,
+    userUpdate,
 } = require('../controllers/userController');
 
 
-
+// private routes
+router.put("/updateUser/:id", userUpdate);
 
 
 
 // public routes
 router.post("/login", userLogin);
-router.post("/register", userRegister);
+router.post("/register",upload,  userRegister);
 
 module.exports = router;
