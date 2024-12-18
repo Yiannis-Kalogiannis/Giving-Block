@@ -112,7 +112,7 @@ const updateService = async (req, res) => {
 
 
 
-// __________delete a service__________
+// ___________________________delete a service___________________________
 let deleteService = async (req, res) => {
     const serviceId = req.params.id;
     const userId = req.user._id;  // Extract the user ID from the request object
@@ -135,13 +135,49 @@ let deleteService = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 }
-// __________delete all services__________
+
+
+
+
+
 
 //__________get all services of one user__________
+let getAllServicesOfOneUser = async (req, res) => {
+    const userId = req.params.id;
+    try {
+        const services = await Service.find({ userId });
+        return res.status(200).json({ services });
+    } catch (error) {
+        console.log(`Error: ${error}`);
+        res.status(500).json({ error: error.message });
+    }
+}
+
+
 
 // __________get service by status__________
+let getAllServicesByStatus = async (req, res) => {
+    const status = req.params.status;
+    try {
+        const services = await Service.find({ status });
+        return res.status(200).json({ services });
+    } catch (error) {
+        console.log(`Error: ${error}`);
+        res.status(500).json({ error: error.message });
+    }
+}
 
 // __________get service by category__________
+let getAllServicesByCategory = async (req, res) => {
+    const category = req.params.category;
+    try {
+        const services = await Service.find({ category });
+        return res.status(200).json({ services });
+    }
+    catch (error) {
+        console.log(`Error: ${error}`);
+        res.status(500).json({ error: error.message });
+    }
+};
 
-
-module.exports = { createService, getAllServices, updateService, deleteService };
+module.exports = { createService, getAllServices, updateService, deleteService, getAllServicesOfOneUser };
