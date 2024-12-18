@@ -154,90 +154,46 @@ let userRegister = async (req, res) => {
 
 // ___________________________update user profile___________________________
 let userUpdate = async (req, res) => {
-  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/; // Password validation regex
-  try {
-    const id = req.params.id; // Get user ID from request parameters
-    const {
-      firstName,
-      lastName,
-      email,
-      newPassword,
-      bio,
-      profilePicture,
-      username,
-      oldPassword,
-    } = req.body; // Destructure request body
-    const oldUser = await User.findById({ _id: id }); // Find user by ID
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
 
-    // Check if user exists
+  try {
+    // const idFromToken = req.user._id; // Extracted from JWT
+    const idFromParams = req.params.id; // Extracted from the URL
+    const { firstName, lastName, email, newPassword, bio, profilePicture, username, oldPassword } = req.body;
+
+    const oldUser = await User.findById(idFromParams);
     if (!oldUser) {
-      console.log(`User does not exist`);
       return res.status(404).json({ message: 'User does not exist' });
     }
 
-    // Validate new password
-    if (!passwordRegex.test(newPassword)) {
-      return res.status(422).json({
-        message:
-          'Password must be at least 8 characters and contain both letters and numbers!',
-      });
-    }
-
-    // Check if old password is correct
-    const isPasswordCorrect = await bcrypt.compare(
-      oldPassword,
-      oldUser.password
-    );
-    if (!isPasswordCorrect) {
-      return res.status(401).json({ message: 'Old password incorrect' });
-    }
-
-    // Hash new password
-    const hashPassword = await bcrypt.hash(newPassword, saltRounds);
-
-    const updatedUser = {
-      firstName,
-      lastName,
-      email,
-      password: hashPassword, // Update password with hashed new password
-      bio,
-      profilePicture,
-      username,
-    };
-
-    // Check if email or username already exists
-    const userExist = await User.findOne({ $or: [{ email }, { username }] });
-    if (userExist && userExist._id.toString() !== id) {
-      if (userExist.email === email) {
-        console.log('Email already exists');
-        return res.status(400).json({
-          message: `Email already exists! Please use a different email.`,
-        });
+    if (newPassword) {
+      if (!passwordRegex.test(newPassword)) {
+        return res.status(422).json({ message: 'Password must be at least 8 characters and contain both letters and numbers!' });
       }
-
-      if (userExist.username === username) {
-        console.log('Username already exists');
-        return res.status(400).json({
-          message: `Username already exists! Please choose a different username.`,
-        });
+      const isPasswordCorrect = await bcrypt.compare(oldPassword, oldUser.password);
+      if (!isPasswordCorrect) {
+        return res.status(401).json({ message: 'Old password incorrect' });
       }
     }
 
-    // Update user data
-    const finalData = await User.findByIdAndUpdate({ _id: id }, updatedUser, {
-      new: true,
-    }); // Return updated user data
-    console.log(finalData);
-    res
-      .status(200)
-      .json({ message: 'User updated successfully', user: finalData });
+    const updatedUser = { firstName, lastName, email, bio, profilePicture, username };
+    if (newPassword) {
+      updatedUser.password = await bcrypt.hash(newPassword, saltRounds);
+    }
+
+    const userExist = await User.findOne({ $or: [{ email }, { username }], _id: { $ne: idFromParams } });
+    if (userExist) {
+      if (userExist.email === email) return res.status(400).json({ message: 'Email already exists!' });
+      if (userExist.username === username) return res.status(400).json({ message: 'Username already exists!' });
+    }
+
+    const finalData = await User.findByIdAndUpdate(idFromParams, updatedUser, { new: true });
+    res.status(200).json({ message: 'User updated successfully', user: finalData });
   } catch (error) {
-    console.log(`Error updating user: ${error}`);
-    res
-      .status(500)
-      .json({ message: 'backend: Error updating user, try again later!' });
+    res.status(500).json({ message: 'Error updating user!' });
   }
 };
+
 
 // ___________________________get user by id___________________________
 let getUserById = async (req, res) => {
