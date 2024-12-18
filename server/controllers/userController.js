@@ -145,82 +145,89 @@ let userRegister = async (req, res) => {
 
 //_________________update user profile____________________
 let userUpdate = async (req, res) => {
-  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/; // Password validation regex
   try {
-    const id = req.params.id;
-    const { firstName, lastName, email, newPassword, bio, profilePicture, username, oldPassword } = req.body;
-    const oldUser = await User.findById({ _id: id });
+    const id = req.params.id; // Get user ID from request parameters
+    const { firstName, lastName, email, newPassword, bio, profilePicture, username, oldPassword } = req.body; // Destructure request body
+    const oldUser = await User.findById({ _id: id }); // Find user by ID
 
-    // check if user exists
+    // Check if user exists
     if (!oldUser) { 
-      console.log(`User does not exists`);
-      return res.status(404).json({ message: 'User does not exists' });
+      console.log(`User does not exist`);
+      return res.status(404).json({ message: 'User does not exist' });
     }
 
+    // Validate new password
     if (!passwordRegex.test(newPassword)) {
       return res.status(422).json({
-        message:
-          "Password must be at least 8 characters and contain both letters and numbers!",
+        message: "Password must be at least 8 characters and contain both letters and numbers!",
       });
     }
-    if (!oldUser) {
-      console.log("User does not exist");
-      return res.status(404).json({ message: "User does not exist" });
-    }
 
-    // password check
-    const isPasswordCorrect = await bcrypt.compare(
-      oldPassword,
-      oldUser.password
-    );
+    // Check if old password is correct
+    const isPasswordCorrect = await bcrypt.compare(oldPassword, oldUser.password);
     if (!isPasswordCorrect) {
       return res.status(401).json({ message: "Old password incorrect" });
     }
 
+    // Hash new password
     const hashPassword = await bcrypt.hash(newPassword, saltRounds);
 
     const updatedUser = {
       firstName,
       lastName,
       email,
-      newPassword: hashPassword,
+      password: hashPassword, // Update password with hashed new password
       bio,
       profilePicture,
       username,
-    }
+    };
+
     // Check if email or username already exists
     const userExist = await User.findOne({ $or: [{ email }, { username }] });
     if (userExist && userExist._id.toString() !== id) {
       if (userExist.email === email) {
-      console.log('Email already exists');
-      return res.status(400).json({
-        message: `Email already exists! Please use a different email.`,
-      });
+        console.log('Email already exists');
+        return res.status(400).json({
+          message: `Email already exists! Please use a different email.`,
+        });
       }
 
       if (userExist.username === username) {
-      console.log('Username already exists');
-      return res.status(400).json({
-        message: `Username already exists! Please choose a different username.`,
-      });
+        console.log('Username already exists');
+        return res.status(400).json({
+          message: `Username already exists! Please choose a different username.`,
+        });
       }
     }
-    const finalData = await User.findByIdAndUpdate ({_id: id}, updatedUser, { new: true }); // to return the updated user data after updating
+
+    // Update user data
+    const finalData = await User.findByIdAndUpdate({ _id: id }, updatedUser, { new: true }); // Return updated user data
     console.log(finalData);
     res.status(200).json({ message: 'User updated successfully', user: finalData });
-} catch (error) {
-  console.log(`Error updating user: ${error}`);
-  res
-    .status(500)
-    .json({ message: "backend: Error updating user, try again later!" });
-}
+  } catch (error) {
+    console.log(`Error updating user: ${error}`);
+    res.status(500).json({ message: "backend: Error updating user, try again later!" });
+  }
 };
 
 
 //_________________get user by id____________________
-let getUserById ={
-  //code here
-}
+  let getUserById = async (req, res) => {
+    try {
+      const id = req.params.id;
+  
+      const user = await User.findById({ _id: id });
+  
+      if (!user) {
+        return res.status(404).json({ message: "User doesn't exist" });
+      }
+      return res.status(200).json({ message: "Here is the user!", user });
+    } catch (error) {
+      console.log(`Error: ${error}`);
+      res.status(500).json(`backend: User not found, please try again later`);
+    }
+  };
 
 
 
@@ -229,4 +236,4 @@ let getUserById ={
 
 
 
-module.exports = { getAllUsers, userLogin, userRegister, userUpdate };
+module.exports = { getAllUsers, userLogin, userRegister, userUpdate, getUserById };

@@ -7,12 +7,13 @@ const {
     userLogin,
     userRegister,
     userUpdate,
+    getUserById
 } = require('../controllers/userController');
 
 
 // private routes
 router.put("/updateUser/:id", userUpdate);
-
+router.get("/getUserById/:id", getUserById);
 
 
 // public routes
