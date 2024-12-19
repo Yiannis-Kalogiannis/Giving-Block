@@ -26,6 +26,11 @@ Giving-Block is a web platform designed to foster community support within neigh
    - [Service API](#service-api)
 
 6. [Database Design](#6️⃣-database-design-📊)
+
+- [User Schema](#user-schema)
+- [Service Schema](#service-schema)
+- [Chat Schema](#chat-schema)
+
 7. [Page Structure](#7️⃣-page-structure-🌐)
 8. [Development Log](#8️⃣-development-log-⌛)
 9. [Testing](#9️⃣-testing-✅)
@@ -310,11 +315,107 @@ To set up the client for the Giving-Block platform, follow these steps:
 
 ## 6️⃣ Database Design 📊
 
-blank
+## 1. UserSchema
 
-## 7️⃣ Page Structure 🌐
+Stores user details such as authentication and profile information.
 
-blank
+```javascript
+const userSchema = new mongoose.Schema(
+  {
+    username: { type: String, required: true, unique: true, trim: true },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      lowercase: true,
+    },
+    password: { type: String, required: true },
+    firstName: { type: String, required: true, trim: true },
+    lastName: { type: String, required: true, trim: true },
+    profilePicture: {
+      type: String,
+      default: '../assets/images/default-image.png',
+    },
+    bio: { type: String, trim: true, default: null },
+  },
+  { timestamps: true }
+);
+```
+
+**Key Fields:**
+
+- `username`, `email`: Authentication info (required).
+- `firstName`, `lastName`: Personal details (required).
+- `profilePicture`, `bio`: Optional user profile data.
+
+## 2. Service Schema
+
+Represents the services/tasks users can post, including task details.
+
+```javascript
+const serviceSchema = new mongoose.Schema(
+  {
+    title: { type: String, required: true },
+    body: { type: String, required: true },
+    category: { type: String, required: true },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+    status: { type: Boolean, default: true },
+    image: { type: String, default: '../assets/images/default-image.png' },
+    address: { type: String },
+    city: { type: String },
+    country: { type: String },
+    zip: { type: String },
+    phone: { type: String },
+  },
+  { timestamps: true }
+);
+```
+
+**Key Fields:**
+
+- `title`, `body`: Service/task description (required).
+- `userId`: Linked to the user offering the service.
+- `status`: Indicates whether the service is active (default: true).
+
+## 3. Chat Schema
+
+Stores messages exchanged between users regarding tasks or services.
+
+```javascript
+const chatSchema = new mongoose.Schema(
+  {
+    msgContent: { type: String, required: true },
+    sender: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+    receiver: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+    readStatus: { type: Boolean, default: false },
+  },
+  { timestamps: true }
+);
+```
+
+**Key Fields:**
+
+- `msgContent`: The content of the message (required).
+- `sender`, `receiver`: Users involved in the conversation.
+- `readStatus`: Indicates if the message is read (default: false).
+
+## Relationships
+
+- **User ↔ Service**: A user can create many services. Services are linked to users via `userId`.
+- **User ↔ Chat**: A user can send and receive many messages. Each chat has `sender` and `receiver` fields.
 
 ## 8️⃣ Development Log ⌛
 
@@ -327,7 +428,8 @@ blank
 
 ## Week 2 (Dec 17 - Dec 18, 2024)
 
- ⚙️ **Backend Development**:
+⚙️ **Backend Development**:
+
 - 👤 **User Management**: Created user schema, registration, login, update, delete (single and all), and get user by ID.
 - 🔐 **Authorization**: Implemented user authorization.
 - 📦 **Service Management**: Created schema, controllers, and routes for create, update, delete, and filter by status/category.
