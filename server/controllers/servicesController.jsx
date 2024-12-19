@@ -61,16 +61,32 @@ let createService = async (req, res) => {
 // __________get all services__________
 let getAllServices = async (req, res) => {
     try {
-        // Find all services in the database
-        const services = await Service.find();
-        // Return a success response with the services
-        return res.status(200).json({ services });
-    } catch (error) {
-        // Log the error and return a server error response
-        console.log(`Error: ${error}`);
-        res.status(500).json({ error: error.message });
+        const { query } = req.query; // Extract the search query from query params
+    
+        let services;
+        if (query) {
+          services = await Service.find({ 
+            $or: [
+              { title: { $regex: query, $options: 'i' } },
+              { body: { $regex: query, $options: 'i' } },
+              { category: { $regex: query, $options: 'i' } },
+              { address: { $regex: query, $options: 'i' } },
+              { city: { $regex: query, $options: 'i' } },
+              { country: { $regex: query, $options: 'i' } },
+              { zip: { $regex: query, $options: 'i' } },
+              { phone: { $regex: query, $options: 'i' } }
+            ]
+          });
+        } else {
+          // If no query is provided, return all services
+          services = await Service.find();
+        }
+    
+        res.status(200).json(services);
+      } catch (error) {
+        res.status(500).json({ message: 'Server error', error });
+      }
     }
-}
 
 // ___________________________update a service___________________________
 
