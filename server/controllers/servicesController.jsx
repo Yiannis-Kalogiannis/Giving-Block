@@ -61,32 +61,39 @@ let createService = async (req, res) => {
 // __________get all services__________
 let getAllServices = async (req, res) => {
     try {
-        const { query } = req.query; // Extract the search query from query params
-    
-        let services;
-        if (query) {
-          services = await Service.find({ 
-            $or: [
-              { title: { $regex: query, $options: 'i' } },
-              { body: { $regex: query, $options: 'i' } },
-              { category: { $regex: query, $options: 'i' } },
-              { address: { $regex: query, $options: 'i' } },
-              { city: { $regex: query, $options: 'i' } },
-              { country: { $regex: query, $options: 'i' } },
-              { zip: { $regex: query, $options: 'i' } },
-              { phone: { $regex: query, $options: 'i' } }
-            ]
-          });
-        } else {
-          // If no query is provided, return all services
-          services = await Service.find();
-        }
-    
-        res.status(200).json(services);
-      } catch (error) {
-        res.status(500).json({ message: 'Server error', error });
+      const { query } = req.query; // Extract the search query from query params
+  
+      let services;
+      if (query) {
+        // If a search query is provided, filter the services by the fields listed
+        services = await Service.find({
+          $or: [
+            { title: { $regex: query, $options: 'i' } },
+            { body: { $regex: query, $options: 'i' } },
+            { category: { $regex: query, $options: 'i' } },
+            { address: { $regex: query, $options: 'i' } },
+            { city: { $regex: query, $options: 'i' } },
+            { country: { $regex: query, $options: 'i' } },
+            { zip: { $regex: query, $options: 'i' } },
+            { phone: { $regex: query, $options: 'i' } },
+            // Match against populated user fields
+          { 'userId.username': { $regex: query, $options: 'i' } },
+          { 'userId.firstName': { $regex: query, $options: 'i' } },
+          { 'userId.lastName': { $regex: query, $options: 'i' } }
+          ]
+        })
+          .populate('userId', 'username firstName lastName'); // Populate user info
+      } else {
+        // If no query is provided, return all services
+        services = await Service.find().populate('userId', 'username firstName lastName');
       }
+  
+      res.status(200).json(services);
+    } catch (error) {
+      res.status(500).json({ message: 'Server error', error });
     }
+  };
+  
 
 // ___________________________update a service___________________________
 
