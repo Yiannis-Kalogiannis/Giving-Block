@@ -3,10 +3,10 @@ const cors = require('cors');
 const path = require('path'); 
 const userRoutes = require("./routes/userRoutes.jsx");
 const serviceRoutes = require("./routes/serviceRoutes.jsx");
-
+require("dotenv").config();
 
 const connection = require('./config/connection.jsx');
-const port = 8080;
+const port = process.env.PORT;
 
 // middleware
 const app = express();

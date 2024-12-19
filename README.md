@@ -6,25 +6,27 @@ Giving-Block is a web platform designed to foster community support within neigh
 
 ## 📚 Index
 
-1. [Introduction](#introduction-🌍)
-2. [MoSCoW Method](#moscow-🎯)
-   - [Must Have (M)](#must-have-m)
-   - [Should Have (S)](#should-have-s)
-   - [Could Have (C)](#could-have-c)
-   - [Won't Have (W)](#wont-have-w)
-3. [Technologies Used](#technologies-used-🛠️)
-   - [Core Technologies (MERN Stack)](#core-technologies-mern-stack)
-   - [Tools](#tools)
-   - [Libraries](#libraries)
-   - [Frontend Frameworks and UI Libraries](#frontend-frameworks-and-ui-libraries)
-4. [Installation](#installation-⚙️)
-5. [API Documentation](#api-documentation-🔧)
-6. [Database Design](#database-design-📊)
-7. [Page Structure](#page-structure-🌐)
-8. [Development Log](#development-log-⌛)
-9. [Testing](#testing-✅)
-10. [Security](#security)
-11. [Future Enhancements](#future-enhancements)
+1. [Introduction](#1️⃣-introduction-🌍)
+2. [MoSCoW Method](#2️⃣-moscow-🎯)
+   - [Must Have (M)](#🔑-must-have-m)
+   - [Should Have (S)](#✅-should-have-s)
+   - [Could Have (C)](#🌟-could-have-c)
+   - [Won't Have (W)](#❌-wont-have-w)
+3. [Technologies Used](#3️⃣-technologies-used-🛠️)
+   - [Core Technologies (MERN Stack)](#🔹-core-technologies-mern-stack)
+   - [Tools](#🔹-tools)
+   - [Libraries](#🔹-libraries)
+   - [Frontend Frameworks and UI Libraries](#🔹-frontend-frameworks-and-ui-libraries)
+4. [Installation](#4️⃣-installation-⚙️)
+   - [Server Installation](#server-installation)
+   - [Client Installation](#client-installation)
+5. [API Documentation](#5️⃣-api-documentation-🔧)
+6. [Database Design](#6️⃣-database-design-📊)
+7. [Page Structure](#7️⃣-page-structure-🌐)
+8. [Development Log](#8️⃣-development-log-⌛)
+9. [Testing](#9️⃣-testing-✅)
+10. [Security](#🔒-security)
+11. [Future Enhancements](#🔧-future-enhancements)
 
 ## 1️⃣ Introduction 🌍
 
@@ -36,15 +38,15 @@ Giving-Block is a web platform designed to foster community support within neigh
 
 These features are essential for the platform's basic functionality and cannot be launched without them.
 
-- [ ] **User Authentication**: Essential for users to sign up/login securely using JWT, and manage their profiles(edit).
-- [ ] **Profile page**: Users manage their profiles(password/names/profile image).
-- [ ] **Security Features**: Ensures safe user interactions with password encryption (**Bcrypt**).
-- [ ] **Task Posting System**: Core feature allowing users to post, edit, and delete tasks with proper categorization and task status.
-- [ ] **File Uploads**: Allows users to upload task-related images for clarity, and profile images as well, using **Multer**.
-- [ ] **Profile Pictures**: Users can upload profile images, with automatic resizing and compression using **Sharp**.
-- [ ] **Task Browsing & Discovery**: Allows users to search, filter, and discover tasks(help wanted. or help offered) based on keywords and category.
-- [ ] **Real-Time Chat**: Enables real-time communication through **Socket.io**, ensuring efficient coordination between task posters and helpers.
-      <br><br>
+- **User Authentication**: Essential for users to sign up/login securely using JWT, and manage their profiles(edit).
+- **Profile page**: Users manage their profiles(password/names/profile image).
+- **Security Features**: Ensures safe user interactions with password encryption (**Bcrypt**).
+- **Task Posting System**: Core feature allowing users to post, edit, and delete tasks with proper categorization and task status.
+- **File Uploads**: Allows users to upload task-related images for clarity, and profile images as well, using **Multer**.
+- **Profile Pictures**: Users can upload profile images, with automatic resizing and compression using **Sharp**.
+- **Task Browsing & Discovery**: Allows users to search, filter, and discover tasks(help wanted. or help offered) based on keywords and category.
+- **Real-Time Chat**: Enables real-time communication through **Socket.io**, ensuring efficient coordination between task posters and helpers.
+  <br><br>
 
 ## ✅ [Should Have (S)](#should-have-s) <a id="should-have-s"></a>
 
@@ -100,6 +102,7 @@ The **MERN** stack powers the backend and frontend of Giving-Block, providing a 
 - ![Sharp](https://img.shields.io/badge/Sharp-ff4b00?style=flat&logo=python&logoColor=white) - Image processing library to resize and optimize images.
 - ![Socket.io](https://img.shields.io/badge/Socket.io-010101?style=flat&logo=socketdotio&logoColor=white) - Real-time communication library for enabling instant chat.
 - ![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat&logo=vite&logoColor=FFD700) - Next generation frontend tooling for fast and optimized development.
+
 ---
 
 ## 🔹 **Libraries** <a id="libraries"></a>
@@ -122,77 +125,84 @@ The **MERN** stack powers the backend and frontend of Giving-Block, providing a 
 
 ## 4️⃣ Installation ⚙️
 
-## Server Installation
+### Server Installation
 
 To set up the server for the Giving-Block platform, follow these steps:
 
 1. **Clone the Repository**:
-      ```bash
-      git clone git@github.com:nottiivago/Giving-Block.git
-      cd giving-block
-      ```
+
+   ```bash
+   git clone git@github.com:nottiivago/Giving-Block.git
+   cd giving-block
+   ```
 
 2. **Install Dependencies**:
-      Navigate to the server directory and install the required dependencies using npm:
-      ```bash
-      cd server
-      npm install
-      ```
+   Navigate to the server directory and install the required dependencies using npm:
+
+   ```bash
+   cd server
+   npm install
+   ```
 
 3. **Set Up Environment Variables**:
-      Create a `.env` file in the server directory and add the necessary environment variables:
-      ```env
-      PORT=5000
-      MONGO_URI=your_mongodb_connection_string
-      JWT_SECRET=your_jwt_secret
-      ```
+   Create a `.env` file in the server directory and add the necessary environment variables:
+
+   ```env
+   PORT=8080
+   MONGO_URI=your_mongodb_connection_string
+   SECRET_KEY=your_jwt_secret
+   SALT_ROUND=10-12
+   ```
 
 4. **Run the Server**:
-      Start the server using npm:
-      ```bash
-      npm start
-      ```
+   Start the server using npm:
+
+   ```bash
+   npm start
+   ```
 
 5. **Verify the Server**:
-      Open your browser and navigate to `http://localhost:8080` to ensure the server is running correctly.
+   Open your browser and navigate to `http://localhost:8080` to ensure the server is running correctly.
 
-      ## Client Installation
+### Client Installation
 
-      To set up the client for the Giving-Block platform, follow these steps:
+To set up the client for the Giving-Block platform, follow these steps:
 
-      1. **Navigate to the Client Directory**:
-            ```bash
-            cd client
-            ```
+1. **Navigate to the Client Directory**:
 
-      2. **Install Dependencies**:
-            Install the required dependencies using npm:
-            ```bash
-            npm install
-            ```
+   ```bash
+   cd client
+   ```
 
-      3. **Run the Client**:
-            Start the client using npm:
-            ```bash
-            npm start
-            ```
+2. **Install Dependencies**:
+   Install the required dependencies using npm:
 
-      4. **Verify the Client**:
-            Open your browser and navigate to `http://localhost:5173` to ensure the client is running correctly.
+   ```bash
+   npm install
+   ```
+
+3. **Run the Client**:
+   Start the client using npm:
+
+   ```bash
+   npm start
+   ```
+
+4. **Verify the Client**:
+   Open your browser and navigate to `http://localhost:5173` to ensure the client is running correctly.
 
 ---
 
 ## 5️⃣ API Documentation 🔧
-# API Documentation
 
 ## Private Routes
 
 ### Update User
+
 - **Endpoint:** `/updateUser/:id`
 - **Method:** `PUT`
 - **Description:** Updates a user by their ID.
-- **Parameters:**
-      - `id` (URL parameter): The ID of the user to update.
+- **Parameters:** - `id` (URL parameter): The ID of the user to update.
 - **Request Body:**
 
       - `firstName` (string): The first name of the user.
@@ -214,11 +224,11 @@ To set up the server for the Giving-Block platform, follow these steps:
       - `500 Internal Server Error`: Error updating user.
 
 ### Get User by ID
+
 - **Endpoint:** `/getUserById/:id`
 - **Method:** `GET`
 - **Description:** Retrieves a user by their ID.
-- **Parameters:**
-      - `id` (URL parameter): The ID of the user to retrieve.
+- **Parameters:** - `id` (URL parameter): The ID of the user to retrieve.
 - **Responses:**
 
       - `200 OK`: User retrieved successfully.
@@ -226,6 +236,7 @@ To set up the server for the Giving-Block platform, follow these steps:
       - `500 Internal Server Error`: Error retrieving user.
 
 ### Get All Users
+
 - **Endpoint:** `/getAllUsers`
 - **Method:** `GET`
 - **Description:** Retrieves all users.
@@ -235,6 +246,7 @@ To set up the server for the Giving-Block platform, follow these steps:
       - `500 Internal Server Error`: Error retrieving users.
 
 ### Delete All Users
+
 - **Endpoint:** `/deleteAllUsers`
 - **Method:** `DELETE`
 - **Description:** Deletes all users.
@@ -246,6 +258,7 @@ To set up the server for the Giving-Block platform, follow these steps:
 ## Public Routes
 
 ### User Login
+
 - **Endpoint:** `/login`
 - **Method:** `POST`
 - **Description:** Logs in a user.
@@ -253,6 +266,7 @@ To set up the server for the Giving-Block platform, follow these steps:
 
       - `email` (string): The email of the user.
       - `password` (string): The password of the user.
+
 - **Responses:**
 
       - `200 OK`: User logged in successfully.
@@ -262,6 +276,7 @@ To set up the server for the Giving-Block platform, follow these steps:
       - `500 Internal Server Error`: Error logging in user.
 
 ### User Register
+
 - **Endpoint:** `/register`
 - **Method:** `POST`
 - **Description:** Registers a new user.
@@ -275,12 +290,12 @@ To set up the server for the Giving-Block platform, follow these steps:
       - `username` (string): The username of the user.
       - `bio` (string): The bio of the user.
       - `profilePicture` (string): The profile picture of the user.
+
 - **Responses:**
 
       - `201 Created`: User created successfully.
       - `400 Bad Request`: All fields are required or email/username already exists.
       - `500 Internal Server Error`: Error creating user.
-
 
 ## 6️⃣ Database Design 📊
 
@@ -292,7 +307,22 @@ blank
 
 ## 8️⃣ Development Log ⌛
 
-blank
+# 🛠️ Giving-Block Dev Log (Dec 11 - Dec 18, 2024) 🛠️
+
+## Week 1 (Dec 11 - Dec 12, 2024)
+
+- 📘 **Project Setup**: Initialized repository and project structure.
+- ✍️ **Documentation**: Started and updated the README file.
+
+## Week 2 (Dec 17 - Dec 18, 2024)
+
+- ⚙️ **Backend Development**:
+  - **User Management**: Created user schema, registration, login, update, delete (single and all), and get user by ID.
+  - **Authorization**: Implemented user authorization.
+- 📦 **Service Management**: Created schema, controllers, and routes for create, update, delete, and filter by status/category.
+- 💬 **Chat System**: Initial chat schema completed.
+- 🔧 **Bug Fixes**: Minor fixes to controllers.
+- 🚀 **Server Live**: Project structure finalized, server is up and running.
 
 ## 9️⃣ Testing ??
 
