@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const upload = require('../middleware/upload.image.jsx');
+const resizeImage = require('../middleware/resizeImage.jsx');
 
 const {
   getAllUsers,
@@ -23,6 +24,6 @@ router.delete('/deleteUser/:id',verifyToken, deleteUser); // Route to delete a u
 
 // _________public routes_________
 router.post('/login', userLogin); // Route to login a user
-router.post('/register', upload, userRegister); // Route to register a user
+router.post('/register', upload, resizeImage, userRegister); // Route to register a user
 
 module.exports = router;
