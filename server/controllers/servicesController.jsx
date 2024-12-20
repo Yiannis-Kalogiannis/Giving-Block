@@ -75,52 +75,54 @@ let createService = async (req, res) => {
   }
 };
 
-// __________get all services__________
+// __________get all services (with flexible filters)__________
 let getAllServices = async (req, res) => {
   try {
-    const { query } = req.query; // Extract the search query from query params
+    const { query, status, category } = req.query; // Extract query, status, and category from query params
 
-    let services;
+    let filter = {}; // Start with an empty filter object
+
+    // Add search query filter if it exists
     if (query) {
-      // If a search query is provided, filter the services by the fields listed
-      services = await Service.find({
-        $or: [
-          {
-            title: {
-              $regex: query, // Use regular expression to match the 'title' field with the value in the 'query' variable
-              $options: 'i', // Make the search case-insensitive (i.e., 'plumbing' will match 'Plumbing', 'PLUMBING', etc.)
-            },
-          },
-          { body: { $regex: query, $options: 'i' } },
-          { category: { $regex: query, $options: 'i' } },
-          { address: { $regex: query, $options: 'i' } },
-          { city: { $regex: query, $options: 'i' } },
-          { country: { $regex: query, $options: 'i' } },
-          { zip: { $regex: query, $options: 'i' } },
-          { phone: { $regex: query, $options: 'i' } },
-          // Match against populated user fields
-          { 'userId.username': { $regex: query, $options: 'i' } },
-          { 'userId.firstName': { $regex: query, $options: 'i' } },
-          { 'userId.lastName': { $regex: query, $options: 'i' } },
-        ],
-      }).populate('userId', 'username firstName lastName'); // Populate user info
-    } else {
-      // If no query is provided, return all services
-      services = await Service.find().populate(
-        'userId',
-        'username firstName lastName'
-      );
+      filter.$or = [
+        { body: { $regex: query, $options: 'i' } },
+        { title: { $regex: query, $options: 'i' } },
+        { category: { $regex: query, $options: 'i' } },
+        { address: { $regex: query, $options: 'i' } },
+        { city: { $regex: query, $options: 'i' } },
+        { country: { $regex: query, $options: 'i' } },
+        { zip: { $regex: query, $options: 'i' } },
+        { phone: { $regex: query, $options: 'i' } },
+        { 'userId.username': { $regex: query, $options: 'i' } },
+        { 'userId.firstName': { $regex: query, $options: 'i' } },
+        { 'userId.lastName': { $regex: query, $options: 'i' } },
+      ];
     }
+
+    // Add status filter if provided
+    if (status !== undefined) {
+      filter.status = status === 'true'; // Convert status to Boolean (true/false)
+    }
+
+    // Add category filter if provided
+    if (category) {
+      filter.category = category; // Filter by category
+    }
+
+    // Fetch the services based on the constructed filter
+    const services = await Service.find(filter).populate(
+      'userId',
+      'username firstName lastName'
+    ); // Populate user info
 
     res.status(200).json(services);
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+    console.error('Server Error:', error); // Log the error for debugging
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
 
 // ___________________________update a service___________________________
-
-// In the updateService function:
 const updateService = async (req, res) => {
   const serviceId = req.params.id;
   const userId = req.user._id; // Extract the user ID from the request object
@@ -209,30 +211,6 @@ let getAllServicesOfOneUser = async (req, res) => {
   const userId = req.params.id;
   try {
     const services = await Service.find({ userId });
-    return res.status(200).json({ services });
-  } catch (error) {
-    console.log(`Error: ${error}`);
-    res.status(500).json({ error: error.message });
-  }
-};
-
-// __________get service by status__________
-let getAllServicesByStatus = async (req, res) => {
-  const status = req.params.status;
-  try {
-    const services = await Service.find({ status });
-    return res.status(200).json({ services });
-  } catch (error) {
-    console.log(`Error: ${error}`);
-    res.status(500).json({ error: error.message });
-  }
-};
-
-// __________get service by category__________
-let getAllServicesByCategory = async (req, res) => {
-  const category = req.params.category;
-  try {
-    const services = await Service.find({ category });
     return res.status(200).json({ services });
   } catch (error) {
     console.log(`Error: ${error}`);

@@ -1,18 +1,18 @@
-// import SignIn from "./test/sign in/SignIn.jsx";
-import ServiceSearch from "./components/SearchService.jsx"; '../src/components/SearchComponent.jsx'
-
-
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import ServiceSearch from '../src/components/SearchService.jsx';
+import Register from '../src/pages/Register.jsx';
 
 function App() {
-  
-
   return (
-    <>
-      testing vite
-     {/* <SignIn /> */}
-     <ServiceSearch />
-    </>
-  )
+  <>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<ServiceSearch />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    </BrowserRouter>
+  </>
+    );
 }
 
-export default App
+export default App;

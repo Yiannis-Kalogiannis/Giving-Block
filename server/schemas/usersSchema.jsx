@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema({
     bio: {
         type: String,
         trim: true,
-        default: null,
+        default: 'This user has not added a bio yet.',
     },
 }, {
     timestamps: true
