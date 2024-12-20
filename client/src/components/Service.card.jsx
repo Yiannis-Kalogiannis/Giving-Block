@@ -1,7 +1,9 @@
+
+
 const ServiceCard = ({ service = {} }) => {
   return (
     <div className="service-card">
-      {service.category && <h3>{service.title}</h3>}
+      {service.title && <h3>{service.title}</h3>}
       {service.description && <p>{service.description}</p>}
       {service.category && <p>Category: {service.category}</p>}
       {service.address && <p>Address: {service.address}</p>}
