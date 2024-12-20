@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function Register() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [newUser, setNewUser] = useState({
     firstName: '',
     lastName: '',
@@ -73,7 +73,7 @@ function Register() {
 
       if (response.status >= 200 && response.status < 300) {
         alert('User created successfully');
-        // navigate('/');
+        navigate('/');
       }
     } catch (error) {
       if (error.response) {
@@ -150,7 +150,7 @@ function Register() {
       <button onClick={register}>Register</button>
       <p>
         Already have an account? 
-        {/* <button onClick={() => navigate("/")}>Log In</button> */}
+        <button onClick={() => navigate("/")}>Log In</button>
       </p>
     </div>
   );
