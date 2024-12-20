@@ -48,7 +48,7 @@ function Login() {
         const { token, user } = response.data; // Assuming response contains token and user info
         login(token, user); // Call Zustand's login function to update global state
         alert(response.data.message);
-        navigate("/"); // Redirect to homepage
+        navigate("/home"); // Redirect to homepage
       } else {
         console.warn("Unexpected response:", response);
       }

@@ -11,7 +11,7 @@ function Register() {
     email: '',
     password: '',
     password2: '',
-    image: null
+    image: null,
   });
   const [image, setImage] = useState(null);
 
@@ -44,7 +44,15 @@ function Register() {
 
   const register = async () => {
     try {
-      const { firstName, lastName, username, email, password, password2, image } = newUser;
+      const {
+        firstName,
+        lastName,
+        username,
+        email,
+        password,
+        password2,
+        image,
+      } = newUser;
 
       if (!firstName || !lastName || !email || !password || !password2) {
         return alert('All fields are required');
@@ -73,11 +81,14 @@ function Register() {
 
       if (response.status >= 200 && response.status < 300) {
         alert('User created successfully');
-        navigate('/');
+        navigate('/login');
       }
     } catch (error) {
       if (error.response) {
-        console.error('Server responded with error:', error.response.data.message);
+        console.error(
+          'Server responded with error:',
+          error.response.data.message
+        );
         alert(error.response.data.message);
       } else {
         console.error('Unexpected error from handling register:', error);
@@ -145,12 +156,18 @@ function Register() {
         accept="image/*"
         onChange={handleImageChange}
       />
-      {image && <img src={image} alt="preview" />}
+      {image && (
+        <img
+          src={image}
+          alt="preview"
+          style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+        />
+      )}
 
       <button onClick={register}>Register</button>
       <p>
-        Already have an account? 
-        <button onClick={() => navigate("/")}>Log In</button>
+        Already have an account?
+        <button onClick={() => navigate('/')}>Log In</button>
       </p>
     </div>
   );
