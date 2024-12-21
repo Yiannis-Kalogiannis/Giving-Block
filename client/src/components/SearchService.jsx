@@ -1,58 +1,64 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios'; 
+import axios from 'axios';
 import ServiceCard from './Service.card';
+import debounce from 'lodash.debounce';
 
 const ServiceSearch = () => {
   const [query, setQuery] = useState('');
-  const [services, setServices] = useState([]); // State for services
-  const [serviceType, setServiceType] = useState(''); // State for service type
+  const [services, setServices] = useState([]);
+  const [serviceType, setServiceType] = useState('');
+  const [status, setStatus] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => { // Fetch services based on query and serviceType
-    const fetchServices = async () => {
-      try {
-        const response = await axios.get(
-          'http://localhost:8080/services/getAllServices',
-          {
-            params: { query, serviceType }, // Include serviceType in params
-          }
-        );
-        setServices(response.data);   // Update services state with the fetched data
-      } catch (error) {
-        console.error('Error fetching services:', error);
-      }
-    };
-
-    fetchServices();
-  }, [query, serviceType]); // Trigger useEffect on both query and serviceType changes
-
-  const handleInputChange = (e) => {
-    setQuery(e.target.value); // Update query state
+  const fetchServices = async (query, serviceType, status) => {
+    try {
+      setLoading(true);
+      const response = await axios.get('http://localhost:8080/services/getAllServices', {
+        params: { query, serviceType, status: status || undefined },
+      });
+      setServices(response.data);
+    } catch (error) {
+      console.error('Error fetching services:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleServiceTypeChange = (e) => {
-    setServiceType(e.target.value); // Correctly update serviceType state
-  };
+  // Debounced fetch
+  const debouncedFetch = debounce(fetchServices, 300);
 
-  return ( // Display the search input and services
+  useEffect(() => {
+    debouncedFetch(query, serviceType, status);
+    return () => debouncedFetch.cancel();
+  }, [ query, serviceType, status]);
+
+  return (
     <div className="service-search">
-      <select value={serviceType} onChange={handleServiceTypeChange}>
+      <select value={serviceType} onChange={(e) => setServiceType(e.target.value)}>
         <option value="">Service Type</option>
         <option value="offering-help">Helper</option>
         <option value="help-wanted">Help Wanted</option>
+      </select>
+      <select value={status} onChange={(e) => setStatus(e.target.value)}>
+        <option value="">Status</option>
+        <option value="true">Active</option>
+        <option value="false">Inactive</option>
       </select>
       <input
         type="text"
         placeholder="Search services..."
         value={query}
-        onChange={handleInputChange}
+        onChange={(e) => setQuery(e.target.value)}
       />
-      <div className="services" >
-        {services.map((service) => (
-          <div key={service._id} style={{ margin: '10px' }}>
-            <ServiceCard service={service} />
-          </div>
-        ))}
-      </div>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <div className="services">
+          {services.map((service) => (
+            <ServiceCard key={service._id} service={service} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

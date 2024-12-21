@@ -8,7 +8,6 @@ import HomePage from './pages/HomePage.jsx';
 import UserProfile from './pages/UserProfile.jsx';
 import ProtectedRoute from '../src/hooks/ProtectedRoute.jsx';
 
-
 function App() {
   return (
     <>
@@ -24,9 +23,30 @@ function App() {
           />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/create-service" element={<ProtectedRoute><CreateService /></ProtectedRoute>} />
-          <Route path="/home" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
-          <Route path="/user-profile" element={<ProtectedRoute><UserProfile /></ProtectedRoute>} />
+          <Route
+            path="/create-service"
+            element={
+              <ProtectedRoute>
+                <CreateService />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/home"
+            element={
+              <ProtectedRoute>
+                <HomePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/user-profile"
+            element={
+              <ProtectedRoute>
+                <UserProfile />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </>
