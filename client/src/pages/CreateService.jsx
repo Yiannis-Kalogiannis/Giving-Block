@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
+import './CreateService.css';
 
 function CreateService() {
     const navigate = useNavigate();
@@ -113,7 +114,6 @@ function CreateService() {
             const formData = new FormData();
             formData.append('title', title);
             formData.append('body', body);
-            formData.append('category', category);
             formData.append('image', image); // This will be the actual file object
             formData.append('address', address);
             formData.append('city', city);
@@ -152,72 +152,80 @@ function CreateService() {
     };
 
     return (
-        <div>
-            <h1>Create Service</h1>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    name="title"
-                    placeholder="Title"
-                    onChange={handleChange}
-                />
-                <textarea 
-                    maxLength="50"
-                    name="body"
-                    placeholder="Short description (max 100 characters)"
-                    onChange={handleChange}
-                />
-                <input
-                    type="text"
-                    name="category"
-                    placeholder="Category (optional)"
-                    onChange={handleChange}
-                />
-                <input type="file" name="image" onChange={handleImageChange} />
-                {image && <img src={image} alt="Preview" style={{ width: '100px' }} />}
-                <input
-                    type="text"
-                    name="address"
-                    placeholder="Address"
-                    onChange={handleChange}
-                />
-                <input
-                    type="text"
-                    name="city"
-                    placeholder="City"
-                    onChange={handleChange}
-                />
-                <input
-                    type="text"
-                    name="country"
-                    placeholder="Country"
-                    onChange={handleChange}
-                />
-                <input
-                    type="text"
-                    name="zip"
-                    placeholder="Zip"
-                    onChange={handleChange}
-                />
-                <input
-                    type="text"
-                    name="phone"
-                    placeholder="Phone"
-                    onChange={handleChange}
-                />
-                <select
-                    name="serviceType"
-                    onChange={handleChange}
-                >
-                    <option value="">Select Service Type</option>
-                    <option value="help-wanted">Help Wanted</option>
-                    <option value="offering-help">Offering Help</option>
-                </select>
-                <button type="submit">
-                    Create Service
-                </button>
-            </form>
-        </div>
+        <div className="create-service-container">
+    <h1>Create Service</h1>
+    <form className="create-service-form" onSubmit={handleSubmit}>
+        <input
+            type="text"
+            name="title"
+            placeholder="Title"
+            className="create-service-input"
+            onChange={handleChange}
+        />
+        <textarea 
+            maxLength="50"
+            name="body"
+            placeholder="Description (100 characters max)"
+            className="create-service-textarea"
+            onChange={handleChange}
+        />
+        <input 
+            type="file" 
+            name="image" 
+            className="create-service-file"
+            onChange={handleImageChange} 
+        />
+        {image && <img src={image} alt="Preview" className="create-service-preview" />}
+        <input
+            type="text"
+            name="address"
+            placeholder="Address"
+            className="create-service-input"
+            onChange={handleChange}
+        />
+        <input
+            type="text"
+            name="city"
+            placeholder="City"
+            className="create-service-input"
+            onChange={handleChange}
+        />
+        <input
+            type="text"
+            name="country"
+            placeholder="Country"
+            className="create-service-input"
+            onChange={handleChange}
+        />
+        <input
+            type="text"
+            name="zip"
+            placeholder="Zip"
+            className="create-service-input"
+            onChange={handleChange}
+        />
+        <input
+            type="text"
+            name="phone"
+            placeholder="Phone"
+            className="create-service-input"
+            onChange={handleChange}
+        />
+        <select
+            name="serviceType"
+            className="create-service-select"
+            onChange={handleChange}
+        >
+            <option value="">Select Service Type</option>
+            <option value="help-wanted">Help Wanted</option>
+            <option value="offering-help">Offering Help</option>
+        </select>
+        <button type="submit" className="create-service-button">
+            Create Service
+        </button>
+    </form>
+</div>
+
     );
 }
 

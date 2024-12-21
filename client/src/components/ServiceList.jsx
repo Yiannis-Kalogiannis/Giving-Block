@@ -1,7 +1,8 @@
 // ServiceList.js
 import { useEffect, useState } from 'react';
-import axios from 'axios';
-import ServiceCard from './Service.card';
+import axios from 'axios'; // Import the axios module
+import './css/serviceList.css'; // Import the CSS file
+import ServiceCard from './Service.card';// Import the ServiceCard component
 import debounce from 'lodash.debounce';
 import useServiceStore from '../store/useServiceStore'; 
 import useSearchStore from '../store/useSearchStore'; 
@@ -35,17 +36,18 @@ const ServiceList = () => {
   }, [query, serviceType, status]);
 
   return (
-    <div className="services">
-      {loading ? (
-        <p>Loading...</p>
-      ) : services.length === 0 ? (
-        <p>No services available</p>
-      ) : (
-        services.map((service) => (
-          <ServiceCard key={service._id} service={service} />
-        ))
-      )}
-    </div>
+    <div className="service-container">
+    {loading ? (
+      <p>Loading...</p>
+    ) : services.length === 0 ? (
+      <p>No services available</p>
+    ) : (
+      services.map((service) => (
+        <ServiceCard key={service._id} service={service} />
+      ))
+    )}
+  </div>
+  
   );
 };
 

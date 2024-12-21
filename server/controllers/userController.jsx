@@ -64,7 +64,7 @@ let userLogin = async (req, res) => {
     let payload = {
       firstName: registeredUser.firstName,
       lastName: registeredUser.lastName,
-      image: registeredUser.image,
+      image: registeredUser.profilePicture,
       userId: registeredUser._id,
       username: registeredUser.username,
     };

@@ -1,40 +1,57 @@
-import './css/serviceCard.css'; // Import the CSS file
+import './css/serviceCard.css';
 
 const ServiceCard = ({ service = {} }) => {
-
   return (
     <div className="service-card">
-      {service.title && <h3>{service.title}</h3>}
-      {service.status !== undefined && (
-        <p>Status: {service.status ? 'Active' : 'Inactive'}</p>
-      )}
-      {service.body && <p>{service.body}</p>}
-      {service.serviceType && (
-        <p>
-          Service Type:{' '}
-          {service.serviceType === 'help-wanted' ? 'Help Wanted' : 'Offering Help'}
-        </p>
-      )}
-      {service.address && <p>Address: {service.address}</p>}
-      {service.image && <img src={`http://localhost:8080/uploads/${service.image}`} alt="Service" style={{ width: '100px' }} />}
-      {service.city && <p>City: {service.city}</p>}
-      {service.country && <p>Country: {service.country}</p>}
-      {service.zip && <p>Zip: {service.zip}</p>}
-      {service.phone && <p>Phone: {service.phone}</p>}
-      {service.userId?.username && <p>Posted by: {service.userId.username}</p>}
-      {service.userId?.firstName && <p>First Name: {service.userId.firstName}</p>}
-      {service.userId?.lastName && <p>Last Name: {service.userId.lastName}</p>}
-      {service.userId?.email && <p>Email: {service.userId.email}</p>}
+      {/* Card Header */}
+      <div className="card-header">
+        <div className="profile-picture-container">
+          {service.userId?.profilePicture ? (
+            <img
+              src={`http://localhost:8080/uploads/${service.userId.profilePicture}`}
+              alt="Profile"
+              className="profile-picture"
+            />
+          ) : (
+            <div className="profile-placeholder">No Image</div>
+          )}
+        </div>
+        <div className="user-info">
+          {service.userId?.firstName && <span>{service.userId.firstName}</span>}
+          {service.userId?.lastName && <span>{service.userId.lastName}</span>}
+          {service.userId?.username && <span>@{service.userId.username}</span>}
+        </div>
+        <div
+          className={`status ${service.status ? 'active' : 'inactive'}`}
+        >
+          {service.status ? 'Active' : 'Inactive'}
+        </div>
+      </div>
 
-      {service.userId?.profilePicture ? (
+      {/* Service Image */}
+      {service.image && (
         <img
-        src={`http://localhost:8080/uploads/${service.userId.profilePicture}`}  // Correct syntax for dynamic path
-        alt="Profile"
-        style={{ width: '100px', height: '100px' }}
-      />
-      ) : (
-        <p>No profile picture available.</p>
+          src={`http://localhost:8080/uploads/${service.image}`}
+          alt="Service"
+          className="service-image"
+        />
       )}
+
+      {/* Service Details */}
+      <div className="service-details">
+        {service.title && <p><span>Title:</span> {service.title}</p>}
+        {service.body && <p><span>Description:</span> {service.body}</p>}
+        {service.serviceType && (
+          <p>
+            <span>Type:</span> {service.serviceType === 'help-wanted' ? 'Help Wanted' : 'Offering Help'}
+          </p>
+        )}
+        {service.address && <p><span>Address:</span> {service.address}</p>}
+        {service.city && <p><span>City:</span> {service.city}</p>}
+        {service.country && <p><span>Country:</span> {service.country}</p>}
+        {service.zip && <p><span>Zip:</span> {service.zip}</p>}
+        {service.phone && <p><span>Phone:</span> {service.phone}</p>}
+      </div>
     </div>
   );
 };

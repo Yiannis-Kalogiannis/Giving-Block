@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import React, { useState } from 'react';
+import { useState } from 'react';
 // store imports
 import useAuthStore from "../store/authStore";
 import SearchBar from "../components/SearchComponent";
@@ -7,12 +7,15 @@ import SearchBar from "../components/SearchComponent";
 import CreateService from "../pages/CreateService";
 // material ui imports
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { jwtDecode } from "jwt-decode";
+
 
 function Navbar() {
     // state
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
     const { logout } = useAuthStore();
+    
     
     // functions
     const handleLogOut = () => {
@@ -28,11 +31,26 @@ function Navbar() {
         setOpen(false);
     };
 
+
+
+
+    const token = localStorage.getItem("token");
+    let username = "";
+    let userId = "";
+    let profilePicture = "";
+
+    if (token) {
+        const decodedToken = jwtDecode(token);
+        console.log(decodedToken);
+        username = decodedToken.username;
+        userId = decodedToken.userId;
+        profilePicture = decodedToken.image;
+        console.log(`Username is: ${username}`);
+        console.log(`User ID is: ${userId}`);
+    }
+
     return (
         <div className="navbar" style={{ display: "flex", justifyContent: "space-between" }}>
-            <button onClick={handleLogOut}>
-                Logout
-            </button>
             <SearchBar />
             <button onClick={handleOpen}>
                 Create Service
@@ -48,6 +66,17 @@ function Navbar() {
                     </Button>
                 </DialogActions>
             </Dialog>
+            <button onClick={handleLogOut}>
+                Logout
+            </button>
+            <div>
+                <span>{username}</span>
+                <img style={{ width: "40px", height: "40px",  borderRadius: "50%" }}
+              src={`http://localhost:8080/uploads/${profilePicture}` }
+              alt="Profile"
+              className="profile-picture"
+            />
+            </div>
         </div>
     );
 }
