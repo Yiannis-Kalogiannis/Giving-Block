@@ -2,13 +2,19 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import ServiceCard from './Service.card';
 import debounce from 'lodash.debounce';
+import useServiceStore from '../store/useServiceStore'; 
+
+
 
 const ServiceSearch = () => {
   const [query, setQuery] = useState('');
-  const [services, setServices] = useState([]);
   const [serviceType, setServiceType] = useState('');
   const [status, setStatus] = useState('');
   const [loading, setLoading] = useState(false);
+  
+  // Access services state from the store
+  const services = useServiceStore((state) => state.services);
+  const setServices = useServiceStore((state) => state.setServices);
 
   const fetchServices = async (query, serviceType, status) => {
     try {
@@ -17,7 +23,7 @@ const ServiceSearch = () => {
         params: { query, serviceType, status: status || undefined },
       });
       console.log(response.data);
-      setServices(response.data);
+      setServices(response.data); // Update global services state
     } catch (error) {
       console.error('Error fetching services:', error);
     } finally {
@@ -31,10 +37,11 @@ const ServiceSearch = () => {
   useEffect(() => {
     debouncedFetch(query, serviceType, status);
     return () => debouncedFetch.cancel();
-  }, [ query, serviceType, status]);
+  }, [query, serviceType, status]);
 
   return (
     <div className="service-search">
+      {/* Search Form */}
       <select value={serviceType} onChange={(e) => setServiceType(e.target.value)}>
         <option value="">Service Type</option>
         <option value="offering-help">Helper</option>
@@ -51,13 +58,19 @@ const ServiceSearch = () => {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
+
+      {/* Display loading message or services */}
       {loading ? (
         <p>Loading...</p>
       ) : (
         <div className="services">
-          {services.map((service) => (
-            <ServiceCard key={service._id} service={service} />
-          ))}
+          {services.length === 0 ? (
+            <p>No services available</p>
+          ) : (
+            services.map((service) => (
+              <ServiceCard key={service._id} service={service} />
+            ))
+          )}
         </div>
       )}
     </div>

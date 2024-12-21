@@ -8,6 +8,7 @@ import HomePage from './pages/HomePage.jsx';
 import UserProfile from './pages/UserProfile.jsx';
 import ProtectedRoute from '../src/hooks/ProtectedRoute.jsx';
 
+
 function App() {
   return (
     <>
