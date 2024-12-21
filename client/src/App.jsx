@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import ServiceSearch from '../src/components/SearchService.jsx';
+import ServiceSearch from './components/ServiceList.jsx';
 import Register from '../src/pages/Register.jsx';
 import Login from './pages/LogIn.jsx';
 import CreateService from './pages/CreateService.jsx';
@@ -14,14 +14,6 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route
-            path="/search"
-            element={
-              <ProtectedRoute>
-                <ServiceSearch />
-              </ProtectedRoute>
-            }
-          />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route

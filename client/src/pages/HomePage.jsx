@@ -1,4 +1,5 @@
 import Navbar from '../components/Navbar';
+import ServiceList from '../components/ServiceList';
 
 
 function HomePage() {
@@ -6,6 +7,7 @@ function HomePage() {
         <>
         <h1>Home Page</h1>
             <Navbar />
+            <ServiceList />
         </>
      );
 }

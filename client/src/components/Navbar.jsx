@@ -1,11 +1,11 @@
 import {useNavigate} from "react-router-dom";
 import useAuthStore from "../store/authStore";
-import useServiceStore from "../store/useServiceStore";
+import SearchBar from "../components/SearchComponent";
+
 
 function Navbar() {
     const navigate = useNavigate();
     const { logout } = useAuthStore();
-    const { services } = useServiceStore();
 
     const handleLogOut = () => {
         logout();
@@ -19,6 +19,7 @@ function Navbar() {
         <button  onClick={handleLogOut}>
             logout
         </button>
+        <SearchBar />
         </div>
      );
 }
