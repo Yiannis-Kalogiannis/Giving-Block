@@ -67,7 +67,7 @@ function CreateService() {
             const userName = decodedToken.username;  // Get userId from decoded token
             console.log("username:", userName);
             if (!userName) {
-                alert('Username dosent exist');
+                alert(`Username doesn't exist`);
                 return;
             }
     
@@ -75,11 +75,40 @@ function CreateService() {
                 title, body, category, image, address, city, country, zip, phone, serviceType, status,
             } = newService;
     
-            // Validate all required fields
-            if (!title || !body || !address || !city || !country || !zip || !phone || !serviceType) {
-                alert('All fields are required');
+            // Validate all required fields 
+            if (!title) {
+                alert('Title is required');
                 return;
             }
+            if (!body) {
+                alert('Body is required');
+                return;
+            }
+            if (!address) {
+                alert('Address is required');
+                return;
+            }
+            if (!city) {
+                alert('City is required');
+                return;
+            }
+            if (!country) {
+                alert('Country is required');
+                return;
+            }
+            if (!zip) {
+                alert('Zip is required');
+                return;
+            }
+            if (!phone) {
+                alert('Phone is required');
+                return;
+            }
+            if (!serviceType) {
+                alert('Service Type is required');
+                return;
+            }
+           
     
             const formData = new FormData();
             formData.append('title', title);
@@ -132,9 +161,10 @@ function CreateService() {
                     placeholder="Title"
                     onChange={handleChange}
                 />
-                <textarea
+                <textarea 
+                    maxLength="50"
                     name="body"
-                    placeholder="Body"
+                    placeholder="Short description (max 100 characters)"
                     onChange={handleChange}
                 />
                 <input
@@ -175,12 +205,14 @@ function CreateService() {
                     placeholder="Phone"
                     onChange={handleChange}
                 />
-                <input
-                    type="text"
+                <select
                     name="serviceType"
-                    placeholder="Service Type ('help-wanted' or 'offering-help')"
                     onChange={handleChange}
-                />
+                >
+                    <option value="">Select Service Type</option>
+                    <option value="help-wanted">Help Wanted</option>
+                    <option value="offering-help">Offering Help</option>
+                </select>
                 <button type="submit">
                     Create Service
                 </button>

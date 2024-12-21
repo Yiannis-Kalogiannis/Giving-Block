@@ -16,6 +16,7 @@ const ServiceSearch = () => {
       const response = await axios.get('http://localhost:8080/services/getAllServices', {
         params: { query, serviceType, status: status || undefined },
       });
+      console.log(response.data);
       setServices(response.data);
     } catch (error) {
       console.error('Error fetching services:', error);

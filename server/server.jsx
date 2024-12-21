@@ -20,6 +20,7 @@ app.use('/services', serviceRoutes);
 // Static files for uploads
 console.log(path.join(__dirname, 'uploads'));
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+console.log("Static files served from:", path.join(__dirname, 'uploads'));
 
 // Start the server
 app.listen(port, () => {

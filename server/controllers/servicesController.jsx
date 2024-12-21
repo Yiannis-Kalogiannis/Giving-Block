@@ -106,6 +106,7 @@ let getAllServices = async (req, res) => {
         { 'userId.username': { $regex: query, $options: 'i' } },
         { 'userId.firstName': { $regex: query, $options: 'i' } },
         { 'userId.lastName': { $regex: query, $options: 'i' } },
+        { 'userId.email': { $regex: query, $options: 'i' } },
       ];
     }
 
@@ -123,7 +124,7 @@ let getAllServices = async (req, res) => {
     // Fetch the services based on the constructed filter
     const services = await Service.find(filter).populate(
       'userId',
-      'username firstName lastName'
+      'username firstName lastName email profilePicture'
     ); // Populate user info
 
     res.status(200).json(services);
