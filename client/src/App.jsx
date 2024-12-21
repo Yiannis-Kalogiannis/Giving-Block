@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import ServiceSearch from './components/ServiceList.jsx';
 import Register from '../src/pages/Register.jsx';
 import Login from './pages/LogIn.jsx';
 import CreateService from './pages/CreateService.jsx';
