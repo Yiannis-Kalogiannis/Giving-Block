@@ -1,13 +1,14 @@
 import Navbar from '../components/Navbar';
 import ServiceList from '../components/ServiceList';
+import Footer from '../components/Footer';
 
 
 function HomePage() {
     return ( 
         <>
-        <h1>Home Page</h1>
             <Navbar />
             <ServiceList />
+            <Footer />
         </>
      );
 }

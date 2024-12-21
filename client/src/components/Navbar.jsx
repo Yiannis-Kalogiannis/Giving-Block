@@ -9,10 +9,12 @@ import CreateService from "../pages/CreateService";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 
 function Navbar() {
+    // state
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
     const { logout } = useAuthStore();
     
+    // functions
     const handleLogOut = () => {
         logout();
         navigate("/login");
