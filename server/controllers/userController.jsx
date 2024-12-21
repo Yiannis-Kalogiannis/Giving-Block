@@ -65,7 +65,8 @@ let userLogin = async (req, res) => {
       firstName: registeredUser.firstName,
       lastName: registeredUser.lastName,
       image: registeredUser.image,
-      id: registeredUser._id,
+      userId: registeredUser._id,
+      username: registeredUser.username,
     };
 
     let token = jwt.sign(payload, process.env.SECRET_KEY);

@@ -5,80 +5,90 @@ const bcrypt = require('bcrypt');
 const Service = require('../schemas/servicesSchema.jsx');
 
 // ___________________________create a service___________________________
+
 let createService = async (req, res) => {
   // Destructure the request body to get the service details
   const {
-    title,
-    body,
-    category,
-    image,
-    address,
-    city,
-    country,
-    zip,
-    phone,
-    status,
-  } = req.body;
-  // Get the user ID from the request parameters
-  const userId = req.params.id;
-
-  try {
-    // Check if all required fields are provided
-    if (
-      !title ||
-      !body ||
-      !category ||
-      !address ||
-      !city ||
-      !country ||
-      !zip ||
-      !phone
-    ) {
-      return res.status(400).json({ message: 'All fields are required' });
-    }
-
-    // Handle the uploaded image (optional)
-    let serviceImage = null;
-    if (req.file) {
-      serviceImage = req.file.filename; // The filename assigned by multer
-    }
-
-    // Create a new service object with the provided details
-    const newService = {
       title,
       body,
       category,
-      userId, // Use the user ID from params
-      status,
-      image: serviceImage,
+      image,
       address,
       city,
       country,
       zip,
       phone,
-    };
+      status,
+      serviceType,
+      username,
+  } = req.body;
 
-    // Save the new service to the database
-    const createdService = await Service.create(newService);
-    console.log({ message: 'Service created successfully' });
+  // Get the user ID from the request parameters (URL parameter)
+  const userId = req.params.id;  // Extract the user ID from the request object 
+ 
 
-    // Return a success response with the created service details
-    return res.status(201).json({
-      message: 'Service created successfully',
-      service: createdService,
-      serviceId: createdService._id,
-    });
+  try {
+      // Check if all required fields are provided
+      if (
+          !title ||
+          !body ||
+          !category ||
+          !address ||
+          !city ||
+          !country ||
+          !zip ||
+          !phone ||
+          !serviceType
+      ) {
+          return res.status(400).json({ message: 'All fields are required' });
+      }
+
+      // Handle the uploaded image (optional)
+      let serviceImage = null;
+      if (req.file) {
+          serviceImage = req.file.filename; // The filename assigned by multer
+      }
+
+      // Create a new service object with the provided details
+      const newService = {
+          title,
+          body,
+          category,
+          userId, // Use the user ID from params
+          status,
+          image: serviceImage,
+          address,
+          city,
+          country,
+          zip,
+          phone,
+          serviceType,
+          username, // Add username to the service object
+      };
+
+      // Save the new service to the database
+      const createdService = await Service.create(newService);
+      console.log({ message: 'Service created successfully' });
+
+      // Return a success response with the created service details
+      return res.status(201).json({
+          message: 'Service created successfully',
+          service: createdService,
+          serviceId: createdService._id,
+      });
   } catch (error) {
-    // Log the error and return a server error response
-    console.log(`Error: ${error}`);
-    res.status(500).json({ error: error.message });
+      // Log the error and return a server error response
+      console.log(`Error: ${error}`);
+      res.status(500).json({ error: error.message });
   }
 };
 
+
 // __________get all services (with flexible filters)__________
+
 let getAllServices = async (req, res) => {
   try {
-    const { query, status, category } = req.query; // Extract query, status, and category from query params
+    const { query, status,serviceType } = req.query; // Extract query, status, and category from query params
 
     let filter = {}; // Start with an empty filter object
 
@@ -87,7 +97,7 @@ let getAllServices = async (req, res) => {
       filter.$or = [
         { body: { $regex: query, $options: 'i' } },
         { title: { $regex: query, $options: 'i' } },
-        { category: { $regex: query, $options: 'i' } },
+        
         { address: { $regex: query, $options: 'i' } },
         { city: { $regex: query, $options: 'i' } },
         { country: { $regex: query, $options: 'i' } },
@@ -104,9 +114,10 @@ let getAllServices = async (req, res) => {
       filter.status = status === 'true'; // Convert status to Boolean (true/false)
     }
 
-    // Add category filter if provided
-    if (category) {
-      filter.category = category; // Filter by category
+    
+// Add serviceType filter if provided
+    if(serviceType){
+      filter.serviceType = serviceType;
     }
 
     // Fetch the services based on the constructed filter

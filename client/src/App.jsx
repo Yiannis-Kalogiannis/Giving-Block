@@ -23,7 +23,7 @@ function App() {
             }
           />
           <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<ProtectedRoute><Login /></ProtectedRoute>} />
+          <Route path="/login" element={<Login />} />
           <Route path="/create-service" element={<ProtectedRoute><CreateService /></ProtectedRoute>} />
           <Route path="/home" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
           <Route path="/user-profile" element={<ProtectedRoute><UserProfile /></ProtectedRoute>} />

@@ -9,10 +9,6 @@ const serviceSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  category: {
-    type: String,
-    required: true,
-  },
   userId: { 
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
@@ -50,7 +46,11 @@ const serviceSchema = new mongoose.Schema({
     type: String, 
     enum: ['help-wanted', 'offering-help'], 
     required: true 
-  }
+  },
+  username: {
+    type: String,
+    required: true,
+  },
 }, { timestamps: true });
 
 const Service = mongoose.model('Service', serviceSchema);

@@ -1,10 +1,11 @@
+import './css/serviceCard.css';  // Import the CSS file
+
 const ServiceCard = ({ service = {} }) => {
   return (
     <div className="service-card">
       {service.title && <h3>{service.title}</h3>}
-      {service.status && <p>Status: {service.status ? 'Active' : 'Inactive'}</p>}
-      {service.description && <p>{service.description}</p>}
-      {service.category && <p>Category: {service.category}</p>}
+      {service.status !== undefined && <p>Status: {service.status ? 'Active' : 'Inactive'}</p>}
+      {service.body && <p>{service.body}</p>}
       {service.serviceType && (
         <p>Service Type: {service.serviceType === 'help-wanted' ? 'Help Wanted' : 'Offering Help'}</p>
       )}
@@ -29,4 +30,3 @@ const ServiceCard = ({ service = {} }) => {
 };
 
 export default ServiceCard;
-

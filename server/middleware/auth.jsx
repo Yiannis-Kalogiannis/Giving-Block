@@ -34,15 +34,15 @@ const verifyToken = async (req, res, next) => {
       const decoded = jwt.verify(token, secretKey);
   
       // Validate the decoded user ID
-      if (!mongoose.Types.ObjectId.isValid(decoded.id)) {
-        console.error("Invalid User ID in Token:", decoded.id);
+      if (!mongoose.Types.ObjectId.isValid(decoded.userId)) {
+        console.error("Invalid User ID in Token:", decoded.userId);
         return res.status(400).json({ message: "Invalid user ID in token." });
       }
   
       // Fetch the user from the database
-      const user = await User.findById(decoded.id);
+      const user = await User.findById(decoded.userId);
       if (!user) {
-        console.error("User not found for ID:", decoded.id);
+        console.error("User not found for ID:", decoded.userId);
         return res.status(404).json({ message: "User not found." });
       }
   
