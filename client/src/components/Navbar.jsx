@@ -7,13 +7,15 @@ import SearchBar from "../components/SearchComponent";
 import CreateService from "../pages/CreateService";
 // material ui imports
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Box, Typography, Avatar } from '@mui/material';
-import { jwtDecode } from "jwt-decode";
+// import { jwtDecode } from "jwt-decode";
+import useUserStore from "../store/useUserStore";
 
 function Navbar() {
     // state
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
     const { logout } = useAuthStore();
+    const { username, userId, profilePicture } = useUserStore();
     
     // functions
     const handleLogOut = () => {
@@ -29,20 +31,7 @@ function Navbar() {
         setOpen(false);
     };
 
-    const token = localStorage.getItem("token");
-    let username = "";
-    let userId = "";
-    let profilePicture = "";
-
-    if (token) {
-        const decodedToken = jwtDecode(token);
-        console.log(decodedToken);
-        username = decodedToken.username;
-        userId = decodedToken.userId;
-        profilePicture = decodedToken.image;
-        console.log(`Username is: ${username}`);
-        console.log(`User ID is: ${userId}`);
-    }
+   
 
     return (
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px' }}>
@@ -79,7 +68,6 @@ function Navbar() {
                 </Typography>
                 <Avatar 
                     sx={{ width: 40, height: 40 }} 
-                    alt="Profile Picture" 
                     src={`http://localhost:8080/uploads/${profilePicture}`} 
                 />
                 <Button 
