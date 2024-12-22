@@ -92,43 +92,49 @@ let userRegister = async (req, res) => {
     password,
     username,
     bio,
-    profilePicture,
   } = req.body;
+  
   try {
+    // Validate required fields
     if (!firstName || !lastName || !email || !password) {
-      return res.status(400).json({ message: 'All fields are required!!' });
+      return res.status(400).json({ message: 'All fields are required!' });
     }
+
+    // Validate password strength
     if (!passwordRegex.test(password)) {
       return res.status(400).json({
-        message:
-          'Password must be at least 8 characters and contain both letters and numbers!',
+        message: 'Password must be at least 8 characters and contain both letters and numbers!',
       });
     }
-    const userExist = await User.findOne({ $or: [{ email }, { username }] }); //check both username and email if they exist
 
+    // Check if email or username already exists
+    const userExist = await User.findOne({ $or: [{ email }, { username }] });
     if (userExist) {
       if (userExist.email === email) {
         console.log('Email already exists');
         return res.status(400).json({
-          message: `Email already exists! Please log in or register with a different email.`, //message to user if email already exists
+          message: `Email already exists! Please log in or register with a different email.`,
         });
       }
-
       if (userExist.username === username) {
         console.log('Username already exists');
         return res.status(400).json({
-          message: `Username already exists! Please choose a different username.`, //message to user if username already exists
+          message: `Username already exists! Please choose a different username.`,
         });
       }
     }
 
-    //  Handle the uploaded image (optional)
-    let profileImage = null;
+    // Handle the uploaded image (optional)
+    let profileImage = 'server/assets/images/default-image.png'; // Default profile image
+
     if (req.file) {
-      profileImage = req.file.filename; // The filename assigned by multer
+      profileImage = `/uploads/${req.file.filename}`; // The filename assigned by multer
     }
 
+    // Hash password
     const hashPassword = await bcrypt.hash(password, saltRounds);
+
+    // Create the user object
     const newUser = {
       firstName,
       lastName,
@@ -138,20 +144,25 @@ let userRegister = async (req, res) => {
       bio,
       username,
     };
+
+    // Create the new user in the database
     const createdUser = await User.create(newUser);
 
     console.log({ message: 'User created successfully' });
 
+    // Return the created user response
     return res.status(201).json({
       message: 'User created successfully',
-      user: createdUser, //return the created user
+      user: createdUser,
       userId: createdUser._id,
     });
+
   } catch (error) {
     console.log(`Error: ${error}`);
-    res.status(500).json({ message: `backend: Failed to create a new user` });
+    return res.status(500).json({ message: 'Failed to create a new user' });
   }
 };
+
 
 // ___________________________update user profile___________________________
 let userUpdate = async (req, res) => {

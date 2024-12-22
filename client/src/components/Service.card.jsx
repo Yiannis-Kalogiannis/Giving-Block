@@ -125,7 +125,7 @@ const ServiceCard = ({ service = {} }) => {
           <CardMedia
             component="img"
             height="180"
-            image={`http://localhost:8080/uploads/${service.image}`}
+            image={`http://localhost:8080/uploads/${service.image}` }
             alt="Service"
             sx={{ objectFit: 'cover' }}
           />

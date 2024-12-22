@@ -33,7 +33,7 @@ Giving-Block is a web platform designed to foster community support within neigh
 
 7. [Page Structure](#7️⃣-page-structure-🌐)
 8. [Development Log](#8️⃣-development-log-⌛)
-9. [Testing](#9️⃣-testing-✅)
+9. [Issues](#9️⃣-Issues-⚠️)
 10. [Security](#🔒-security)
 11. [Future Enhancements](#🔧-future-enhancements)
 
@@ -426,21 +426,26 @@ const chatSchema = new mongoose.Schema(
 ### ⚙️ Backend Development 🖥️
 
 **Dec 17, 2024:**
+
 - 📜 Created user registration and login controllers.
 
 **Dec 18, 2024:**
+
 - 🗂️ Completed CRUD operations for users (register, update, delete by ID, delete all, and get by ID).
 - 🔐 Implemented authorization for secured access.
 - ⚙️ Developed service CRUD operations (create, update, delete) and added filters for status and category.
 
 **Dec 19, 2024:**
+
 - 🔍 Updated backend GET services to handle search functionality.
 
 **Dec 20, 2024:**
+
 - ⚙️ Added serviceType to the schema to indicate if the user is offering help or requesting help.
 - 📷 Added Sharp middleware for image processing (pending cleanup of original images post-resizing).
 
 **Dec 21, 2024:**
+
 - 🔄 Implemented debounce functionality in search.
 - 📋 Added filters for service status (active/inactive) in search.
 
@@ -449,17 +454,21 @@ const chatSchema = new mongoose.Schema(
 ### ⚒️ Frontend Development 💻
 
 **Dec 19, 2024:**
+
 - 🛠️ Built service card and search components (functionality complete, styling pending).
 - 🗂️ Populated services with user details for better display on cards.
 
 **Dec 20, 2024:**
+
 - ✅ Completed LogIn and Register pages.
 
 **Dec 21, 2024:**
+
 - 🛠️ Populated images in services via user relationships.
 - 🏗️ Started separating global state stores for search and list.
 
 **Dec 22, 2024:**
+
 - ⚡ Added conditional rendering to allow only service owners to edit or delete their services.
 - ➕ Added buttons for edit and delete in service cards (functionality pending).
 - ✏️ Styled components and pages with Material-UI.
@@ -468,10 +477,21 @@ const chatSchema = new mongoose.Schema(
 - 🔍 Enhanced the search bar by adding a modal for creating services.
 - 🧹 Minor improvements to home page and service card styling.
 
+## 9️⃣ Issues ⚠️
 
-## 9️⃣ Testing ??
+### Issues Encountered
 
-blank
+⚠️ **List Reload Issue**: The list does not reload after rendering (update or delete service).
+
+⚠️ **User Image and info Persistence**: When logging out and logging in again, the user image and name remain the same unless the page is reloaded.
+
+⚠️ **Default Service Image**: Ensure a default image is added to services even if the user hasn't uploaded one.
+
+⚠️ **Default Profile Image**: Ensure a default image is added to user profiles even if the user hasn't uploaded one.
+
+⚠️ **Close form after submitting new service**: Create service page is a modal that wont close after press submit, tried to add the handle close function from parent component (navbar) but wont work
+
+⚠️ **Delete image after resize**: Make SHARP(the resize tool) to delete the image after resizing it
 
 ## 🔒 Security
 

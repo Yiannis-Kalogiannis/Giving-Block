@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import useUserStore from '../store/useUserStore';
 import { TextField, Button, InputLabel, MenuItem, Select, FormControl, Box } from '@mui/material';
 
-function CreateService() {
-    const navigate = useNavigate();
+function CreateService( handleClose) {
+    
     const {username, userId, token} = useUserStore();  // Get username and userId from the store
     const [newService, setNewService] = useState({
         title: '',
@@ -87,7 +86,6 @@ function CreateService() {
             
             if (response.status === 201) {
                 alert('Service created successfully');
-                navigate('/');
             }
         } catch (error) {
             if (error.response) {

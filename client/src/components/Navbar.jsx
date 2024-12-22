@@ -66,7 +66,7 @@ function Navbar() {
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Create New Service</DialogTitle>
         <DialogContent>
-          <CreateService />
+          <CreateService handleClose={handleClose} />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
@@ -83,6 +83,7 @@ function Navbar() {
         <Avatar
           sx={{ width: 40, height: 40 }}
           src={`http://localhost:8080/uploads/${profilePicture}`}
+          alt="Profile"
         />
         <Button
           variant="outlined"
