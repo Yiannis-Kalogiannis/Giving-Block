@@ -419,23 +419,55 @@ const chatSchema = new mongoose.Schema(
 
 ## 8️⃣ Development Log ⌛
 
-# 🛠️ Giving-Block Dev Log (Dec 11 - Dec 18, 2024) 🛠️
+# 🛠️ Giving-Block Dev Log (Dec 17 - Dec 22, 2024) 🛠️
 
-## Week 1 (Dec 11 - Dec 12, 2024)
+## Week 3 (Dec 17 - Dec 22, 2024)
 
-- 📘 **Project Setup**: Initialized repository and project structure.
-- ✍️ **Documentation**: Started and updated the README file.
+### ⚙️ Backend Development 🖥️
 
-## Week 2 (Dec 17 - Dec 18, 2024)
+**Dec 17, 2024:**
+- 📜 Created user registration and login controllers.
 
-⚙️ **Backend Development**:
+**Dec 18, 2024:**
+- 🗂️ Completed CRUD operations for users (register, update, delete by ID, delete all, and get by ID).
+- 🔐 Implemented authorization for secured access.
+- ⚙️ Developed service CRUD operations (create, update, delete) and added filters for status and category.
 
-- 👤 **User Management**: Created user schema, registration, login, update, delete (single and all), and get user by ID.
-- 🔐 **Authorization**: Implemented user authorization.
-- 📦 **Service Management**: Created schema, controllers, and routes for create, update, delete, and filter by status/category.
-- 💬 **Chat System**: Initial chat schema completed.
-- 🔧 **Bug Fixes**: Minor fixes to controllers.
-- 🚀 **Server Live**: Project structure finalized, server is up and running.
+**Dec 19, 2024:**
+- 🔍 Updated backend GET services to handle search functionality.
+
+**Dec 20, 2024:**
+- ⚙️ Added serviceType to the schema to indicate if the user is offering help or requesting help.
+- 📷 Added Sharp middleware for image processing (pending cleanup of original images post-resizing).
+
+**Dec 21, 2024:**
+- 🔄 Implemented debounce functionality in search.
+- 📋 Added filters for service status (active/inactive) in search.
+
+---
+
+### ⚒️ Frontend Development 💻
+
+**Dec 19, 2024:**
+- 🛠️ Built service card and search components (functionality complete, styling pending).
+- 🗂️ Populated services with user details for better display on cards.
+
+**Dec 20, 2024:**
+- ✅ Completed LogIn and Register pages.
+
+**Dec 21, 2024:**
+- 🛠️ Populated images in services via user relationships.
+- 🏗️ Started separating global state stores for search and list.
+
+**Dec 22, 2024:**
+- ⚡ Added conditional rendering to allow only service owners to edit or delete their services.
+- ➕ Added buttons for edit and delete in service cards (functionality pending).
+- ✏️ Styled components and pages with Material-UI.
+- 🖼️ Integrated images into the navbar.
+- 📅 Added a footer (links pending).
+- 🔍 Enhanced the search bar by adding a modal for creating services.
+- 🧹 Minor improvements to home page and service card styling.
+
 
 ## 9️⃣ Testing ??
 

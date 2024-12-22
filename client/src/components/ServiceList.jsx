@@ -13,6 +13,12 @@ const ServiceList = () => {
   const setServices = useServiceStore((state) => state.setServices);
   const [loading, setLoading] = useState(false);
 
+
+
+
+
+
+
   const fetchServices = async (query, serviceType, status) => {
     try {
       setLoading(true);
@@ -27,11 +33,13 @@ const ServiceList = () => {
     }
   };
 
-  // Debounced fetch to optimize performance
-  const debouncedFetch = debounce(fetchServices, 300);
+  
 
   useEffect(() => {
+    const debouncedFetch = debounce(fetchServices, 300);
+    
     debouncedFetch(query, serviceType, status);
+    
     return () => debouncedFetch.cancel();
   }, [query, serviceType, status]);
 

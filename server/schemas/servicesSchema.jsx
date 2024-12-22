@@ -20,7 +20,7 @@ const serviceSchema = new mongoose.Schema({
   },
   image: {
     type: String,
-    default: '../assets/images/default-image.png',
+    default: '/assets/images/default-image.png',
   },
   address: {
     type: String,

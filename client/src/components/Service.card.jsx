@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useUserStore from '../store/useUserStore';
 import useEditDeleteStore from '../store/useEditAndDeletestore';
+import useServiceStore from '../store/useServiceStore';
 // Import MUI components and icons
 import { styled } from '@mui/material/styles';
 import {
@@ -27,6 +28,7 @@ const ExpandMore = styled((props) => {
 const ServiceCard = ({ service = {} }) => {
   const [expanded, setExpanded] = useState(false);
   const { userId } = useUserStore();
+  const { services, setServices } = useServiceStore();
   const [openEditModal, setOpenEditModal] = useState(false);  // Modal state
   const [editedService, setEditedService] = useState({
     title: service.title || '',
@@ -38,6 +40,9 @@ const ServiceCard = ({ service = {} }) => {
     phone: service.phone || '',
     status: service.status || false,
   });  // Store edited service details
+  
+  
+ 
 
   const { deleteService, editService } = useEditDeleteStore();
 
@@ -69,7 +74,6 @@ const ServiceCard = ({ service = {} }) => {
     setOpenEditModal(false);  // Close the modal after saving
   };
   
-  // console.log(service._id);
   return (
     <>
       <Card sx={{ maxWidth: 345, margin: '20px auto', borderRadius: 2, boxShadow: 3 }}>
