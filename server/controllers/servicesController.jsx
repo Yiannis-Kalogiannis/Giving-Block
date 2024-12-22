@@ -220,15 +220,48 @@ let deleteService = async (req, res) => {
 
 //__________get all services of one user__________
 let getAllServicesOfOneUser = async (req, res) => {
-  const userId = req.params.id;
   try {
-    const services = await Service.find({ userId });
-    return res.status(200).json({ services });
+    const { query, status, serviceType } = req.query; // Extract query, status, and serviceType from query params
+    const userId = req.user.id;   // Extract the user ID from the request object
+
+    let filter = { userId }; // Filter to get only the logged-in user's services
+
+    // Add search query filter if it exists
+    if (query) {
+      filter.$or = [
+        { body: { $regex: query, $options: 'i' } },
+        { title: { $regex: query, $options: 'i' } },
+        { address: { $regex: query, $options: 'i' } },
+        { city: { $regex: query, $options: 'i' } },
+        { country: { $regex: query, $options: 'i' } },
+        { zip: { $regex: query, $options: 'i' } },
+        { phone: { $regex: query, $options: 'i' } },
+      ];
+    }
+
+    // Add status filter if provided
+    if (status !== undefined) {
+      filter.status = status === 'true'; // Convert status to Boolean (true/false)
+    }
+
+    // Add serviceType filter if provided
+    if (serviceType) {
+      filter.serviceType = serviceType;
+    }
+
+    // Fetch the services based on the constructed filter and userId
+    const services = await Service.find(filter).populate(
+      'userId',
+      'username firstName lastName email profilePicture'
+    ); // Populate user info
+
+    res.status(200).json(services); // Return the filtered services
   } catch (error) {
-    console.log(`Error: ${error}`);
-    res.status(500).json({ error: error.message });
+    console.error('Server Error:', error); // Log the error for debugging
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
+
 
 module.exports = {
   createService,

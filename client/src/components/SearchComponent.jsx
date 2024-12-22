@@ -1,6 +1,6 @@
-// SearchBar.js
 import { useState } from 'react';
-import useSearchStore from '../store/useSearchStore'; 
+import { TextField, MenuItem, Select, InputLabel, FormControl, Box } from '@mui/material';
+import useSearchStore from '../store/useSearchStore';
 
 const SearchBar = () => {
   const { setQuery, setServiceType, setStatus } = useSearchStore();
@@ -27,25 +27,47 @@ const SearchBar = () => {
   };
 
   return (
-    <div className="service-search">
-      {/* Search Form */}
-      <select value={localServiceType} onChange={handleServiceTypeChange}>
-        <option value="">Service Type</option>
-        <option value="offering-help">Helper</option>
-        <option value="help-wanted">Help Wanted</option>
-      </select>
-      <select value={localStatus} onChange={handleStatusChange}>
-        <option value="">Status</option>
-        <option value="true">Active</option>
-        <option value="false">Inactive</option>
-      </select>
-      <input
-        type="text"
-        placeholder="Search services..."
+    <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+      {/* Service Type Select */}
+      <FormControl fullWidth variant="outlined" size="small">
+        <InputLabel>Service Type</InputLabel>
+        <Select
+          value={localServiceType}
+          onChange={handleServiceTypeChange}
+          label="Service Type"
+          size="small" // Make the Select smaller
+        >
+          <MenuItem value="">Service Type</MenuItem>
+          <MenuItem value="offering-help">Helper</MenuItem>
+          <MenuItem value="help-wanted">Help Wanted</MenuItem>
+        </Select>
+      </FormControl>
+
+      {/* Status Select */}
+      <FormControl fullWidth variant="outlined" size="small">
+        <InputLabel>Status</InputLabel>
+        <Select
+          value={localStatus}
+          onChange={handleStatusChange}
+          label="Status"
+          size="small" // Make the Select smaller
+        >
+          <MenuItem value="">Status</MenuItem>
+          <MenuItem value="true">Active</MenuItem>
+          <MenuItem value="false">Inactive</MenuItem>
+        </Select>
+      </FormControl>
+
+      {/* Search Input */}
+      <TextField
+        label="Search services..."
+        variant="outlined"
         value={localQuery}
         onChange={handleQueryChange}
+        fullWidth
+        size="small" // Make the TextField smaller
       />
-    </div>
+    </Box>
   );
 };
 

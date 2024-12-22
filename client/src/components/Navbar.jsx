@@ -6,16 +6,14 @@ import SearchBar from "../components/SearchComponent";
 // page imports
 import CreateService from "../pages/CreateService";
 // material ui imports
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Box, Typography, Avatar } from '@mui/material';
 import { jwtDecode } from "jwt-decode";
-
 
 function Navbar() {
     // state
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
     const { logout } = useAuthStore();
-    
     
     // functions
     const handleLogOut = () => {
@@ -30,9 +28,6 @@ function Navbar() {
     const handleClose = () => {
         setOpen(false);
     };
-
-
-
 
     const token = localStorage.getItem("token");
     let username = "";
@@ -50,11 +45,21 @@ function Navbar() {
     }
 
     return (
-        <div className="navbar" style={{ display: "flex", justifyContent: "space-between" }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px' }}>
+            {/* Left side: Search Bar */}
             <SearchBar />
-            <button onClick={handleOpen}>
+
+            {/* Middle: Create Service Button */}
+            <Button 
+                variant="contained" 
+                color="primary" 
+                onClick={handleOpen}
+                sx={{ marginLeft: '10px' }}
+            >
                 Create Service
-            </button>
+            </Button>
+
+            {/* Dialog for Creating Service */}
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Create New Service</DialogTitle>
                 <DialogContent>
@@ -66,18 +71,27 @@ function Navbar() {
                     </Button>
                 </DialogActions>
             </Dialog>
-            <button onClick={handleLogOut}>
-                Logout
-            </button>
-            <div>
-                <span>{username}</span>
-                <img style={{ width: "40px", height: "40px",  borderRadius: "50%" }}
-              src={`http://localhost:8080/uploads/${profilePicture}` }
-              alt="Profile"
-              className="profile-picture"
-            />
-            </div>
-        </div>
+
+            {/* Right side: User Info & Logout */}
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Typography variant="body1" sx={{ marginRight: '10px' }}>
+                    {username}
+                </Typography>
+                <Avatar 
+                    sx={{ width: 40, height: 40 }} 
+                    alt="Profile Picture" 
+                    src={`http://localhost:8080/uploads/${profilePicture}`} 
+                />
+                <Button 
+                    variant="outlined" 
+                    color="secondary" 
+                    onClick={handleLogOut}
+                    sx={{ marginLeft: '15px' }}
+                >
+                    Logout
+                </Button>
+            </Box>
+        </Box>
     );
 }
 

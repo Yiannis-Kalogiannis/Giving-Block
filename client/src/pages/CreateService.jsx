@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
-import './css/CreateService.css';
+import { TextField, Button, InputLabel, MenuItem, Select, FormControl, Box } from '@mui/material';
 
 function CreateService() {
     const navigate = useNavigate();
@@ -18,7 +18,7 @@ function CreateService() {
         phone: '',
         status: true,
         serviceType: '',
-        username: 'username', // Add username to the service
+        username: 'username',
     });
     const [image, setImage] = useState(null);
 
@@ -45,72 +45,33 @@ function CreateService() {
 
     const handleSubmit = async (e) => {
         e.preventDefault(); // Prevent default form submission
-    
+
         try {
             const token = localStorage.getItem('token');
-            console.log("token:" , token);
             if (!token) {
                 alert('No token found, please log in');
                 return;
             }
-    
+
             // Decode the token to extract user data
             const decodedToken = jwtDecode(token);
-            console.log("Decoded token:", decodedToken);
-
-            
             const userId = decodedToken.userId;  // Get userId from decoded token
-            console.log("User ID:", userId);
-            if (!userId) {
+            const userName = decodedToken.username;  // Get userName from decoded token
+            if (!userId || !userName) {
                 alert('User is not authenticated');
                 return;
             }
-            const userName = decodedToken.username;  // Get userId from decoded token
-            console.log("username:", userName);
-            if (!userName) {
-                alert(`Username doesn't exist`);
-                return;
-            }
-    
+
             const {
                 title, body, category, image, address, city, country, zip, phone, serviceType, status,
             } = newService;
-    
+
             // Validate all required fields 
-            if (!title) {
-                alert('Title is required');
+            if (!title || !body || !address || !city || !country || !zip || !phone || !serviceType) {
+                alert('All fields are required');
                 return;
             }
-            if (!body) {
-                alert('Body is required');
-                return;
-            }
-            if (!address) {
-                alert('Address is required');
-                return;
-            }
-            if (!city) {
-                alert('City is required');
-                return;
-            }
-            if (!country) {
-                alert('Country is required');
-                return;
-            }
-            if (!zip) {
-                alert('Zip is required');
-                return;
-            }
-            if (!phone) {
-                alert('Phone is required');
-                return;
-            }
-            if (!serviceType) {
-                alert('Service Type is required');
-                return;
-            }
-           
-    
+
             const formData = new FormData();
             formData.append('title', title);
             formData.append('body', body);
@@ -123,8 +84,7 @@ function CreateService() {
             formData.append('serviceType', serviceType);
             formData.append('status', status);
             formData.append('username', userName);  // Add username to the form data
-        
-    
+
             // Send the request with userId as a URL parameter
             const response = await axios.post(
                 `http://localhost:8080/services/createService/${userId}`,  // Add userId in the URL
@@ -152,80 +112,117 @@ function CreateService() {
     };
 
     return (
-        <div className="create-service-container">
-    <h1>Create Service</h1>
-    <form className="create-service-form" onSubmit={handleSubmit}>
-        <input
-            type="text"
-            name="title"
-            placeholder="Title"
-            className="create-service-input"
-            onChange={handleChange}
-        />
-        <textarea 
-            maxLength="50"
-            name="body"
-            placeholder="Description (100 characters max)"
-            className="create-service-textarea"
-            onChange={handleChange}
-        />
-        <input 
-            type="file" 
-            name="image" 
-            className="create-service-file"
-            onChange={handleImageChange} 
-        />
-        {image && <img src={image} alt="Preview" className="create-service-preview" />}
-        <input
-            type="text"
-            name="address"
-            placeholder="Address"
-            className="create-service-input"
-            onChange={handleChange}
-        />
-        <input
-            type="text"
-            name="city"
-            placeholder="City"
-            className="create-service-input"
-            onChange={handleChange}
-        />
-        <input
-            type="text"
-            name="country"
-            placeholder="Country"
-            className="create-service-input"
-            onChange={handleChange}
-        />
-        <input
-            type="text"
-            name="zip"
-            placeholder="Zip"
-            className="create-service-input"
-            onChange={handleChange}
-        />
-        <input
-            type="text"
-            name="phone"
-            placeholder="Phone"
-            className="create-service-input"
-            onChange={handleChange}
-        />
-        <select
-            name="serviceType"
-            className="create-service-select"
-            onChange={handleChange}
-        >
-            <option value="">Select Service Type</option>
-            <option value="help-wanted">Help Wanted</option>
-            <option value="offering-help">Offering Help</option>
-        </select>
-        <button type="submit" className="create-service-button">
-            Create Service
-        </button>
-    </form>
-</div>
+        <Box sx={{ maxWidth: 600, margin: '0 auto', padding: 2 }}>
+            <h1>Create Service</h1>
+            <form onSubmit={handleSubmit}>
+                {/* Title */}
+                <TextField
+                    fullWidth
+                    label="Title"
+                    name="title"
+                    variant="outlined"
+                    margin="normal"
+                    onChange={handleChange}
+                />
 
+                {/* Description */}
+                <TextField
+                    fullWidth
+                    label="Description"
+                    name="body"
+                    variant="outlined"
+                    margin="normal"
+                    multiline
+                    rows={4}
+                    maxLength="50"
+                    onChange={handleChange}
+                />
+
+                {/* Image */}
+                <input
+                    type="file"
+                    name="image"
+                    onChange={handleImageChange}
+                    style={{ marginBottom: 16 }}
+                />
+                {image && <img src={image} alt="Preview" style={{ width: '100%', maxHeight: 200, objectFit: 'cover' }} />}
+
+                {/* Address */}
+                <TextField
+                    fullWidth
+                    label="Address"
+                    name="address"
+                    variant="outlined"
+                    margin="normal"
+                    onChange={handleChange}
+                />
+
+                {/* City */}
+                <TextField
+                    fullWidth
+                    label="City"
+                    name="city"
+                    variant="outlined"
+                    margin="normal"
+                    onChange={handleChange}
+                />
+
+                {/* Country */}
+                <TextField
+                    fullWidth
+                    label="Country"
+                    name="country"
+                    variant="outlined"
+                    margin="normal"
+                    onChange={handleChange}
+                />
+
+                {/* Zip */}
+                <TextField
+                    fullWidth
+                    label="Zip"
+                    name="zip"
+                    variant="outlined"
+                    margin="normal"
+                    onChange={handleChange}
+                />
+
+                {/* Phone */}
+                <TextField
+                    fullWidth
+                    label="Phone"
+                    name="phone"
+                    variant="outlined"
+                    margin="normal"
+                    onChange={handleChange}
+                />
+
+                {/* Service Type */}
+                <FormControl fullWidth margin="normal">
+                    <InputLabel>Service Type</InputLabel>
+                    <Select
+                        label="Service Type"
+                        name="serviceType"
+                        value={newService.serviceType}
+                        onChange={handleChange}
+                    >
+                        <MenuItem value="help-wanted">Help Wanted</MenuItem>
+                        <MenuItem value="offering-help">Offering Help</MenuItem>
+                    </Select>
+                </FormControl>
+
+                {/* Submit Button */}
+                <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                    sx={{ marginTop: 2 }}
+                >
+                    Create Service
+                </Button>
+            </form>
+        </Box>
     );
 }
 

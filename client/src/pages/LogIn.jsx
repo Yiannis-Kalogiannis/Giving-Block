@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import useAuthStore from '../store/authStore'; // Import Zustand store
+import { TextField, Button, Box, Typography } from '@mui/material';
 
 function Login() {
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ function Login() {
         const { token, user } = response.data; // Assuming response contains token and user info
         login(token, user); // Call Zustand's login function to update global state
         alert(response.data.message);
-        navigate("/home"); // Redirect to homepage
+        navigate("/"); // Redirect to homepage
       } else {
         console.warn("Unexpected response:", response);
       }
@@ -64,32 +65,76 @@ function Login() {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <input
-        type="email"
-        name="email"
-        value={loggedData.email}
-        placeholder="Email"
-        onChange={handleChange}
-        onKeyDown={handleEnter}
-      />
-      <input
-        type="password"
-        name="password"
-        value={loggedData.password}
-        placeholder="Password"
-        onChange={handleChange}
-        onKeyDown={handleEnter}
-      />
-      <button onClick={logIn}>Log In</button>
-      <p>
-        Don’t have an account?{" "}
-        <button onClick={() => navigate("/register")}>
-          <span>Sign Up</span>
-        </button>
-      </p>
-    </div>
+    <Box
+      sx={{
+        position: 'relative',
+        height: '100vh',
+        backgroundColor: 'darkBlue',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <Box
+        sx={{
+          width: '100%',
+          maxWidth: 400,
+          backgroundColor: 'rgba(255, 255, 255, 0.9)', // Semi-transparent background for readability
+          padding: 3,
+          borderRadius: 2,
+        }}
+      >
+        <Typography variant="h4" align="center" sx={{ color: 'white', marginBottom: 2 }}>
+          Login
+        </Typography>
+
+        <TextField
+          fullWidth
+          label="Email"
+          name="email"
+          value={loggedData.email}
+          variant="outlined"
+          margin="normal"
+          onChange={handleChange}
+          onKeyDown={handleEnter}
+          sx={{ backgroundColor: 'white' }}
+        />
+
+        <TextField
+          fullWidth
+          label="Password"
+          name="password"
+          type="password"
+          value={loggedData.password}
+          variant="outlined"
+          margin="normal"
+          onChange={handleChange}
+          onKeyDown={handleEnter}
+          sx={{ backgroundColor: 'white' }}
+        />
+
+        <Button
+          variant="contained"
+          color="primary"
+          fullWidth
+          onClick={logIn}
+          sx={{ marginTop: 2 }}
+        >
+          Log In
+        </Button>
+
+        <Box sx={{ marginTop: 6, textAlign: 'center' }}>
+          <Typography variant="body2" sx={{ color: 'white' }}>
+            Don’t have an account?{' '}
+            <Button onClick={() => navigate("/register")} color="primary" sx={{ textDecoration: 'underline' }}>
+              Sign Up
+            </Button>
+          </Typography>
+        </Box>
+      </Box>
+    </Box>
   );
 }
 

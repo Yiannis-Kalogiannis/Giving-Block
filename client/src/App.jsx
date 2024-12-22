@@ -7,7 +7,6 @@ import Login from './pages/LogIn.jsx';
 import HomePage from './pages/HomePage.jsx';
 import UserProfile from './pages/UserProfile.jsx';
 
-
 function App() {
   return (
     <>
@@ -24,7 +23,7 @@ function App() {
             }
           />
           <Route
-            path="/user-profile"
+            path="/userProfile"
             element={
               <ProtectedRoute>
                 <UserProfile />

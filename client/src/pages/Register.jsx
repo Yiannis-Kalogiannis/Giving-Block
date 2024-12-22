@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { TextField, Button, Box, Typography } from '@mui/material';
 
 function Register() {
   const navigate = useNavigate();
@@ -98,78 +99,131 @@ function Register() {
   };
 
   return (
-    <div>
-      <h2>Register</h2>
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        backgroundColor: '#f0f0f0',
+      }}
+    >
+      <Box
+        sx={{
+          maxWidth: 400,
+          width: '100%',
+          padding: 3,
+          backgroundColor: 'white',
+          borderRadius: 2,
+          boxShadow: 3,
+        }}
+      >
+        <Typography variant="h4" align="center" sx={{ marginBottom: 2 }}>
+          Register
+        </Typography>
 
-      <input
-        type="text"
-        name="firstName"
-        value={newUser.firstName}
-        placeholder="First name"
-        onChange={handleChange}
-        onKeyDown={handleEnter}
-      />
-      <input
-        type="text"
-        name="lastName"
-        value={newUser.lastName}
-        placeholder="Last name"
-        onChange={handleChange}
-        onKeyDown={handleEnter}
-      />
-      <input
-        type="text"
-        name="username"
-        value={newUser.username}
-        placeholder="Username"
-        onChange={handleChange}
-        onKeyDown={handleEnter}
-      />
-      <input
-        type="email"
-        name="email"
-        value={newUser.email}
-        placeholder="Email"
-        onChange={handleChange}
-        onKeyDown={handleEnter}
-      />
-      <input
-        type="password"
-        name="password"
-        value={newUser.password}
-        placeholder="Password"
-        onChange={handleChange}
-        onKeyDown={handleEnter}
-      />
-      <input
-        type="password"
-        name="password2"
-        value={newUser.password2}
-        placeholder="Confirm password"
-        onChange={handleChange}
-        onKeyDown={handleEnter}
-      />
-
-      <input
-        type="file"
-        name="image"
-        accept="image/*"
-        onChange={handleImageChange}
-      />
-      {image && (
-        <img
-          src={image}
-          alt="preview"
-          style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+        <TextField
+          fullWidth
+          label="First Name"
+          name="firstName"
+          value={newUser.firstName}
+          onChange={handleChange}
+          onKeyDown={handleEnter}
+          margin="normal"
         />
-      )}
+        <TextField
+          fullWidth
+          label="Last Name"
+          name="lastName"
+          value={newUser.lastName}
+          onChange={handleChange}
+          onKeyDown={handleEnter}
+          margin="normal"
+        />
+        <TextField
+          fullWidth
+          label="Username"
+          name="username"
+          value={newUser.username}
+          onChange={handleChange}
+          onKeyDown={handleEnter}
+          margin="normal"
+        />
+        <TextField
+          fullWidth
+          label="Email"
+          name="email"
+          value={newUser.email}
+          onChange={handleChange}
+          onKeyDown={handleEnter}
+          margin="normal"
+        />
+        <TextField
+          fullWidth
+          label="Password"
+          name="password"
+          type="password"
+          value={newUser.password}
+          onChange={handleChange}
+          onKeyDown={handleEnter}
+          margin="normal"
+        />
+        <TextField
+          fullWidth
+          label="Confirm Password"
+          name="password2"
+          type="password"
+          value={newUser.password2}
+          onChange={handleChange}
+          onKeyDown={handleEnter}
+          margin="normal"
+        />
 
-      <button onClick={register}>Register</button>
-      <p>
-        Already have an account?
-        <button onClick={() => navigate('/')}>Log In</button>
-      </p>
-    </div>
+        <Button
+          variant="outlined"
+          component="label"
+          fullWidth
+          sx={{ marginBottom: 2, marginTop: 2 }}
+        >
+          Upload Image
+          <input
+            type="file"
+            name="image"
+            accept="image/*"
+            hidden
+            onChange={handleImageChange}
+          />
+        </Button>
+        {image && (
+          <Box sx={{ textAlign: 'center', marginBottom: 2 }}>
+            <img
+              src={image}
+              alt="preview"
+              style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+            />
+          </Box>
+        )}
+
+        <Button
+          variant="contained"
+          color="primary"
+          fullWidth
+          onClick={register}
+          sx={{ marginTop: 2 }}
+        >
+          Register
+        </Button>
+
+        <Box sx={{ marginTop: 2, textAlign: 'center' }}>
+          <Typography variant="body2">
+            Already have an account?{' '}
+            <Button onClick={() => navigate('/login')} color="primary">
+              Log In
+            </Button>
+          </Typography>
+        </Box>
+      </Box>
+    </Box>
   );
 }
 

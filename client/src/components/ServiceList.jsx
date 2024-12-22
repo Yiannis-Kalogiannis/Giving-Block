@@ -1,11 +1,11 @@
-// ServiceList.js
 import { useEffect, useState } from 'react';
 import axios from 'axios'; // Import the axios module
-import './css/serviceList.css'; // Import the CSS file
-import ServiceCard from './Service.card';// Import the ServiceCard component
+
+import ServiceCard from './Service.card'; // Import the ServiceCard component
 import debounce from 'lodash.debounce';
 import useServiceStore from '../store/useServiceStore'; 
 import useSearchStore from '../store/useSearchStore'; 
+import { CircularProgress, Typography, Box } from '@mui/material'; // Import Material UI components
 
 const ServiceList = () => {
   const { query, serviceType, status } = useSearchStore();
@@ -36,18 +36,19 @@ const ServiceList = () => {
   }, [query, serviceType, status]);
 
   return (
-    <div className="service-container">
-    {loading ? (
-      <p>Loading...</p>
-    ) : services.length === 0 ? (
-      <p>No services available</p>
-    ) : (
-      services.map((service) => (
-        <ServiceCard key={service._id} service={service} />
-      ))
-    )}
-  </div>
-  
+    <Box sx={{ padding: 1, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+      {loading ? (
+        <CircularProgress />
+      ) : services.length === 0 ? (
+        <Typography variant="h6" color="textSecondary">
+          No services available
+        </Typography>
+      ) : (
+        services.map((service) => (
+          <ServiceCard key={service._id} service={service} />
+        ))
+      )}
+    </Box>
   );
 };
 
