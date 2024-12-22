@@ -37,7 +37,7 @@ function HomePage() {
       </Box>
 
       {/* Service List Component */}
-      <Box sx={{ flexGrow: 1, overflow: 'auto' }}>
+      <Box sx={{ flexGrow: 1, overflow: 'Auto' }}>
         <ServiceList />
       </Box>
 
