@@ -5,6 +5,7 @@ const useUserStore = create((set) => ({
     username: "",
     userId: "",
     profilePicture: "",
+    token : localStorage.getItem("token"),
     setUserFromToken: (token) => {
         if (token) {
             const decodedToken = jwtDecode(token);

@@ -142,7 +142,6 @@ const updateService = async (req, res) => {
   const {
     title,
     body,
-    category,
     image,
     address,
     city,
@@ -170,7 +169,6 @@ const updateService = async (req, res) => {
       {
         title,
         body,
-        category,
         image,
         address,
         city,

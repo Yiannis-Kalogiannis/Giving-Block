@@ -27,8 +27,8 @@ const useEditDeleteStore = create((set) => ({
     }
   },
 
-  // Edit a service and update the services list
-  editService: async (updatedService) => {
+// Edit a service and update the services list
+editService: async (updatedService) => {
     try {
       // Make a request to the backend to update the service
       const response = await axios.put(

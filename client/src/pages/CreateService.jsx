@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { jwtDecode } from "jwt-decode";
+import useUserStore from '../store/useUserStore';
 import { TextField, Button, InputLabel, MenuItem, Select, FormControl, Box } from '@mui/material';
 
 function CreateService() {
     const navigate = useNavigate();
+    const {username, userId, token} = useUserStore();  // Get username and userId from the store
     const [newService, setNewService] = useState({
         title: '',
         body: '',
@@ -47,23 +48,10 @@ function CreateService() {
         e.preventDefault(); // Prevent default form submission
 
         try {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                alert('No token found, please log in');
-                return;
-            }
-
-            // Decode the token to extract user data
-            const decodedToken = jwtDecode(token);
-            const userId = decodedToken.userId;  // Get userId from decoded token
-            const userName = decodedToken.username;  // Get userName from decoded token
-            if (!userId || !userName) {
-                alert('User is not authenticated');
-                return;
-            }
+            
 
             const {
-                title, body, category, image, address, city, country, zip, phone, serviceType, status,
+                title, body, image, address, city, country, zip, phone, serviceType, status,
             } = newService;
 
             // Validate all required fields 
@@ -83,7 +71,7 @@ function CreateService() {
             formData.append('phone', phone);
             formData.append('serviceType', serviceType);
             formData.append('status', status);
-            formData.append('username', userName);  // Add username to the form data
+            formData.append('username', username);  // Add username to the form data
 
             // Send the request with userId as a URL parameter
             const response = await axios.post(
@@ -99,7 +87,7 @@ function CreateService() {
             
             if (response.status === 201) {
                 alert('Service created successfully');
-                navigate('/home');
+                navigate('/');
             }
         } catch (error) {
             if (error.response) {

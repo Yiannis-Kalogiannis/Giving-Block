@@ -36,7 +36,7 @@ const ServiceList = () => {
   }, [query, serviceType, status]);
 
   return (
-    <Box sx={{ padding: 1, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+    <Box sx={{ padding: 1, display: 'flex', flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap' }}>
       {loading ? (
         <CircularProgress />
       ) : Array.isArray(services) && services.length === 0 ? (
