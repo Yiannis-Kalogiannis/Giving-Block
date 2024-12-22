@@ -1,5 +1,3 @@
-import './css/serviceCard.css';
-
 const ServiceCard = ({ service = {} }) => {
   return (
     <div className="service-card">
@@ -26,6 +24,12 @@ const ServiceCard = ({ service = {} }) => {
         >
           {service.status ? 'Active' : 'Inactive'}
         </div>
+        {/* Move service type here */}
+        {service.serviceType && (
+          <div className="service-type">
+            {service.serviceType === 'help-wanted' ? 'Help Wanted' : 'Offering Help'}
+          </div>
+        )}
       </div>
 
       {/* Service Image */}
@@ -41,11 +45,6 @@ const ServiceCard = ({ service = {} }) => {
       <div className="service-details">
         {service.title && <p><span>Title:</span> {service.title}</p>}
         {service.body && <p><span>Description:</span> {service.body}</p>}
-        {service.serviceType && (
-          <p>
-            <span>Type:</span> {service.serviceType === 'help-wanted' ? 'Help Wanted' : 'Offering Help'}
-          </p>
-        )}
         {service.address && <p><span>Address:</span> {service.address}</p>}
         {service.city && <p><span>City:</span> {service.city}</p>}
         {service.country && <p><span>Country:</span> {service.country}</p>}

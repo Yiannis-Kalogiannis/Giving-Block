@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
-import './CreateService.css';
+import './css/CreateService.css';
 
 function CreateService() {
     const navigate = useNavigate();

@@ -12,7 +12,7 @@ body {
     top: 0;
     width: 100%;
     z-index: 1000; /* Keep it above other content */
-    background-color: #fff; /* Ensure a background color to avoid overlap issues */
+    background-color: rgba(254, 140, 140, 0.1); /* Ensure a background color with opacity to avoid overlap issues */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow for visual appeal */
   }
   
