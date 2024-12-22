@@ -32,7 +32,7 @@ let createService = async (req, res) => {
       if (
           !title ||
           !body ||
-          !category ||
+          
           !address ||
           !city ||
           !country ||
@@ -53,7 +53,7 @@ let createService = async (req, res) => {
       const newService = {
           title,
           body,
-          category,
+         
           userId, // Use the user ID from params
           status,
           image: serviceImage,

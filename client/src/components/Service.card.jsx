@@ -1,25 +1,15 @@
-// Import necessary libraries and components
 import React, { useState } from 'react';
 import useUserStore from '../store/useUserStore';
-
-
+import useEditDeleteStore from '../store/useEditAndDeletestore';
 // Import MUI components and icons
 import { styled } from '@mui/material/styles';
 import {
-  Card, // Card component for displaying content
-  CardContent, // Container for card content
-  CardMedia, // Component for displaying media (images)
-  Avatar, // Component for user avatars
-  Box, // Box component for layout
-  Typography, // Component for text
-  IconButton, // Button component for icons
-  CardActions, // Container for card actions
-  Collapse, // Component for collapsible content
+  Card, CardContent, CardMedia, Avatar, Box, Typography, IconButton, CardActions, Collapse,
 } from '@mui/material';
-import { red } from '@mui/material/colors'; // Color utility
-import FavoriteIcon from '@mui/icons-material/Favorite'; // Favorite icon
-import ShareIcon from '@mui/icons-material/Share'; // Share icon
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'; // Expand more icon
+import { red } from '@mui/material/colors';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ShareIcon from '@mui/icons-material/Share';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 // Styled Components
 const ExpandMore = styled((props) => {
@@ -32,33 +22,37 @@ const ExpandMore = styled((props) => {
     duration: theme.transitions.duration.shortest,
   }),
 }));
-// End of Styled Components
 
 const ServiceCard = ({ service = {} }) => {
   const [expanded, setExpanded] = useState(false);
   const { userId } = useUserStore();
 
+  // Get actions from the edit/delete store
+  const { deleteService, editService } = useEditDeleteStore();
+
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-  const handleDelete = () => {};
 
-  const handleEdit = () => {};
+  const handleDelete = () => {
+    deleteService(service._id); // Call the delete action from the store
+  };
+
+  const handleEdit = () => {
+    const updatedService = {
+      // Prepare the updated data, you may open a modal or form to get this
+      title: "Updated Service Title",
+      body: "Updated Service Description",
+    };
+    editService(service._id, updatedService); // Call the edit action from the store
+  };
 
   return (
-    <Card
-      sx={{ maxWidth: 345, margin: '20px auto', borderRadius: 2, boxShadow: 3 }}
-    >
+    <Card sx={{ maxWidth: 345, margin: '20px auto', borderRadius: 2, boxShadow: 3 }}>
       {/* Card Header */}
-      <CardContent
-        sx={{ display: 'flex', alignItems: 'center', padding: '16px' }}
-      >
+      <CardContent sx={{ display: 'flex', alignItems: 'center', padding: '16px' }}>
         <Avatar
-          src={
-            service.userId?.profilePicture
-              ? `http://localhost:8080/uploads/${service.userId.profilePicture}`
-              : ''
-          }
+          src={service.userId?.profilePicture ? `http://localhost:8080/uploads/${service.userId.profilePicture}` : ''}
           alt="Profile"
           sx={{ width: 50, height: 50, marginRight: 2, bgcolor: red[500] }}
         >
@@ -91,13 +85,8 @@ const ServiceCard = ({ service = {} }) => {
             {service.status ? 'Active' : 'Completed'}
           </Typography>
           {service.serviceType && (
-            <Typography
-              variant="body2"
-              sx={{ fontSize: '0.8rem', marginTop: 1 }}
-            >
-              {service.serviceType === 'help-wanted'
-                ? 'Help Wanted'
-                : 'Offering Help'}
+            <Typography variant="body2" sx={{ fontSize: '0.8rem', marginTop: 1 }}>
+              {service.serviceType === 'help-wanted' ? 'Help Wanted' : 'Offering Help'}
             </Typography>
           )}
         </Box>
@@ -136,27 +125,18 @@ const ServiceCard = ({ service = {} }) => {
         <IconButton aria-label="share">
           <ShareIcon />
         </IconButton>
-        <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
+        <ExpandMore expand={expanded} onClick={handleExpandClick} aria-expanded={expanded} aria-label="show more">
           <ExpandMoreIcon />
         </ExpandMore>
 
         {/* Conditionally Render Edit and Delete */}
         {userId === service.userId?._id && (
           <>
-            <IconButton>
-              <Typography variant="body2" color="textSecondary">
-                delete
-              </Typography>
+            <IconButton onClick={handleDelete}>
+              <Typography variant="body2" color="textSecondary">delete</Typography>
             </IconButton>
-            <IconButton>
-              <Typography variant="body2" color="textSecondary">
-                edit
-              </Typography>
+            <IconButton onClick={handleEdit}>
+              <Typography variant="body2" color="textSecondary">edit</Typography>
             </IconButton>
           </>
         )}

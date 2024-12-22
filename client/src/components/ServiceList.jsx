@@ -39,17 +39,19 @@ const ServiceList = () => {
     <Box sx={{ padding: 1, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
       {loading ? (
         <CircularProgress />
-      ) : services.length === 0 ? (
+      ) : Array.isArray(services) && services.length === 0 ? (
         <Typography variant="h6" color="textSecondary">
           No services available
         </Typography>
       ) : (
-        services.map((service) => (
+        Array.isArray(services) && services.map((service) => (
           <ServiceCard key={service._id} service={service} />
         ))
       )}
     </Box>
   );
+  
+ 
 };
 
 export default ServiceList;
