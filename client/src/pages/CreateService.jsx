@@ -3,7 +3,7 @@ import axios from 'axios';
 import useUserStore from '../store/useUserStore';
 import { TextField, Button, InputLabel, MenuItem, Select, FormControl, Box } from '@mui/material';
 
-function CreateService( handleClose) {
+function CreateService( ) {
     
     const {username, userId, token} = useUserStore();  // Get username and userId from the store
     const [newService, setNewService] = useState({

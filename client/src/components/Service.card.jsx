@@ -157,17 +157,33 @@ const ServiceCard = ({ service = {} }) => {
             <ExpandMoreIcon />
           </ExpandMore>
 
-          {/* Conditionally Render Edit and Delete */}
-          {userId === service.userId?._id && (
-            <>
-              <IconButton onClick={handleDelete}>
-                <Typography variant="body2" color="textSecondary">delete</Typography>
-              </IconButton>
-              <IconButton onClick={handleEdit}>
-                <Typography variant="body2" color="textSecondary">edit</Typography>
-              </IconButton>
-            </>
-          )}
+    {/* Conditionally Render Edit and Delete */}
+{userId === service.userId?._id && (
+  <>
+    <IconButton 
+      onClick={handleDelete} 
+      sx={{ 
+        backgroundColor: 'red', 
+        borderRadius: '8px', // Less round
+        '&:hover': { backgroundColor: 'red' } 
+      }}
+    >
+      <Typography variant="body2" color="textSecondary">delete</Typography>
+    </IconButton>
+    <IconButton 
+      onClick={handleEdit} 
+      sx={{ 
+        backgroundColor: 'lightblue', 
+        borderRadius: '8px', // Less round
+        '&:hover': { backgroundColor: 'red' } 
+      }}
+    >
+      <Typography variant="body2" color="textSecondary">edit</Typography>
+    </IconButton>
+  </>
+)}
+
+
         </CardActions>
 
         {/* Expandable Content */}

@@ -15,7 +15,7 @@ const useUserStore = create((set) => ({
                 profilePicture: decodedToken.image || "",
             });
         }
-    },
+                },
     clearUser: () => set({ username: "", userId: "", profilePicture: "" }),
 }));
 
