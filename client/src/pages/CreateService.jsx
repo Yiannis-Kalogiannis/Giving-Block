@@ -4,13 +4,13 @@ import useUserStore from '../store/useUserStore';
 import { TextField, Button, InputLabel, MenuItem, Select, FormControl, Box } from '@mui/material';
 import useServiceStore from '../store/useServiceStore';
 
-function CreateService( {handleClose} ) {
-    const {username, userId, token} = useUserStore();  // Get username and userId from the store
+function CreateService({ handleClose }) {
+    const { username, userId, token } = useUserStore();  // Get username and userId from the store
     const [newService, setNewService] = useState({
         title: '',
         body: '',
         category: '',
-        image: null,
+        serviceImage: '',
         address: '',
         city: '',
         country: '',
@@ -20,18 +20,17 @@ function CreateService( {handleClose} ) {
         serviceType: '',
         username: 'username',
     });
-    const [image, setImage] = useState(null);
+    const [serviceImagePreview, setServiceImagePreview] = useState(null);
     const services = useServiceStore((state) => state.services);
-  const setServices = useServiceStore((state) => state.setServices);
-
+    const setServices = useServiceStore((state) => state.setServices);
 
     useEffect(() => {
         return () => {
-            if (image) {
-                URL.revokeObjectURL(image); // Clean up image URL when unmounting
+            if (serviceImagePreview) {
+                URL.revokeObjectURL(serviceImagePreview); // Clean up image URL when unmounting
             }
         };
-    }, [image]);
+    }, [serviceImagePreview]);
 
     function handleChange(e) {
         const { name, value } = e.target;
@@ -41,8 +40,8 @@ function CreateService( {handleClose} ) {
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            setImage(URL.createObjectURL(file));
-            setNewService((prevState) => ({ ...prevState, image: file })); // Store the file, not the URL
+            setServiceImagePreview(URL.createObjectURL(file));
+            setNewService((prevState) => ({ ...prevState, serviceImage: file })); // Store the file, not the URL
         }
     };
 
@@ -50,10 +49,8 @@ function CreateService( {handleClose} ) {
         e.preventDefault(); // Prevent default form submission
 
         try {
-            
-
             const {
-                title, body, image, address, city, country, zip, phone, serviceType, status,
+                title, body, serviceImage, address, city, country, zip, phone, serviceType, status,
             } = newService;
 
             // Validate all required fields 
@@ -65,7 +62,7 @@ function CreateService( {handleClose} ) {
             const formData = new FormData();
             formData.append('title', title);
             formData.append('body', body);
-            formData.append('image', image); // This will be the actual file object
+            formData.append('serviceImage', serviceImage); // This will be the actual file object
             formData.append('address', address);
             formData.append('city', city);
             formData.append('country', country);
@@ -86,12 +83,11 @@ function CreateService( {handleClose} ) {
                     },
                 }
             );
-            
+
             if (response.status === 201) {
                 alert('Service created successfully');
                 handleClose();  // Close the dialog
                 setServices([...services, response.data]);  // Update the services list
-                
             }
         } catch (error) {
             if (error.response) {
@@ -133,11 +129,11 @@ function CreateService( {handleClose} ) {
                 {/* Image */}
                 <input
                     type="file"
-                    name="image"
+                    name="serviceImage"
                     onChange={handleImageChange}
                     style={{ marginBottom: 16 }}
                 />
-                {image && <img src={image} alt="Preview" style={{ width: '100%', maxHeight: 200, objectFit: 'cover' }} />}
+                {serviceImagePreview && <img src={serviceImagePreview} alt="Preview" style={{ width: '100%', maxHeight: 200, objectFit: 'cover' }} />}
 
                 {/* Address */}
                 <TextField

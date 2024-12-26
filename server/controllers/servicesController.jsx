@@ -3,16 +3,17 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const Service = require('../schemas/servicesSchema.jsx');
+const uploadImage = require('../utility/upload.image.jsx');
 
 // ___________________________create a service___________________________
 
-let createService = async (req, res) => {
+const createService = async (req, res) => {
   // Destructure the request body to get the service details
   const {
       title,
       body,
       category,
-      image,
+      serviceImage,
       address,
       city,
       country,
@@ -25,7 +26,6 @@ let createService = async (req, res) => {
 
   // Get the user ID from the request parameters (URL parameter)
   const userId = req.params.id;  // Extract the user ID from the request object 
- 
 
   try {
       // Check if all required fields are provided
@@ -42,10 +42,9 @@ let createService = async (req, res) => {
           return res.status(400).json({ message: 'All fields are required' });
       }
 
-      // Handle the uploaded image (optional)
-      let serviceImage = null;
-      if (req.file) {
-          serviceImage = req.file.filename; // The filename assigned by multer
+      let image = '';
+      if (req.files && req.files.serviceImage) {
+          image = await uploadImage(req.files.serviceImage.tempFilePath); // Cloudinary upload
       }
 
       // Create a new service object with the provided details
@@ -54,7 +53,7 @@ let createService = async (req, res) => {
           body,
           userId, // Use the user ID from params
           status,
-          image: serviceImage,
+          serviceImage: image,
           address,
           city,
           country,
@@ -80,6 +79,9 @@ let createService = async (req, res) => {
       res.status(500).json({ error: error.message });
   }
 };
+
+
+
 
 
 // __________get all services (with flexible filters)__________

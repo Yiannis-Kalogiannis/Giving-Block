@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../schemas/usersSchema.jsx');
-const uploadImage = require('../middleware/upload.image.jsx');
+const uploadImage = require('../utility/upload.image.jsx');
 
 const saltRounds = +process.env.SALT_ROUNDS;
 

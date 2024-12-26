@@ -122,11 +122,11 @@ const ServiceCard = ({ service = {} }) => {
         </CardContent>
 
         {/* Service Image */}
-        {service.image && (
+        {service.serviceImage && (
           <CardMedia
             component="img"
             height="180"
-            image={`http://localhost:8080/uploads/${service.image}` }
+            image={service.serviceImage}
             alt="Service"
             sx={{ objectFit: 'cover' }}
           />

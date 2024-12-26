@@ -18,7 +18,7 @@ const serviceSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
-  image: {
+  serviceImage: {
     type: String,
     default: '/assets/images/default-image.png',
   },
