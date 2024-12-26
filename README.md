@@ -27,15 +27,16 @@ Giving-Block is a web platform designed to foster community support within neigh
 
 6. [Database Design](#6️⃣-database-design-📊)
 
-- [User Schema](#user-schema)
-- [Service Schema](#service-schema)
-- [Chat Schema](#chat-schema)
+   - [User Schema](#user-schema)
+   - [Service Schema](#service-schema)
+   - [Chat Schema](#chat-schema)
 
 7. [Page Structure](#7️⃣-page-structure-🌐)
 8. [Development Log](#8️⃣-development-log-⌛)
-9. [Issues](#9️⃣-Issues-⚠️)
-10. [Security](#🔒-security)
-11. [Future Enhancements](#🔧-future-enhancements)
+9. [Functionalities](#9️⃣-functionalities)  
+12. [Issues](#-Issues-⚠️)
+11. [Security](#🔒-security)
+12. [Future Enhancements](#🔧-future-enhancements)
 
 ## 1️⃣ Introduction 🌍
 
@@ -477,7 +478,7 @@ const chatSchema = new mongoose.Schema(
 - 🔍 Enhanced the search bar by adding a modal for creating services.
 - 🧹 Minor improvements to home page and service card styling.
 
-## 9️⃣ Issues ⚠️
+## 10 Issues ⚠️
 
 ### Issues Encountered
 

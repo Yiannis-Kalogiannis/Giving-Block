@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import useUserStore from '../store/useUserStore';
 import { TextField, Button, InputLabel, MenuItem, Select, FormControl, Box } from '@mui/material';
+import useServiceStore from '../store/useServiceStore';
 
-function CreateService( ) {
-    
+function CreateService( {handleClose} ) {
     const {username, userId, token} = useUserStore();  // Get username and userId from the store
     const [newService, setNewService] = useState({
         title: '',
@@ -21,6 +21,9 @@ function CreateService( ) {
         username: 'username',
     });
     const [image, setImage] = useState(null);
+    const services = useServiceStore((state) => state.services);
+  const setServices = useServiceStore((state) => state.setServices);
+
 
     useEffect(() => {
         return () => {
@@ -86,6 +89,9 @@ function CreateService( ) {
             
             if (response.status === 201) {
                 alert('Service created successfully');
+                handleClose();  // Close the dialog
+                setServices([...services, response.data]);  // Update the services list
+                
             }
         } catch (error) {
             if (error.response) {

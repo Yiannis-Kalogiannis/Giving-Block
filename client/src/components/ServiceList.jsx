@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios'; // Import the axios module
-
-import ServiceCard from './Service.card'; // Import the ServiceCard component
-import debounce from 'lodash.debounce';
+import axios from 'axios';
+import ServiceCard from './Service.card';
 import useServiceStore from '../store/useServiceStore';
 import useSearchStore from '../store/useSearchStore';
-import { CircularProgress, Typography, Box } from '@mui/material'; // Import Material UI components
+import { CircularProgress, Typography, Box } from '@mui/material';
 
 const ServiceList = () => {
   const { query, serviceType, status } = useSearchStore();
@@ -13,16 +11,18 @@ const ServiceList = () => {
   const setServices = useServiceStore((state) => state.setServices);
   const [loading, setLoading] = useState(false);
 
-  const fetchServices = async (query, serviceType, status) => {
+  const fetchServices = async () => {
     try {
       setLoading(true);
+      console.log('Fetching services with:', { query, serviceType, status });
       const response = await axios.get(
         'http://localhost:8080/services/getAllServices',
         {
           params: { query, serviceType, status: status || undefined },
         }
       );
-      setServices(response.data);
+      setServices([...response.data]); // Ensure a new reference is set
+      console.log('Fetched services:', response.data);
     } catch (error) {
       console.error('Error fetching services:', error);
     } finally {
@@ -30,16 +30,11 @@ const ServiceList = () => {
     }
   };
 
-  // Debounced fetch to optimize performance
-  const debouncedFetch = debounce(fetchServices, 300);
-
+  // Fetch services on mount and whenever query, serviceType, or status changes
   useEffect(() => {
-    // Trigger debounced fetch whenever query, serviceType, or status change
-    debouncedFetch(query, serviceType, status);
+    fetchServices();
+  }, [query, serviceType, status, services.length]);
 
-    // Cleanup function to cancel the debounce on unmount or change in dependencies
-    return () => debouncedFetch.cancel();
-  }, [query, serviceType, status]); // Only re-run if query, serviceType, or status changes
 
   return (
     <Box

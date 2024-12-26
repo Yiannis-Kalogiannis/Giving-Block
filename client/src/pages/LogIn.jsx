@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import useAuthStore from '../store/authStore'; // Import Zustand store
 import { TextField, Button, Box, Typography } from '@mui/material';
+import useUserStore from '../store/useUserStore';
 
 function Login() {
   const navigate = useNavigate();
   const login = useAuthStore((state) => state.login); // Zustand's login function
   const [loggedData, setLoggedData] = useState({ email: '', password: '' });
+  const setUserFromToken = useUserStore((state) => state.setUserFromToken);
 
   // Handle input change
   function handleChange(e) {
@@ -50,6 +52,8 @@ function Login() {
         login(token, user); // Call Zustand's login function to update global state
         alert(response.data.message);
         navigate("/"); // Redirect to homepage
+        setUserFromToken(token); // Update user data in Zustand store
+
       } else {
         console.warn("Unexpected response:", response);
       }
