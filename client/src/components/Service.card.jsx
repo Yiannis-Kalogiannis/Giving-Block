@@ -73,6 +73,7 @@ const ServiceCard = ({ service = {} }) => {
     }); // Call the edit action from the store
     setOpenEditModal(false);  // Close the modal after saving
   };
+ 
   
   return (
     <>
@@ -80,7 +81,7 @@ const ServiceCard = ({ service = {} }) => {
         {/* Card Header */}
         <CardContent sx={{ display: 'flex', alignItems: 'center', padding: '16px' }}>
           <Avatar
-            src={service.userId?.profilePicture ? `http://localhost:8080/uploads/${service.userId.profilePicture}` : ''}
+            src={service.userId?.profilePicture ? service.userId.profilePicture : ''}
             alt="Profile"
             sx={{ width: 50, height: 50, marginRight: 2, bgcolor: red[500] }}
           >

@@ -1,30 +1,24 @@
-const multer = require('multer');
-const path = require('path');
+const cloudinary = require('cloudinary').v2;
+require('dotenv').config();
 
-// Storage configuration
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '../uploads')); // Directory where files will be stored
-  },
-  filename: (req, file, cb) => {
-    const timestamp = Date.now();
-    const ext = path.extname(file.originalname); 
-    const uniqueName = `${timestamp}${ext}`;
-    cb(null, uniqueName);
-  },
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
 });
+console.log(cloudinary.config());
 
-// Multer middleware
-const upload = multer({
-    storage,
-    fileFilter: (req, file, cb) => {
-      const allowedMimeTypes = ["image/jpeg", "image/jpg"];
-      if (allowedMimeTypes.includes(file.mimetype)) {
-        cb(null, true);
-      } else {
-        cb(new Error("Invalid file type. Only JPEG images are allowed."));
-      }
-    },
-  }).single("image");
+// Upload image to Cloudinary
+const uploadImage = async (imagePath) => {
+  try {
+    const result = await cloudinary.uploader.upload(imagePath);
+    console.log(result);
+    return result.secure_url; // Return the Cloudinary URL
+  } catch (error) {
+    console.error('Error uploading image to Cloudinary:', error);
+    throw error; // Propagate the error
+  }
+};
 
-module.exports = upload;
+module.exports = uploadImage;

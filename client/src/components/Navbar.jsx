@@ -82,7 +82,7 @@ function Navbar() {
         </Typography>
         <Avatar
           sx={{ width: 40, height: 40 }}
-          src={`http://localhost:8080/uploads/${profilePicture}`}
+          src={profilePicture}
           alt="Profile"
         />
         <Button

@@ -478,6 +478,29 @@ const chatSchema = new mongoose.Schema(
 - 🔍 Enhanced the search bar by adding a modal for creating services.
 - 🧹 Minor improvements to home page and service card styling.
 
+
+## 9 Functionalities 
+
+ **Upload Images**
+
+ ***documentation of how i manage to upload using cloudinary***
+
+- Created the Upload Middleware:
+  I created a middleware file upload.image.jsx to handle image uploads using Cloudinary. This middleware configures Cloudinary with my credentials and defines a function to upload images and return their URLs.
+
+- Added the Upload Middleware to the User Controller:
+  In the userController.jsx file, I imported the uploadImage function from the upload.image.jsx middleware. I used this function in the user registration and user update functions to handle profile picture uploads. When a user registers or updates their profile, the image is uploaded to Cloudinary, and the returned URL is stored in the user's profile.
+
+- Configured Express to Handle File Uploads:
+  In the server.js file, I configured Express to use the express-fileupload middleware. This middleware allows me to handle file uploads in my Express application. I set the useTempFiles option to true to enable temporary file storage.
+
+- Defined User Routes:
+  In the userRoutes.jsx file, I defined routes for user-related actions such as registration, login, updating user profiles, and fetching user data. I applied the verifyToken middleware to protect certain routes, ensuring that only authenticated users can access them.
+
+- Integrated Frontend to Display Profile Pictures:
+  In the Service.card.jsx file, I updated the component to display the user's profile picture using the URL stored in the profilePicture field. If the profile picture is not available, a default avatar is displayed.
+
+
 ## 10 Issues ⚠️
 
 ### Issues Encountered

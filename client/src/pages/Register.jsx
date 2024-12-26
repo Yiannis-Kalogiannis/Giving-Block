@@ -16,6 +16,7 @@ function Register() {
   });
   const [image, setImage] = useState(null);
 
+  // Clean up the image URL when the component unmounts
   useEffect(() => {
     return () => {
       if (image) {
@@ -63,12 +64,12 @@ function Register() {
       }
 
       const formData = new FormData();
-      formData.append('firstName', firstName);
+      formData.append('firstName', firstName); // Append the user details to the form data
       formData.append('username', username);
       formData.append('lastName', lastName);
       formData.append('email', email);
       formData.append('password', password);
-      formData.append('image', image);
+      formData.append('profilePicture', image);
 
       const response = await axios.post(
         'http://localhost:8080/users/register',

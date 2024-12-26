@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../schemas/usersSchema.jsx');
+const uploadImage = require('../middleware/upload.image.jsx');
 
 const saltRounds = +process.env.SALT_ROUNDS;
 
@@ -25,14 +26,14 @@ let deleteAllUsers = async (req, res) => {
     const result = await User.deleteMany();
 
     res.status(200).json({
-      message: "All users deleted successfully",
+      message: 'All users deleted successfully',
       deletedCount: `${result.deletedCount} users deleted`,
     });
   } catch (error) {
     console.log(`Error deleting user: ${error}`);
     res
       .status(500)
-      .json({ message: "backend: Error deleting user, try again later!" });
+      .json({ message: 'backend: Error deleting user, try again later!' });
   }
 };
 
@@ -82,18 +83,10 @@ let userLogin = async (req, res) => {
 };
 
 // ___________________________register new user___________________________
-
 let userRegister = async (req, res) => {
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
-  const {
-    firstName,
-    lastName,
-    email,
-    password,
-    username,
-    bio,
-  } = req.body;
-  
+  const { firstName, lastName, email, password, username, bio } = req.body;
+
   try {
     // Validate required fields
     if (!firstName || !lastName || !email || !password) {
@@ -103,7 +96,8 @@ let userRegister = async (req, res) => {
     // Validate password strength
     if (!passwordRegex.test(password)) {
       return res.status(400).json({
-        message: 'Password must be at least 8 characters and contain both letters and numbers!',
+        message:
+          'Password must be at least 8 characters and contain both letters and numbers!',
       });
     }
 
@@ -124,11 +118,10 @@ let userRegister = async (req, res) => {
       }
     }
 
-    // Handle the uploaded image (optional)
-    let profileImage = 'server/assets/images/default-image.png'; // Default profile image
-
-    if (req.file) {
-      profileImage = `/uploads/${req.file.filename}`; // The filename assigned by multer
+    // Handle profile image upload to Cloudinary (directly from file)
+    let profileImage = '';
+    if (req.files && req.files.profilePicture) {
+      profileImage = await uploadImage(req.files.profilePicture.tempFilePath); // Cloudinary upload
     }
 
     // Hash password
@@ -156,13 +149,11 @@ let userRegister = async (req, res) => {
       user: createdUser,
       userId: createdUser._id,
     });
-
   } catch (error) {
     console.log(`Error: ${error}`);
     return res.status(500).json({ message: 'Failed to create a new user' });
   }
 };
-
 
 // ___________________________update user profile___________________________
 let userUpdate = async (req, res) => {
@@ -171,7 +162,15 @@ let userUpdate = async (req, res) => {
   try {
     // const idFromToken = req.user._id; // Extracted from JWT
     const idFromParams = req.params.id; // Extracted from the URL
-    const { firstName, lastName, email, newPassword, bio, profilePicture, username, oldPassword } = req.body;
+    const {
+      firstName,
+      lastName,
+      email,
+      newPassword,
+      bio,
+      username,
+      oldPassword,
+    } = req.body;
 
     const oldUser = await User.findById(idFromParams);
     if (!oldUser) {
@@ -180,32 +179,61 @@ let userUpdate = async (req, res) => {
 
     if (newPassword) {
       if (!passwordRegex.test(newPassword)) {
-        return res.status(422).json({ message: 'Password must be at least 8 characters and contain both letters and numbers!' });
+        return res
+          .status(422)
+          .json({
+            message:
+              'Password must be at least 8 characters and contain both letters and numbers!',
+          });
       }
-      const isPasswordCorrect = await bcrypt.compare(oldPassword, oldUser.password);
+      const isPasswordCorrect = await bcrypt.compare(
+        oldPassword,
+        oldUser.password
+      );
       if (!isPasswordCorrect) {
         return res.status(401).json({ message: 'Old password incorrect' });
       }
     }
 
-    const updatedUser = { firstName, lastName, email, bio, profilePicture, username };
+    // Handle profile image upload to Cloudinary (directly from file)
+    let profileImage = '';
+    if (req.files && req.files.profilePicture) {
+      profileImage = await uploadImage(req.files.profilePicture.tempFilePath); // Cloudinary upload
+    }
+
+    const updatedUser = {
+      firstName,
+      lastName,
+      email,
+      bio,
+      profilePicture: profileImage,
+      username,
+    };
     if (newPassword) {
       updatedUser.password = await bcrypt.hash(newPassword, saltRounds);
     }
 
-    const userExist = await User.findOne({ $or: [{ email }, { username }], _id: { $ne: idFromParams } });
+    const userExist = await User.findOne({
+      $or: [{ email }, { username }],
+      _id: { $ne: idFromParams },
+    });
     if (userExist) {
-      if (userExist.email === email) return res.status(400).json({ message: 'Email already exists!' });
-      if (userExist.username === username) return res.status(400).json({ message: 'Username already exists!' });
+      if (userExist.email === email)
+        return res.status(400).json({ message: 'Email already exists!' });
+      if (userExist.username === username)
+        return res.status(400).json({ message: 'Username already exists!' });
     }
 
-    const finalData = await User.findByIdAndUpdate(idFromParams, updatedUser, { new: true });
-    res.status(200).json({ message: 'User updated successfully', user: finalData });
+    const finalData = await User.findByIdAndUpdate(idFromParams, updatedUser, {
+      new: true,
+    });
+    res
+      .status(200)
+      .json({ message: 'User updated successfully', user: finalData });
   } catch (error) {
     res.status(500).json({ message: 'Error updating user!' });
   }
 };
-
 
 // ___________________________get user by id___________________________
 let getUserById = async (req, res) => {
@@ -231,18 +259,16 @@ let deleteUser = async (req, res) => {
     const userToDelete = await User.findByIdAndDelete({ _id: id });
     if (!userToDelete) {
       console.log(`User does not exist`);
-      res.status(404).json({ message: "You are not authorized" });
+      res.status(404).json({ message: 'You are not authorized' });
     }
-    res.status(200).json({ message: "User deleted successfully" });
+    res.status(200).json({ message: 'User deleted successfully' });
   } catch (error) {
     console.log(`Error deleting user: ${error}`);
     res
       .status(500)
-      .json({ message: "backend: Error deleting user, try again later!" });
+      .json({ message: 'backend: Error deleting user, try again later!' });
   }
 };
-
-
 
 module.exports = {
   getAllUsers,
