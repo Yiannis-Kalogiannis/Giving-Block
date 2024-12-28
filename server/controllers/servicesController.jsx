@@ -151,7 +151,6 @@ const updateService = async (req, res) => {
   const {
     title,
     body,
-    image,
     address,
     city,
     country,
@@ -173,12 +172,18 @@ const updateService = async (req, res) => {
         .json({ message: `You don't have access to this service` });
     }
 
+    let image = service.serviceImage; // Default to the current image
+    if (req.files && req.files.serviceImage) {
+      image = await uploadImage(req.files.serviceImage.tempFilePath); // Cloudinary upload
+    }
+
+    // Update the service
     const updatedService = await Service.findByIdAndUpdate(
       serviceId,
       {
         title,
         body,
-        image,
+        serviceImage: image, // Either the new image or the existing one
         address,
         city,
         country,
@@ -186,7 +191,7 @@ const updateService = async (req, res) => {
         phone,
         status,
       },
-      { new: true }
+      { new: true } // Return the updated document
     );
 
     return res.status(200).json({
@@ -198,6 +203,7 @@ const updateService = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 // ___________________________delete a service___________________________
 let deleteService = async (req, res) => {

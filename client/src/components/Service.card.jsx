@@ -39,12 +39,18 @@ const ServiceCard = ({ service = {} }) => {
     zip: service.zip || '',
     phone: service.phone || '',
     status: service.status || false,
-  });  // Store edited service details
-  
-  
- 
-
+    serviceImage: null,  // Initialize serviceImage state for image file
+  });
+  const [serviceImagePreview, setServiceImagePreview] = useState('');  // Image preview state
   const { deleteService, editService } = useEditDeleteStore();
+
+  useEffect(() => {
+    return () => {
+      if (serviceImagePreview) {
+        URL.revokeObjectURL(serviceImagePreview); // Clean up image URL when unmounting
+      }
+    };
+  }, [serviceImagePreview]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -58,23 +64,45 @@ const ServiceCard = ({ service = {} }) => {
     setOpenEditModal(true);  // Open the modal when edit button is clicked
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setEditedService((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+  const handleSaveEdit = async () => {
+    const formData = new FormData();
+  
+    // Append all service fields to FormData
+    Object.keys(editedService).forEach((key) => {
+      if (key === 'serviceImage' && editedService[key]) {
+        // Append the file separately
+        formData.append(key, editedService[key]);
+      } else if (key !== 'serviceImage') {
+        formData.append(key, editedService[key]);
+      }
+    });
+  
+    // Send formData to the edit service action
+    await editService(service._id, formData);
+    setOpenEditModal(false); // Close the modal after saving
   };
 
-  const handleSaveEdit = () => {
-    editService({
-      ...editedService,
-      _id: service._id, // Include the service ID
-    }); // Call the edit action from the store
-    setOpenEditModal(false);  // Close the modal after saving
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+
+    // Handle file input separately
+    if (name === 'serviceImage' && files.length > 0) {
+      const file = files[0];
+      setEditedService((prev) => ({
+        ...prev,
+        [name]: file, // Store the file
+      }));
+
+      // Generate a preview for the selected image
+      setServiceImagePreview(URL.createObjectURL(file));
+    } else {
+      setEditedService((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
- 
-  
+
   return (
     <>
       <Card sx={{ maxWidth: 345, margin: '20px auto', borderRadius: 2, boxShadow: 3 }}>
@@ -158,33 +186,31 @@ const ServiceCard = ({ service = {} }) => {
             <ExpandMoreIcon />
           </ExpandMore>
 
-    {/* Conditionally Render Edit and Delete */}
-{userId === service.userId?._id && (
-  <>
-    <IconButton 
-      onClick={handleDelete} 
-      sx={{ 
-        backgroundColor: 'red', 
-        borderRadius: '8px', // Less round
-        '&:hover': { backgroundColor: 'red' } 
-      }}
-    >
-      <Typography variant="body2" color="textSecondary">delete</Typography>
-    </IconButton>
-    <IconButton 
-      onClick={handleEdit} 
-      sx={{ 
-        backgroundColor: 'lightblue', 
-        borderRadius: '8px', // Less round
-        '&:hover': { backgroundColor: 'red' } 
-      }}
-    >
-      <Typography variant="body2" color="textSecondary">edit</Typography>
-    </IconButton>
-  </>
-)}
-
-
+          {/* Conditionally Render Edit and Delete */}
+          {userId === service.userId?._id && (
+            <>
+              <IconButton
+                onClick={handleDelete}
+                sx={{
+                  backgroundColor: 'red',
+                  borderRadius: '8px', // Less round
+                  '&:hover': { backgroundColor: 'red' }
+                }}
+              >
+                <Typography variant="body2" color="textSecondary">delete</Typography>
+              </IconButton>
+              <IconButton
+                onClick={handleEdit}
+                sx={{
+                  backgroundColor: 'lightblue',
+                  borderRadius: '8px', // Less round
+                  '&:hover': { backgroundColor: 'red' }
+                }}
+              >
+                <Typography variant="body2" color="textSecondary">edit</Typography>
+              </IconButton>
+            </>
+          )}
         </CardActions>
 
         {/* Expandable Content */}
@@ -219,10 +245,7 @@ const ServiceCard = ({ service = {} }) => {
         </Collapse>
       </Card>
 
-
-
       {/* Edit Service Modal */}
-      
       <Dialog open={openEditModal} onClose={() => setOpenEditModal(false)}>
         <DialogTitle>Edit Service</DialogTitle>
         <DialogContent>
@@ -266,32 +289,19 @@ const ServiceCard = ({ service = {} }) => {
             fullWidth
             margin="normal"
           />
-          <TextField
-            label="Title"
-            name="title"
-            value={editedService.title}
+
+          {/* Image Input and Preview */}
+          <input
+            type="file"
+            name="serviceImage"
             onChange={handleChange}
-            fullWidth
-            margin="normal"
+            accept="image/*"
           />
-          <TextField
-            label="Description"
-            name="body"
-            value={editedService.body}
-            onChange={handleChange}
-            fullWidth
-            multiline
-            rows={4}
-            margin="normal"
-          />
+          {serviceImagePreview && <img src={serviceImagePreview} alt="Preview" height="100" />}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenEditModal(false)} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleSaveEdit} color="primary">
-            Save
-          </Button>
+          <Button onClick={() => setOpenEditModal(false)} color="primary">Cancel</Button>
+          <Button onClick={handleSaveEdit} color="primary">Save</Button>
         </DialogActions>
       </Dialog>
     </>

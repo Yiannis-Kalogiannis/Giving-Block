@@ -15,7 +15,7 @@ const useEditDeleteStore = create((set) => ({
           },
         }
       );
-      
+
       if (response.status === 200) {
         // After deleting, update the services state in the main store
         useServiceStore.getState().setServices((state) => ({
@@ -27,30 +27,29 @@ const useEditDeleteStore = create((set) => ({
     }
   },
 
-// Edit a service and update the services list
-editService: async (updatedService) => {
+  // Edit a service and update the services list
+  editService: async (serviceId, formData) => {
     try {
-      // Make a request to the backend to update the service
       const response = await axios.put(
-        `http://localhost:8080/services/updateService/${updatedService._id}`,
-        updatedService,
+        `http://localhost:8080/services/updateService/${serviceId}`,
+        formData,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
-      
+
       if (response.status === 200) {
-        // After editing, update the service in the state of the main store
+        const updatedService = response.data; // Use the updated service from the response
         useServiceStore.getState().setServices((state) => ({
           services: state.services.map((service) =>
-            service._id === updatedService._id ? updatedService : service
+            service._id === serviceId ? updatedService : service
           ),
         }));
       }
     } catch (error) {
-      console.error('Error updating service:', error);
+      console.error("Error updating service:", error);
     }
   },
 }));
