@@ -42,7 +42,7 @@ const createService = async (req, res) => {
           return res.status(400).json({ message: 'All fields are required' });
       }
 
-      let image = '';
+      let image;
       if (req.files && req.files.serviceImage) {
           image = await uploadImage(req.files.serviceImage.tempFilePath); // Cloudinary upload
       }

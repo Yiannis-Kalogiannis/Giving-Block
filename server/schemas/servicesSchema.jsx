@@ -20,7 +20,7 @@ const serviceSchema = new mongoose.Schema({
   },
   serviceImage: {
     type: String,
-    default: '/assets/images/default-image.png',
+    default: 'https://res.cloudinary.com/dj02fukkg/image/upload/v1735410363/Giving%20block/gatvvwyzwdsqfjlpm4wg.png',
   },
   address: {
     type: String,

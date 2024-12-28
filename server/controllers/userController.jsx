@@ -119,7 +119,7 @@ let userRegister = async (req, res) => {
     }
 
     // Handle profile image upload to Cloudinary (directly from file)
-    let profileImage = '';
+    let profileImage;
     if (req.files && req.files.profilePicture) {
       profileImage = await uploadImage(req.files.profilePicture.tempFilePath); // Cloudinary upload
     }
