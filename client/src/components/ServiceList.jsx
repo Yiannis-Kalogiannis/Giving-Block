@@ -6,7 +6,7 @@ import useSearchStore from '../store/useSearchStore';
 import { CircularProgress, Typography, Box } from '@mui/material';
 
 const ServiceList = () => {
-  const { query, serviceType, status } = useSearchStore();
+  const { query, serviceType, status, filteredUserId } = useSearchStore();
   const services = useServiceStore((state) => state.services);
   const setServices = useServiceStore((state) => state.setServices);
   const [loading, setLoading] = useState(false);
@@ -14,11 +14,11 @@ const ServiceList = () => {
   const fetchServices = async () => {
     try {
       setLoading(true);
-      console.log('Fetching services with:', { query, serviceType, status });
+      console.log('Fetching services with:', { query, serviceType, status, filteredUserId });
       const response = await axios.get(
         'http://localhost:8080/services/getAllServices',
         {
-          params: { query, serviceType, status: status || undefined },
+          params: { query, serviceType, status: status || undefined, filteredUserId: filteredUserId || undefined },
         }
       );
       setServices([...response.data]); // Ensure a new reference is set
@@ -33,7 +33,7 @@ const ServiceList = () => {
   // Fetch services on mount and whenever query, serviceType, or status changes
   useEffect(() => {
     fetchServices();
-  }, [query, serviceType, status, services.length]);
+  }, [query, serviceType, status, services.length, filteredUserId]);
 
 
   return (

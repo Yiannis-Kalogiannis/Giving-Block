@@ -3,7 +3,7 @@ import axios from 'axios';
 import useUserStore from '../store/useUserStore';
 import { TextField, Button, InputLabel, MenuItem, Select, FormControl, Box } from '@mui/material';
 import useServiceStore from '../store/useServiceStore';
-
+import PropTypes from 'prop-types';
 function CreateService({ handleClose }) {
     const { username, userId, token } = useUserStore();  // Get username and userId from the store
     const [newService, setNewService] = useState({
@@ -213,5 +213,11 @@ function CreateService({ handleClose }) {
         </Box>
     );
 }
+
+
+// Add PropTypes validation for handleClose
+CreateService.propTypes = {
+    handleClose: PropTypes.func.isRequired, // handleClose should be a function and is required
+};
 
 export default CreateService;

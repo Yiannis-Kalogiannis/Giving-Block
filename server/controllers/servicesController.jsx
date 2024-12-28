@@ -88,7 +88,7 @@ const createService = async (req, res) => {
 
 let getAllServices = async (req, res) => {
   try {
-    const { query, status,serviceType } = req.query; // Extract query, status, and category from query params
+    const { query, status,serviceType, filteredUserId } = req.query; // Extract query, status, and category from query params
 
     let filter = {}; // Start with an empty filter object
 
@@ -107,24 +107,33 @@ let getAllServices = async (req, res) => {
         { 'userId.firstName': { $regex: query, $options: 'i' } },
         { 'userId.lastName': { $regex: query, $options: 'i' } },
         { 'userId.email': { $regex: query, $options: 'i' } },
+        
       ];
     }
 
     // Add status filter if provided
     if (status !== undefined) {
       filter.status = status === 'true'; // Convert status to Boolean (true/false)
+      // console.log(filter.status);
     }
 
     
 // Add serviceType filter if provided
     if(serviceType){
       filter.serviceType = serviceType;
+      // console.log(filter.serviceType);
     }
+
+     // Add userId filter if provided
+     if (filteredUserId) {
+      filter.userId = filteredUserId; 
+    }
+
 
     // Fetch the services based on the constructed filter
     const services = await Service.find(filter).populate(
       'userId',
-      'username firstName lastName email profilePicture'
+      'username firstName lastName email profilePicture _id'
     ); // Populate user info
 
     res.status(200).json(services);
