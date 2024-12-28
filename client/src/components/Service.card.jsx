@@ -5,8 +5,21 @@ import useServiceStore from '../store/useServiceStore';
 // Import MUI components and icons
 import { styled } from '@mui/material/styles';
 import {
-  Card, CardContent, CardMedia, Avatar, Box, Typography, IconButton, CardActions, Collapse,
-  Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField
+  Card,
+  CardContent,
+  CardMedia,
+  Avatar,
+  Box,
+  Typography,
+  IconButton,
+  CardActions,
+  Collapse,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
+  TextField,
 } from '@mui/material';
 import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -28,8 +41,8 @@ const ExpandMore = styled((props) => {
 const ServiceCard = ({ service = {} }) => {
   const [expanded, setExpanded] = useState(false);
   const { userId } = useUserStore();
-  const { services, setServices } = useServiceStore();
-  const [openEditModal, setOpenEditModal] = useState(false);  // Modal state
+  // const { services, setServices } = useServiceStore();
+  const [openEditModal, setOpenEditModal] = useState(false); // Modal state
   const [editedService, setEditedService] = useState({
     title: service.title || '',
     body: service.body || '',
@@ -39,9 +52,9 @@ const ServiceCard = ({ service = {} }) => {
     zip: service.zip || '',
     phone: service.phone || '',
     status: service.status || false,
-    serviceImage: null,  // Initialize serviceImage state for image file
+    serviceImage: null, // Initialize serviceImage state for image file
   });
-  const [serviceImagePreview, setServiceImagePreview] = useState('');  // Image preview state
+  const [serviceImagePreview, setServiceImagePreview] = useState(''); // Image preview state
   const { deleteService, editService } = useEditDeleteStore();
 
   useEffect(() => {
@@ -61,12 +74,12 @@ const ServiceCard = ({ service = {} }) => {
   };
 
   const handleEdit = () => {
-    setOpenEditModal(true);  // Open the modal when edit button is clicked
+    setOpenEditModal(true); // Open the modal when edit button is clicked
   };
 
   const handleSaveEdit = async () => {
     const formData = new FormData();
-  
+
     // Append all service fields to FormData
     Object.keys(editedService).forEach((key) => {
       if (key === 'serviceImage' && editedService[key]) {
@@ -76,7 +89,7 @@ const ServiceCard = ({ service = {} }) => {
         formData.append(key, editedService[key]);
       }
     });
-  
+
     // Send formData to the edit service action
     await editService(service._id, formData);
     setOpenEditModal(false); // Close the modal after saving
@@ -105,11 +118,24 @@ const ServiceCard = ({ service = {} }) => {
 
   return (
     <>
-      <Card sx={{ maxWidth: 345, margin: '20px auto', borderRadius: 2, boxShadow: 3 }}>
+      <Card
+        sx={{
+          maxWidth: 345,
+          margin: '20px auto',
+          borderRadius: 2,
+          boxShadow: 3,
+        }}
+      >
         {/* Card Header */}
-        <CardContent sx={{ display: 'flex', alignItems: 'center', padding: '16px' }}>
+        <CardContent
+          sx={{ display: 'flex', alignItems: 'center', padding: '16px' }}
+        >
           <Avatar
-            src={service.userId?.profilePicture ? service.userId.profilePicture : ''}
+            src={
+              service.userId?.profilePicture
+                ? service.userId.profilePicture
+                : ''
+            }
             alt="Profile"
             sx={{ width: 50, height: 50, marginRight: 2, bgcolor: red[500] }}
           >
@@ -118,13 +144,17 @@ const ServiceCard = ({ service = {} }) => {
 
           <Box sx={{ flexGrow: 1 }}>
             {service.userId?.firstName && (
-              <Typography variant="body2">{service.userId.firstName}</Typography>
+              <Typography variant="body2">
+                {service.userId.firstName}
+              </Typography>
             )}
             {service.userId?.lastName && (
               <Typography variant="body2">{service.userId.lastName}</Typography>
             )}
             {service.userId?.username && (
-              <Typography variant="body2">@{service.userId.username}</Typography>
+              <Typography variant="body2">
+                @{service.userId.username}
+              </Typography>
             )}
           </Box>
 
@@ -142,8 +172,13 @@ const ServiceCard = ({ service = {} }) => {
               {service.status ? 'Active' : 'Completed'}
             </Typography>
             {service.serviceType && (
-              <Typography variant="body2" sx={{ fontSize: '0.8rem', marginTop: 1 }}>
-                {service.serviceType === 'help-wanted' ? 'Help Wanted' : 'Offering Help'}
+              <Typography
+                variant="body2"
+                sx={{ fontSize: '0.8rem', marginTop: 1 }}
+              >
+                {service.serviceType === 'help-wanted'
+                  ? 'Help Wanted'
+                  : 'Offering Help'}
               </Typography>
             )}
           </Box>
@@ -182,7 +217,12 @@ const ServiceCard = ({ service = {} }) => {
           <IconButton aria-label="share">
             <ShareIcon />
           </IconButton>
-          <ExpandMore expand={expanded} onClick={handleExpandClick} aria-expanded={expanded} aria-label="show more">
+          <ExpandMore
+            expand={expanded}
+            onClick={handleExpandClick}
+            aria-expanded={expanded}
+            aria-label="show more"
+          >
             <ExpandMoreIcon />
           </ExpandMore>
 
@@ -194,20 +234,24 @@ const ServiceCard = ({ service = {} }) => {
                 sx={{
                   backgroundColor: 'red',
                   borderRadius: '8px', // Less round
-                  '&:hover': { backgroundColor: 'red' }
+                  '&:hover': { backgroundColor: 'red' },
                 }}
               >
-                <Typography variant="body2" color="textSecondary">delete</Typography>
+                <Typography variant="body2" color="textSecondary">
+                  delete
+                </Typography>
               </IconButton>
               <IconButton
                 onClick={handleEdit}
                 sx={{
                   backgroundColor: 'lightblue',
                   borderRadius: '8px', // Less round
-                  '&:hover': { backgroundColor: 'red' }
+                  '&:hover': { backgroundColor: 'red' },
                 }}
               >
-                <Typography variant="body2" color="textSecondary">edit</Typography>
+                <Typography variant="body2" color="textSecondary">
+                  edit
+                </Typography>
               </IconButton>
             </>
           )}
@@ -249,6 +293,22 @@ const ServiceCard = ({ service = {} }) => {
       <Dialog open={openEditModal} onClose={() => setOpenEditModal(false)}>
         <DialogTitle>Edit Service</DialogTitle>
         <DialogContent>
+          <TextField
+            label="Title"
+            name="title"
+            value={editedService.title}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Description"
+            name="body"
+            value={editedService.body}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
           <TextField
             label="Address"
             name="address"
@@ -297,11 +357,17 @@ const ServiceCard = ({ service = {} }) => {
             onChange={handleChange}
             accept="image/*"
           />
-          {serviceImagePreview && <img src={serviceImagePreview} alt="Preview" height="100" />}
+          {serviceImagePreview && (
+            <img src={serviceImagePreview} alt="Preview" height="100" />
+          )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenEditModal(false)} color="primary">Cancel</Button>
-          <Button onClick={handleSaveEdit} color="primary">Save</Button>
+          <Button onClick={() => setOpenEditModal(false)} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleSaveEdit} color="primary">
+            Save
+          </Button>
         </DialogActions>
       </Dialog>
     </>
