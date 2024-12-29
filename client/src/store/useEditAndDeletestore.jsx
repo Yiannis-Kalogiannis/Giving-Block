@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import axios from 'axios'; // Axios for API requests
 import useServiceStore from './useServiceStore'; // Import the existing service store
 
-const useEditDeleteStore = create((set) => ({
+const useEditDeleteStore = create(() => ({
   // Delete a service by ID and update the services list
   deleteService: async (serviceId) => {
     try {

@@ -1,7 +1,6 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { Navigate } from 'react-router-dom';
-import useAuthStore from '../store/authStore'; // Import Zustand store
+import useAuthStore from '../store/UseAuthStore'; // Import Zustand store
 
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);  // use Zustand store to check if user is authenticated

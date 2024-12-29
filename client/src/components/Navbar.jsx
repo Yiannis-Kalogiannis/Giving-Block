@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 // store imports
-import useAuthStore from '../store/authStore';
+import useAuthStore from '../store/UseAuthStore';
 import SearchBar from '../components/SearchComponent';
 // page imports
 import CreateService from '../pages/CreateService';

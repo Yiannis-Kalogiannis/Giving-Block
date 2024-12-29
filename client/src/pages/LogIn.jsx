@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import useAuthStore from '../store/authStore'; // Import Zustand store
+import useAuthStore from '../store/UseAuthStore'; // Import Zustand store
 import { TextField, Button, Box, Typography } from '@mui/material';
 import useUserStore from '../store/useUserStore';
 
@@ -27,7 +27,7 @@ function Login() {
 
   // Trigger login on Enter key press
   const handleEnter = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       logIn();
     }
   };
@@ -39,7 +39,7 @@ function Login() {
 
       // Validate if fields are filled
       if (!email || !password) {
-        return alert("Both fields are required");
+        return alert('Both fields are required');
       }
 
       const response = await axios.post(
@@ -51,19 +51,21 @@ function Login() {
         const { token, user } = response.data; // Assuming response contains token and user info
         login(token, user); // Call Zustand's login function to update global state
         alert(response.data.message);
-        navigate("/"); // Redirect to homepage
+        navigate('/'); // Redirect to homepage
         setUserFromToken(token); // Update user data in Zustand store
-
       } else {
-        console.warn("Unexpected response:", response);
+        console.warn('Unexpected response:', response);
       }
     } catch (error) {
       if (error.response) {
-        console.error("Server responded with error:", error.response.data.message);
+        console.error(
+          'Server responded with error:',
+          error.response.data.message
+        );
         alert(error.response.data.message);
       } else {
-        console.error("Unexpected error:", error);
-        alert("An unexpected error occurred. Please try again.");
+        console.error('Unexpected error:', error);
+        alert('An unexpected error occurred. Please try again.');
       }
     }
   };
@@ -90,7 +92,11 @@ function Login() {
           borderRadius: 2,
         }}
       >
-        <Typography variant="h4" align="center" sx={{ color: 'white', marginBottom: 2 }}>
+        <Typography
+          variant="h4"
+          align="center"
+          sx={{ color: 'white', marginBottom: 2 }}
+        >
           Login
         </Typography>
 
@@ -132,7 +138,11 @@ function Login() {
         <Box sx={{ marginTop: 6, textAlign: 'center' }}>
           <Typography variant="body2" sx={{ color: 'white' }}>
             Don’t have an account?{' '}
-            <Button onClick={() => navigate("/register")} color="primary" sx={{ textDecoration: 'underline' }}>
+            <Button
+              onClick={() => navigate('/register')}
+              color="primary"
+              sx={{ textDecoration: 'underline' }}
+            >
               Sign Up
             </Button>
           </Typography>

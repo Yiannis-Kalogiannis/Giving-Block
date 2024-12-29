@@ -15,14 +15,15 @@ const useUserStore = create((set) => ({
                 profilePicture: decodedToken.image || "",
             });
         }
-                },
-    clearUser: () => set({ username: "", userId: "", profilePicture: "" }),
+                }
 }));
 
 // Initialize user data when app loads
 const token = localStorage.getItem("token");
 if (token) {
-    useUserStore.getState().setUserFromToken(token);
+    useUserStore.getState().setUserFromToken(token);    
 }
+
+
 
 export default useUserStore;

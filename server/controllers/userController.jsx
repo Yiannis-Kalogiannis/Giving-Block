@@ -170,6 +170,8 @@ let userUpdate = async (req, res) => {
       bio,
       username,
       oldPassword,
+      profilePicture,
+
     } = req.body;
 
     const oldUser = await User.findById(idFromParams);
