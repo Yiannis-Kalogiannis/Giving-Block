@@ -25,4 +25,6 @@ router.delete('/deleteUser/:id',verifyToken, deleteUser); // Route to delete a u
 router.post('/login', userLogin); // Route to login a user
 router.post('/register', userRegister); // Route to register a user
 
+
+
 module.exports = router;

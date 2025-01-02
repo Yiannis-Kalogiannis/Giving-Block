@@ -3,7 +3,7 @@ const cors = require('cors');
 const path = require('path'); 
 const userRoutes = require("./routes/userRoutes.jsx");
 const serviceRoutes = require("./routes/serviceRoutes.jsx");
-require("dotenv").config();
+const messageRoutes = require('./routes/messages.routes.jsx');require("dotenv").config();
 const fileUpload = require('express-fileupload');
 
 const connection = require('./config/connection.jsx');
@@ -18,6 +18,8 @@ app.use(fileUpload({ useTempFiles: true }));
 // User routes
 app.use('/users', userRoutes);
 app.use('/services', serviceRoutes);
+
+app.use('/messages', messageRoutes);
 
 
 
