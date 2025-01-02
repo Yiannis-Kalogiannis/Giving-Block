@@ -48,7 +48,7 @@ function Login() {
       );
 
       if (response.status === 200 || response.status === 201) {
-        const { token, user } = response.data; // Assuming response contains token and user info
+        const { token, user } = response.data;  // Destructure token and user from response
         login(token, user); // Call Zustand's login function to update global state
         alert(response.data.message);
         navigate('/'); // Redirect to homepage

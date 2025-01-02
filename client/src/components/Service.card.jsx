@@ -21,8 +21,12 @@ import {
   DialogTitle,
   Button,
   TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from '@mui/material';
-import { red } from '@mui/material/colors';
+
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -138,7 +142,7 @@ const ServiceCard = ({ service = {} }) => {
                 : ''
             }
             alt="Profile"
-            sx={{ width: 50, height: 50, marginRight: 2, bgcolor: red[500] }}
+            sx={{ width: 50, height: 50, marginRight: 2, }}
           >
             {!service.userId?.profilePicture && 'N'}
           </Avatar>
@@ -351,6 +355,14 @@ const ServiceCard = ({ service = {} }) => {
             margin="normal"
           />
 
+          {/* Status Toggle */}
+          <FormControl fullWidth margin="normal">
+            <InputLabel>Status</InputLabel>
+            <Select name="status" value={editedService.status} onChange={handleChange}>
+              <MenuItem value={true}>Active</MenuItem>
+              <MenuItem value={false}>Completed</MenuItem>
+            </Select>
+            </FormControl >
           {/* Image Input and Preview */}
           <input
             type="file"

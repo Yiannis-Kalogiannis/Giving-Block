@@ -52,26 +52,31 @@ const UserProfile = () => {
   // Update user details
   async function handleSaveNewUserData(e) {
     e.preventDefault();
-  
-    const { newPassword, newPasswordConfirmation, oldPassword, ...otherFields } = editedUserData;
-  
+
+    const {
+      newPassword,
+      newPasswordConfirmation,
+      oldPassword,
+      ...otherFields
+    } = editedUserData;
+
     // Check if passwords match
     if (newPassword && newPassword !== newPasswordConfirmation) {
       console.log('Passwords do not match');
       return;
     }
-  
+
     // Create an update payload with only non-empty fields
     const updatedFields = Object.keys(otherFields).reduce((acc, key) => {
       if (otherFields[key]) acc[key] = otherFields[key];
       return acc;
     }, {});
-  
+
     if (newPassword) {
       updatedFields.newPassword = newPassword;
       updatedFields.oldPassword = oldPassword;
     }
-  
+
     try {
       const response = await axios.put(
         `http://localhost:8080/users/updateUser/${userId}`,
@@ -83,7 +88,7 @@ const UserProfile = () => {
         }
       );
       setUserDetails(response.data.user);
-  
+
       // Clear editedUserData and exit edit mode
       setEditedUserData({
         email: '',
@@ -99,7 +104,6 @@ const UserProfile = () => {
       console.error('Failed to update user credentials:', error);
     }
   }
-  
 
   return (
     <div>
@@ -107,51 +111,54 @@ const UserProfile = () => {
       <h3>
         Hello {userDetails.firstName} {userDetails.lastName}
       </h3>
-  
+
       {editForm ? (
-        <form onSubmit={handleSaveNewUserData} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <form
+          onSubmit={handleSaveNewUserData}
+          style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}
+        >
           <input
-  type="text"
-  name="firstName"
-  value={editedUserData.firstName || userDetails.firstName}
-  placeholder="First Name"
-  onChange={handleChange}
-/>
-<input
-  type="text"
-  name="lastName"
-  value={editedUserData.lastName || userDetails.lastName}
-  placeholder="Last Name"
-  onChange={handleChange}
-/>
-<input
-  type="email"
-  name="email"
-  value={editedUserData.email || userDetails.email}
-  placeholder="Email"
-  onChange={handleChange}
-/>
-<input
-  type="password"
-  name="oldPassword"
-  value={editedUserData.oldPassword}
-  placeholder="Current Password"
-  onChange={handleChange}
-/>
-<input
-  type="password"
-  name="newPassword"
-  value={editedUserData.newPassword}
-  placeholder="New Password"
-  onChange={handleChange}
-/>
-<input
-  type="password"
-  name="newPasswordConfirmation"
-  value={editedUserData.newPasswordConfirmation}
-  placeholder="Confirm New Password"
-  onChange={handleChange}
-/>
+            type="text"
+            name="firstName"
+            value={editedUserData.firstName || userDetails.firstName}
+            placeholder="First Name"
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="lastName"
+            value={editedUserData.lastName || userDetails.lastName}
+            placeholder="Last Name"
+            onChange={handleChange}
+          />
+          <input
+            type="email"
+            name="email"
+            value={editedUserData.email || userDetails.email}
+            placeholder="Email"
+            onChange={handleChange}
+          />
+          <input
+            type="password"
+            name="oldPassword"
+            value={editedUserData.oldPassword}
+            placeholder="Current Password"
+            onChange={handleChange}
+          />
+          <input
+            type="password"
+            name="newPassword"
+            value={editedUserData.newPassword}
+            placeholder="New Password"
+            onChange={handleChange}
+          />
+          <input
+            type="password"
+            name="newPasswordConfirmation"
+            value={editedUserData.newPasswordConfirmation}
+            placeholder="Confirm New Password"
+            onChange={handleChange}
+          />
 
           <button type="submit">Save</button>
           <button type="button" onClick={() => setEditForm(false)}>
