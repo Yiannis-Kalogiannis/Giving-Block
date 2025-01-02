@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import useUserStore from '../store/useUserStore';
-import { Avatar } from '@mui/material';
+import { Avatar, Box, Typography, Button, TextField } from '@mui/material';
 
 const UserProfile = () => {
   const { userId } = useUserStore();
@@ -50,7 +50,7 @@ const UserProfile = () => {
   }, [userId]);
 
   // Update user details
-  async function handleSaveNewUserData(e) {
+  const handleSaveNewUserData = async (e) => {
     e.preventDefault();
 
     const {
@@ -60,13 +60,11 @@ const UserProfile = () => {
       ...otherFields
     } = editedUserData;
 
-    // Check if passwords match
     if (newPassword && newPassword !== newPasswordConfirmation) {
       console.log('Passwords do not match');
       return;
     }
 
-    // Create an update payload with only non-empty fields
     const updatedFields = Object.keys(otherFields).reduce((acc, key) => {
       if (otherFields[key]) acc[key] = otherFields[key];
       return acc;
@@ -89,7 +87,6 @@ const UserProfile = () => {
       );
       setUserDetails(response.data.user);
 
-      // Clear editedUserData and exit edit mode
       setEditedUserData({
         email: '',
         firstName: '',
@@ -103,77 +100,126 @@ const UserProfile = () => {
     } catch (error) {
       console.error('Failed to update user credentials:', error);
     }
-  }
+  };
 
   return (
-    <div>
-      <Avatar src={userDetails.profilePicture} alt="User profile picture" />
-      <h3>
-        Hello {userDetails.firstName} {userDetails.lastName}
-      </h3>
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
+      minHeight="100vh"
+      bgcolor="#f5f5f5"
+      p={3}
+    >
+      <Avatar
+        src={userDetails.profilePicture}
+        alt="User profile picture"
+        sx={{ width: 100, height: 100, mb: 2 }}
+      />
+      <Typography variant="h5" gutterBottom>
+        Hello, {userDetails.firstName} {userDetails.lastName}
+      </Typography>
 
       {editForm ? (
-        <form
+        <Box
+          component="form"
           onSubmit={handleSaveNewUserData}
-          style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}
+          display="flex"
+          flexDirection="column"
+          gap={2}
+          maxWidth="400px"
+          width="100%"
+          bgcolor="white"
+          p={3}
+          borderRadius={2}
+          boxShadow={3}
         >
-          <input
-            type="text"
+          <TextField
+            label="First Name"
             name="firstName"
             value={editedUserData.firstName || userDetails.firstName}
-            placeholder="First Name"
             onChange={handleChange}
+            fullWidth
           />
-          <input
-            type="text"
+          <TextField
+            label="Last Name"
             name="lastName"
             value={editedUserData.lastName || userDetails.lastName}
-            placeholder="Last Name"
             onChange={handleChange}
+            fullWidth
           />
-          <input
-            type="email"
+          <TextField
+            label="Email"
             name="email"
             value={editedUserData.email || userDetails.email}
-            placeholder="Email"
             onChange={handleChange}
+            fullWidth
+            type="email"
           />
-          <input
-            type="password"
+          <TextField
+            label="Current Password"
             name="oldPassword"
             value={editedUserData.oldPassword}
-            placeholder="Current Password"
             onChange={handleChange}
-          />
-          <input
+            fullWidth
             type="password"
+          />
+          <TextField
+            label="New Password"
             name="newPassword"
             value={editedUserData.newPassword}
-            placeholder="New Password"
             onChange={handleChange}
-          />
-          <input
+            fullWidth
             type="password"
+          />
+          <TextField
+            label="Confirm New Password"
             name="newPasswordConfirmation"
             value={editedUserData.newPasswordConfirmation}
-            placeholder="Confirm New Password"
             onChange={handleChange}
+            fullWidth
+            type="password"
           />
-
-          <button type="submit">Save</button>
-          <button type="button" onClick={() => setEditForm(false)}>
+          <Button type="submit" variant="contained" color="primary">
+            Save
+          </Button>
+          <Button
+            type="button"
+            variant="outlined"
+            color="secondary"
+            onClick={() => setEditForm(false)}
+          >
             Cancel
-          </button>
-        </form>
+          </Button>
+        </Box>
       ) : (
-        <div>
-          <p>Email: {userDetails.email}</p>
-          <p>Password: *********</p>
-          <p>Username: {userDetails.username}</p>
-          <button onClick={() => setEditForm(true)}>Edit Profile</button>
-        </div>
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          bgcolor="white"
+          p={3}
+          borderRadius={2}
+          boxShadow={3}
+          maxWidth="400px"
+          width="100%"
+          mt={3}
+        >
+          <Typography>Email: {userDetails.email}</Typography>
+          <Typography>Password: *********</Typography>
+          <Typography>Username: {userDetails.username}</Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setEditForm(true)}
+            sx={{ mt: 2 }}
+          >
+            Edit Profile
+          </Button>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 };
 

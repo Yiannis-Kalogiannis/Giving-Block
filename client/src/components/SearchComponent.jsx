@@ -43,6 +43,7 @@ const handleFilteredUserIdChange = (e) => {
       <FormControl fullWidth variant="outlined" size="small">
         <InputLabel>Service Type</InputLabel>
         <Select
+        sx={{ width: 200 }}
           value={localServiceType}
           onChange={handleServiceTypeChange}
           label="Service Type"
@@ -56,15 +57,16 @@ const handleFilteredUserIdChange = (e) => {
 
       {/* User id Select */}
       <FormControl fullWidth variant="outlined" size="small">
-        <InputLabel>User id</InputLabel>
+        <InputLabel>Services filter</InputLabel>
         <Select
+        sx={{ width: 200 }}
           value={localFilteredUserId}
           onChange={handleFilteredUserIdChange}
           label="User id"
           size="small" // Make the Select smaller
         >
-          <MenuItem value=""> All </MenuItem>
-          <MenuItem value={userId}>Mine</MenuItem>
+          <MenuItem value=""> All services </MenuItem>
+          <MenuItem value={userId}>My services</MenuItem>
         </Select>
       </FormControl>
 
@@ -72,6 +74,7 @@ const handleFilteredUserIdChange = (e) => {
       <FormControl fullWidth variant="outlined" size="small">
         <InputLabel>Status</InputLabel>
         <Select
+        sx={{ width: 200 }}
           value={localStatus}
           onChange={handleStatusChange}
           label="Status"

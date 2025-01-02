@@ -75,6 +75,7 @@ const ServiceCard = ({ service = {} }) => {
   };
 
   const handleDelete = () => {
+    alert('Are you sure you want to delete this service?');
     deleteService(service._id); // Call the delete action from the store
   };
 

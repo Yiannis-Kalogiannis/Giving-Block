@@ -77,11 +77,13 @@ function Navbar() {
 
       {/* Right side: User Info & Logout */}
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Typography variant="body1" sx={{ marginRight: '10px' }}>
+        <Typography onClick={() => navigate('/userprofile')} variant="body1" sx={{ marginRight: '10px' , mt: 2, cursor: 'pointer'}}>
           Welcome {username}
         </Typography>
         <Avatar
-          sx={{ width: 40, height: 40 }}
+        
+        onClick={() => navigate('/userprofile')}
+          sx={{ width: 40, height: 40, mt: 2, cursor: 'pointer'}}
           src={profilePicture}
           alt="Profile"
         />
