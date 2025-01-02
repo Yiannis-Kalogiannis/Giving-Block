@@ -15,6 +15,8 @@ function HomePage() {
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         position: 'relative',
+        backgroundAttachment: 'fixed',  // Fixes the background image
+        
         zIndex: 0,
       }}
     >
@@ -26,18 +28,28 @@ function HomePage() {
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundColor: 'rgba(255, 226, 226, 0.28)', // Semi-transparent overlay with opacity
+          backgroundColor: 'rgba(239, 180, 255, 0.15)', // Semi-transparent overlay with opacity
           zIndex: -1, // This ensures the overlay is behind the content
         }}
       />
 
       {/* Navbar Component */}
-      <Box sx={{ flexShrink: 0 }}>
-        <Navbar />
-      </Box>
+      <Box
+  sx={{
+    position: 'fixed',  // Keep navbar fixed at the top
+    top: 0,             // Align navbar to the top of the screen
+    left: 0,            // Ensure navbar is aligned with the left edge
+    right: 0,           // Ensure navbar is aligned with the right edge
+    zIndex: 1100,       // Ensure navbar is above other content
+    width: '100%',      // Full width
+    
+  }}
+>
+  <Navbar />
+</Box>
 
       {/* Service List Component */}
-      <Box sx={{ flexGrow: 1, overflow: 'Auto' }}>
+      <Box sx={{ flexGrow: 1, overflow: 'Auto', marginTop: '67px' }}>
         <ServiceList />
       </Box>
 

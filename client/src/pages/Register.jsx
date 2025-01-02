@@ -106,20 +106,27 @@ function Register() {
         justifyContent: 'center',
         alignItems: 'center',
         height: '100vh',
-        backgroundColor: '#f0f0f0',
+        backgroundImage:
+          'url("https://res.cloudinary.com/dj02fukkg/image/upload/v1735410370/Giving%20block/x9031cflh1tjsl0217yk.jpg")',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
       }}
     >
       <Box
         sx={{
           maxWidth: 400,
+          backgroundColor: 'rgb(60, 65, 77)',
           width: '100%',
           padding: 3,
-          backgroundColor: 'white',
           borderRadius: 2,
           boxShadow: 3,
         }}
       >
-        <Typography variant="h4" align="center" sx={{ marginBottom: 2 }}>
+        <Typography
+          variant="h4"
+          align="center"
+          sx={{ marginBottom: 2, color: 'white' }}
+        >
           Register
         </Typography>
 
@@ -131,6 +138,13 @@ function Register() {
           onChange={handleChange}
           onKeyDown={handleEnter}
           margin="normal"
+          sx={{
+            backgroundColor: 'white',
+            borderRadius: '4px',
+            '& .MuiInputBase-input': {
+              backgroundColor: 'white',
+            },
+          }}
         />
         <TextField
           fullWidth
@@ -140,6 +154,13 @@ function Register() {
           onChange={handleChange}
           onKeyDown={handleEnter}
           margin="normal"
+          sx={{
+            backgroundColor: 'white',
+            borderRadius: '4px',
+            '& .MuiInputBase-input': {
+              backgroundColor: 'white',
+            },
+          }}
         />
         <TextField
           fullWidth
@@ -149,6 +170,13 @@ function Register() {
           onChange={handleChange}
           onKeyDown={handleEnter}
           margin="normal"
+          sx={{
+            backgroundColor: 'white',
+            borderRadius: '4px',
+            '& .MuiInputBase-input': {
+              backgroundColor: 'white',
+            },
+          }}
         />
         <TextField
           fullWidth
@@ -158,6 +186,13 @@ function Register() {
           onChange={handleChange}
           onKeyDown={handleEnter}
           margin="normal"
+          sx={{
+            backgroundColor: 'white',
+            borderRadius: '4px',
+            '& .MuiInputBase-input': {
+              backgroundColor: 'white',
+            },
+          }}
         />
         <TextField
           fullWidth
@@ -168,6 +203,13 @@ function Register() {
           onChange={handleChange}
           onKeyDown={handleEnter}
           margin="normal"
+          sx={{
+            backgroundColor: 'white',
+            borderRadius: '4px',
+            '& .MuiInputBase-input': {
+              backgroundColor: 'white',
+            },
+          }}
         />
         <TextField
           fullWidth
@@ -178,13 +220,28 @@ function Register() {
           onChange={handleChange}
           onKeyDown={handleEnter}
           margin="normal"
+          sx={{
+            backgroundColor: 'white',
+            borderRadius: '4px',
+            '& .MuiInputBase-input': {
+              backgroundColor: 'white',
+            },
+          }}
         />
 
         <Button
           variant="outlined"
           component="label"
           fullWidth
-          sx={{ marginBottom: 2, marginTop: 2 }}
+          sx={{
+            marginBottom: 2,
+            marginTop: 2,
+            backgroundColor: 'white',
+            borderRadius: '4px',
+            '& .MuiInputBase-input': {
+              backgroundColor: 'white',
+            },
+          }}
         >
           Upload Image
           <input
@@ -216,8 +273,9 @@ function Register() {
         </Button>
 
         <Box sx={{ marginTop: 2, textAlign: 'center' }}>
-          <Typography variant="body2">
+          <Typography variant="body2" sx={{ color: 'white' }}>
             Already have an account?{' '}
+            
             <Button onClick={() => navigate('/login')} color="primary">
               Log In
             </Button>

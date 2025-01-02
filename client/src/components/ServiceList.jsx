@@ -3,7 +3,7 @@ import axios from 'axios';
 import ServiceCard from './Service.card';
 import useServiceStore from '../store/useServiceStore';
 import useSearchStore from '../store/useSearchStore';
-import { CircularProgress, Typography, Box } from '@mui/material';
+import { CircularProgress, Typography, Box, Grid  } from '@mui/material';
 
 const ServiceList = () => {
   const { query, serviceType, status, filteredUserId } = useSearchStore();
@@ -41,9 +41,8 @@ const ServiceList = () => {
       sx={{
         padding: 1,
         display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
         flexWrap: 'wrap',
+        gap: 2, // Space between items
       }}
     >
       {loading ? (
@@ -55,7 +54,15 @@ const ServiceList = () => {
       ) : (
         Array.isArray(services) &&
         services.map((service) => (
-          <ServiceCard key={service._id} service={service} />
+          <Box
+            key={service._id}
+            sx={{
+              width: 'calc(25% - 16px)', // Adjust width for 4 items per row (with gap considered)
+              boxSizing: 'border-box', // Ensures padding is included in width calculation
+            }}
+          >
+            <ServiceCard service={service} />
+          </Box>
         ))
       )}
     </Box>

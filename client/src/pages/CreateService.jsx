@@ -26,7 +26,7 @@ function CreateService({ handleClose }) {
         phone: '',
         status: true,
         serviceType: '',
-        username: 'username',
+        username: 'username', 
     });
     const [serviceImagePreview, setServiceImagePreview] = useState(null);
     const services = useServiceStore((state) => state.services);

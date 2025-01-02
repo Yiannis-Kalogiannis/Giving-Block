@@ -110,8 +110,15 @@ const UserProfile = () => {
       justifyContent="center"
       minHeight="100vh"
       bgcolor="#f5f5f5"
+      sx={{
+        backgroundImage: 'url(https://res.cloudinary.com/dj02fukkg/image/upload/v1735410371/Giving%20block/u4tcadkgbagw1zrsxikh.jpg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'cover',
+        backgroundRepeat: 'no-repeat',
+      }}
       p={3}
     >
+      
       <Avatar
         src={userDetails.profilePicture}
         alt="User profile picture"

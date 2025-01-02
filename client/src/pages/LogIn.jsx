@@ -72,22 +72,22 @@ function Login() {
 
   return (
     <Box
-      sx={{
-        position: 'relative',
-        height: '100vh',
-        backgroundColor: 'darkBlue',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
+  sx={{
+    position: 'relative',
+    height: '100vh',
+    backgroundImage: 'url("https://res.cloudinary.com/dj02fukkg/image/upload/v1735410371/Giving%20block/btylwvnu5uem5f0zsbdz.jpg")',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }}
+>
       <Box
         sx={{
           width: '100%',
           maxWidth: 400,
-          backgroundColor: 'rgba(255, 255, 255, 0.9)', // Semi-transparent background for readability
+          backgroundColor: 'rgb(60, 65, 77)', // Semi-transparent background for readability
           padding: 3,
           borderRadius: 2,
         }}

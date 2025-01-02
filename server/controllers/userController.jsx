@@ -170,7 +170,7 @@ let userUpdate = async (req, res) => {
       bio,
       username,
       oldPassword,
-      profilePicture,
+    
 
     } = req.body;
 
@@ -198,7 +198,7 @@ let userUpdate = async (req, res) => {
     }
 
     // Handle profile image upload to Cloudinary (directly from file)
-    let profileImage = '';
+    let profileImage = oldUser.profilePicture;
     if (req.files && req.files.profilePicture) {
       profileImage = await uploadImage(req.files.profilePicture.tempFilePath); // Cloudinary upload
     }

@@ -7,6 +7,7 @@ import SearchBar from '../components/SearchComponent';
 import CreateService from '../pages/CreateService';
 // material ui imports
 import {
+  CssBaseline,
   Button,
   Dialog,
   DialogActions,
@@ -47,6 +48,7 @@ function Navbar() {
         justifyContent: 'space-between',
         alignItems: 'center',
         padding: '10px',
+        backgroundColor: 'white',
       }}
     >
       {/* Left side: Search Bar */}
