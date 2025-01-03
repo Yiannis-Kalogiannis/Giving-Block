@@ -3,7 +3,7 @@ import axios from 'axios';
 import ServiceCard from './Service.card';
 import useServiceStore from '../store/useServiceStore';
 import useSearchStore from '../store/useSearchStore';
-import { CircularProgress, Typography, Box, Grid  } from '@mui/material';
+import { CircularProgress, Typography, Box, Grid } from '@mui/material';
 
 const ServiceList = () => {
   const { query, serviceType, status, filteredUserId } = useSearchStore();
@@ -30,40 +30,51 @@ const ServiceList = () => {
     }
   };
 
-  // Fetch services on mount and whenever query, serviceType, or status changes
   useEffect(() => {
     fetchServices();
   }, [query, serviceType, status, services.length, filteredUserId]);
 
-
   return (
     <Box
-      sx={{
-        padding: 1,
-        display: 'flex',
-        flexWrap: 'wrap',
-        gap: 2, // Space between items
-      }}
-    >
+    sx={{
+      padding: 1,
+      background: 'radial-gradient(circle, rgba(208,208,208,1) 34%, rgba(148,187,233,1) 100%)', // Radial gradient background
+      minHeight: '100vh', // Full height background
+      color: 'white', // White text
+    }}
+  >
       {loading ? (
-        <CircularProgress />
+        <Box display="flex" justifyContent="center" alignItems="center" sx={{ minHeight: '100vh' }}>
+          <CircularProgress sx={{ color: 'white' }} />
+        </Box>
       ) : Array.isArray(services) && services.length === 0 ? (
-        <Typography variant="h6" color="textSecondary">
+        <Typography variant="h6" color="inherit" textAlign="center" sx={{ marginTop: 2 }}>
           No services available
         </Typography>
       ) : (
-        Array.isArray(services) &&
-        services.map((service) => (
-          <Box
-            key={service._id}
-            sx={{
-              width: 'calc(25% - 16px)', // Adjust width for 4 items per row (with gap considered)
-              boxSizing: 'border-box', // Ensures padding is included in width calculation
-            }}
-          >
-            <ServiceCard service={service} />
-          </Box>
-        ))
+        <Grid container spacing={2}>
+          {Array.isArray(services) &&
+            services.map((service) => (
+              <Grid
+                item
+                key={service._id}
+                xs={12}
+                sm={6}
+                md={4}
+                lg={3}
+                sx={{
+                  marginTop: {
+                    xs: '200px',
+                    sm: '60px',
+                    md: '50px',
+                    lg: '50px',
+                  },
+                }}
+              >
+                <ServiceCard service={service} />
+              </Grid>
+            ))}
+        </Grid>
       )}
     </Box>
   );

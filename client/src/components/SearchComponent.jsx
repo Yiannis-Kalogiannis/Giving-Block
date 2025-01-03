@@ -14,71 +14,139 @@ const SearchBar = () => {
   const handleQueryChange = (e) => {
     const query = e.target.value;
     setLocalQuery(query);
-    setQuery(query); // Update global search state
+    setQuery(query);
   };
 
   const handleServiceTypeChange = (e) => {
     const type = e.target.value;
     setLocalServiceType(type);
-    setServiceType(type); // Update global search state
+    setServiceType(type);
   };
 
   const handleStatusChange = (e) => {
     const status = e.target.value;
     setLocalStatus(status);
-    setStatus(status); // Update global search state
-    console.log(status);
+    setStatus(status);
   };
 
-const handleFilteredUserIdChange = (e) => {
+  const handleFilteredUserIdChange = (e) => {
     const userId = e.target.value;
     setLocalFilteredUserId(userId);
-    setFilteredUserId(userId); // Update global search state
-    console.log(userId);
-  }
+    setFilteredUserId(userId);
+  };
 
   return (
-    <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+    <Box
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' },
+        gap: 2,
+        padding: 2,
+       
+        color: 'white', // White text
+        borderRadius: '8px',
+      }}
+    >
       {/* Service Type Select */}
-      <FormControl fullWidth variant="outlined" size="small">
-        <InputLabel>Service Type</InputLabel>
+      <FormControl fullWidth variant="outlined" size="small" sx={{ borderRadius: '4px' }}>
+        <InputLabel sx={{ color: 'white' }}>Service Type</InputLabel>
         <Select
-        sx={{ width: 200 }}
-          value={localServiceType}
-          onChange={handleServiceTypeChange}
-          label="Service Type"
-          size="small" // Make the Select smaller
-        >
-          <MenuItem value="">Service Type</MenuItem>
-          <MenuItem value="offering-help">Helper</MenuItem>
-          <MenuItem value="help-wanted">Help Wanted</MenuItem>
-        </Select>
+  value={localServiceType}
+  onChange={handleServiceTypeChange}
+  label="Service Type"
+  sx={{
+    color: 'white',
+    '& .MuiOutlinedInput-notchedOutline': { borderColor: 'white' },
+    '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#001f3f' },
+    '& .MuiInputLabel-root': { color: 'white' },
+    '& .MuiInputLabel-outlined': { color: 'white' },
+    '& .MuiSelect-root': { backgroundColor: '#001f3f' },
+    '& .MuiSelect-icon': { color: 'white' }, // Adjust dropdown arrow color
+  }}
+  MenuProps={{
+    PaperProps: {
+      sx: {
+        backgroundColor: '#001f3f', // Dark blue background for dropdown
+        '& .MuiMenuItem-root': {
+          color: 'white', // White text for menu items
+          '&:hover': { backgroundColor: '#004080' }, // Lighter blue on hover
+        },
+      },
+    },
+  }}
+>
+  <MenuItem value="" sx={{ color: 'white', backgroundColor: '#001f3f' }}>
+    Service Type
+  </MenuItem>
+  <MenuItem value="offering-help" sx={{ color: 'white', backgroundColor: '#001f3f' }}>
+    Helper
+  </MenuItem>
+  <MenuItem value="help-wanted" sx={{ color: 'white', backgroundColor: '#001f3f' }}>
+    Help Wanted
+  </MenuItem>
+</Select>
       </FormControl>
 
-      {/* User id Select */}
-      <FormControl fullWidth variant="outlined" size="small">
-        <InputLabel>Services filter</InputLabel>
+      {/* User ID Select */}
+      <FormControl fullWidth variant="outlined" size="small" sx={{ borderRadius: '4px' }}>
+        <InputLabel sx={{ color: 'white' }}>Services Filter</InputLabel>
         <Select
-        sx={{ width: 200 }}
           value={localFilteredUserId}
           onChange={handleFilteredUserIdChange}
-          label="User id"
-          size="small" // Make the Select smaller
+          label="User ID"
+          sx={{
+            color: 'white',
+            '& .MuiOutlinedInput-notchedOutline': { borderColor: 'white' },
+            '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#001f3f' },
+            '& .MuiInputLabel-root': { color: 'white' },
+            '& .MuiInputLabel-outlined': { color: 'white' },
+            '& .MuiSelect-root': { backgroundColor: '#001f3f' },
+            '& .MuiSelect-icon': { color: 'white' }, // Adjust dropdown arrow color
+          }}
+          MenuProps={{
+            PaperProps: {
+              sx: {
+                backgroundColor: '#001f3f', // Dark blue background for dropdown
+                '& .MuiMenuItem-root': {
+                  color: 'white', // White text for menu items
+                  '&:hover': { backgroundColor: '#004080' }, // Lighter blue on hover
+                },
+              },
+            },
+          }}
         >
-          <MenuItem value=""> All services </MenuItem>
-          <MenuItem value={userId}>My services</MenuItem>
+          <MenuItem value="">All Services</MenuItem>
+          <MenuItem value={userId}>My Services</MenuItem>
         </Select>
       </FormControl>
 
       {/* Status Select */}
-      <FormControl fullWidth variant="outlined" size="small">
-        <InputLabel>Status</InputLabel>
+      <FormControl fullWidth variant="outlined" size="small" sx={{ borderRadius: '4px' }}>
+        <InputLabel sx={{ color: 'white' }}>Status</InputLabel>
         <Select
-        sx={{ width: 200 }}
           value={localStatus}
           onChange={handleStatusChange}
           label="Status"
-          size="small" // Make the Select smaller
+          sx={{
+            color: 'white',
+            '& .MuiOutlinedInput-notchedOutline': { borderColor: 'white' },
+            '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#001f3f' },
+            '& .MuiInputLabel-root': { color: 'white' },
+            '& .MuiInputLabel-outlined': { color: 'white' },
+            '& .MuiSelect-root': { backgroundColor: '#001f3f' },
+            '& .MuiSelect-icon': { color: 'white' }, // Adjust dropdown arrow color
+          }}
+          MenuProps={{
+            PaperProps: {
+              sx: {
+                backgroundColor: '#001f3f', // Dark blue background for dropdown
+                '& .MuiMenuItem-root': {
+                  color: 'white', // White text for menu items
+                  '&:hover': { backgroundColor: '#004080' }, // Lighter blue on hover
+                },
+              },
+            },
+          }}
         >
           <MenuItem value="">Status</MenuItem>
           <MenuItem value="true">Active</MenuItem>
@@ -87,13 +155,31 @@ const handleFilteredUserIdChange = (e) => {
       </FormControl>
 
       {/* Search Input */}
-      <TextField
+      <TextField 
         label="Search services..."
         variant="outlined"
         value={localQuery}
         onChange={handleQueryChange}
         fullWidth
-        size="small" // Make the TextField smaller
+        size="small"
+        sx={{
+          borderRadius: '4px',
+          '& .MuiOutlinedInput-root': {
+            color: 'white',
+          },
+          '& .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'white',
+          },
+          '&:hover .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#001f3f',
+          },
+          '& .MuiInputLabel-root': {
+            color: 'white', // Make the placeholder text white
+          },
+          '& .MuiInputLabel-outlined': {
+            color: 'white', // Make the placeholder text white
+          },
+        }}
       />
     </Box>
   );

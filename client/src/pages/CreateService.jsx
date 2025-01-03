@@ -108,7 +108,7 @@ function CreateService({ handleClose }) {
     };
 
     return (
-        <Box sx={{ maxWidth: 600, margin: '0 auto', padding: 2 }}>
+        <Box sx={{ maxWidth: 600, margin: '0 auto', padding: 2, }}>
             <h1>Create Service</h1>
             <form onSubmit={handleSubmit}>
                 {/* Title */}

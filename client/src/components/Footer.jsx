@@ -5,11 +5,11 @@ function Footer() {
         <Box 
             component="footer"
             sx={{
-                backgroundColor: '#f8f9fa', 
+                background: 'radial-gradient(circle, rgba(208,208,208,1) 34%, rgba(148,187,233,1) 100%)', // Radial gradient background
                 padding: '10px 0', // Reduced padding for smaller height
                 display: 'flex', 
                 justifyContent: 'center', 
-                alignItems: 'center'
+                alignItems: 'center',
             }}
         >
             <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>

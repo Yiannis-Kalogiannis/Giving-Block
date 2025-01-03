@@ -48,7 +48,8 @@ function Navbar() {
         justifyContent: 'space-between',
         alignItems: 'center',
         padding: '10px',
-        backgroundColor: 'white',
+        backgroundColor: '#001f3f', // Dark blue background
+        color: 'white', // White text
       }}
     >
       {/* Left side: Search Bar */}
@@ -57,9 +58,15 @@ function Navbar() {
       {/* Middle: Create Service Button */}
       <Button
         variant="contained"
-        color="primary"
+        sx={{
+          marginLeft: '10px',
+          backgroundColor: '#001f3f', // White button
+          color: 'white', // Dark blue text
+          '&:hover': {
+            backgroundColor: 'gray', // Light gray hover
+          },
+        }}
         onClick={handleOpen}
-        sx={{ marginLeft: '10px' }}
       >
         Create Service
       </Button>
@@ -71,7 +78,7 @@ function Navbar() {
           <CreateService handleClose={handleClose} />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleClose} sx={{ color: '#001f3f' }}>
             Close
           </Button>
         </DialogActions>
@@ -79,21 +86,43 @@ function Navbar() {
 
       {/* Right side: User Info & Logout */}
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Typography onClick={() => navigate('/userprofile')} variant="body1" sx={{ marginRight: '10px' , mt: 2, cursor: 'pointer'}}>
+        <Typography
+          onClick={() => navigate('/userprofile')}
+          variant="body1"
+          sx={{
+            marginRight: '10px',
+            marginLeft: '10px',
+            mt: 2,
+            cursor: 'pointer',
+            color: 'white', // White text
+          }}
+        >
           Welcome {username}
         </Typography>
         <Avatar
-        
-        onClick={() => navigate('/userprofile')}
-          sx={{ width: 40, height: 40, mt: 2, cursor: 'pointer'}}
+          onClick={() => navigate('/userprofile')}
+          sx={{
+            width: 40,
+            height: 40,
+            mt: 2,
+            cursor: 'pointer',
+            border: '2px solid white', // Border for visibility
+          }}
           src={profilePicture}
           alt="Profile"
         />
         <Button
           variant="outlined"
-          color="secondary"
+          sx={{
+            marginLeft: '15px',
+            color: 'white', // White text
+            borderColor: 'white', // White border
+            '&:hover': {
+              borderColor: '#e0e0e0',
+              color: '#e0e0e0',
+            },
+          }}
           onClick={handleLogOut}
-          sx={{ marginLeft: '15px' }}
         >
           Logout
         </Button>
