@@ -10,8 +10,10 @@ const saltRounds = +process.env.SALT_ROUNDS;
 // ___________________________get all users (for admin uses, and maybe for chat functionality)___________________________
 let getAllUsers = async (req, res) => {
   try {
-    const allUsers = await User.find();
-    res.json(allUsers);
+    const loggedInUser = req.user;
+    const filteredUsers = await User.find({ _id: { $ne: loggedInUser._id } }).select('-password');
+
+    res.status(200).json({ message: 'Here are all the users', filteredUsers });
   } catch (error) {
     console.log(`Error: ${error}`);
     res

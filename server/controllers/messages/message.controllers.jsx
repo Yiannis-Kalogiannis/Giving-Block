@@ -5,20 +5,13 @@ const sendMessages = async (req, res) => {
     try {
         const { message } = req.body;
         const { id } = req.params; // Receiver ID
-        const senderId = req.user._id.toString(); // Convert ObjectId to string if needed
-console.log("Sender ID:", senderId); // Debugging
-
-
-        if (!senderId) {
-            return res.status(400).json({ error: "Sender ID is missing" });
-        }
-
-        console.log("Sender ID:", senderId);
-        console.log("Receiver ID:", id);
+        const senderId = req.user._id.toString(); // Convert ObjectId to string
+        console.log("Sender ID:", senderId); // Debugging
+        console.log("Receiver ID:", id); // Debugging
 
         let conversation = await Conversation.findOneAndUpdate(
             {
-                participants: { $all: [senderId, id] }
+                participants: { $all: [senderId, id] } // Find conversation with both participants
             },
             { new: true }
         );
@@ -26,7 +19,7 @@ console.log("Sender ID:", senderId); // Debugging
         if (!conversation) {
             // Create new conversation if not found
             conversation = await Conversation.create({
-                participants: [senderId, id],
+                participants: [senderId, id], // Add both participants to the conversation
             });
 
             const newMessage = new Message({
@@ -35,25 +28,24 @@ console.log("Sender ID:", senderId); // Debugging
                 message,
             });
 
-            await newMessage.save();  // Save the new message to DB
-
-            conversation.messages.push(newMessage._id);
-            await conversation.save();
-
-            return res.status(200).json({ message: "Message sent successfully", newMessage });
-        } else {
-            const newMessage = new Message({
-                senderId,
-                receiverId: id,
-                message,
-            });
-            await newMessage.save();  // Save the new message to DB
-
+            await newMessage.save();
             conversation.messages.push(newMessage._id);
             await conversation.save();
 
             return res.status(200).json({ message: "Message sent successfully", newMessage });
         }
+
+        // Handle adding a new message to an existing conversation
+        const newMessage = new Message({
+            senderId,
+            receiverId: id,
+            message,
+        });
+        await newMessage.save();
+        conversation.messages.push(newMessage._id);
+        await conversation.save();
+
+        return res.status(200).json({ message: "Message sent successfully", newMessage });
     } catch (error) {
         console.log("Error in sendMessages", error.message);
         res.status(500).json({ error: "Internal server error" });
