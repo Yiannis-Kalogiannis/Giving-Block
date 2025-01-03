@@ -47,7 +47,8 @@ const verifyToken = async (req, res, next) => {
       }
   
       // Attach the user to the request object for further middleware or the route handler to use
-      req.user = { _id: user._id }; // Attach only the ID for simplicity and security reasons (to avoid leaking sensitive user information) 
+      req.user = { _id: user._id }; // Attach only the ID for simplicity and security reasons (to avoid leaking sensitive user information)
+      console.log("User is authenticated:", req.user); 
       next();
     } catch (error) {
       // Handle token verification errors
