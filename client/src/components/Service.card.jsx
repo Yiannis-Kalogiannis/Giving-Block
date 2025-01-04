@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import useUserStore from '../store/useUserStore';
 import useEditDeleteStore from '../store/useEditAndDeletestore';
 import PropTypes from 'prop-types';  // Import PropTypes
+// import { useNavigate } from 'react-router-dom';
 
 // Import MUI components and icons
 import { styled } from '@mui/material/styles';
@@ -44,6 +45,7 @@ const ExpandMore = styled((props) => {
 }));
 
 const ServiceCard = ({ service = {} }) => {
+  // const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
   const { userId } = useUserStore();
   const [openEditModal, setOpenEditModal] = useState(false); // Modal state
@@ -124,29 +126,33 @@ const ServiceCard = ({ service = {} }) => {
   return (
     <>
    <Card
-  sx={{
-    maxWidth: 345,
-    margin: '20px auto',
-    borderRadius: 2,
-    boxShadow: 3,
-    background: 'radial-gradient(circle, rgba(30,25,45,0.9031300264246324) 100%, rgba(57,0,255,1) 100%)', // Radial gradient background
-    color: 'white', // White text color
-  }}
+ sx={{ 
+  maxWidth: 345,
+  margin: '20px auto',
+  borderRadius: 2,
+  boxShadow: 5,
+  background: 'linear-gradient(rgb(180, 180, 180),rgb(65, 97, 134))', // Linear gradient background color
+}}
 >
         {/* Card Header */}
         <CardContent
           sx={{ display: 'flex', alignItems: 'center', padding: '16px', }}
         >
           <Avatar
+          sx={{
+            width: 50,
+            height: 50,
+            mr: 2,
+            cursor: 'pointer',
+            
+          }}
             src={
               service.userId?.profilePicture
                 ? service.userId.profilePicture
                 : ''
             }
             alt="Profile"
-            sx={{ width: 50, height: 50, marginRight: 2, }}
           >
-            {!service.userId?.profilePicture && 'N'}
           </Avatar>
 
           <Box sx={{ flexGrow: 1 }}>

@@ -104,20 +104,19 @@ const UserProfile = () => {
 
   return (
     <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      minHeight="100vh"
-      bgcolor="#f5f5f5"
-      sx={{
-        backgroundImage: 'url(https://res.cloudinary.com/dj02fukkg/image/upload/v1735410371/Giving%20block/u4tcadkgbagw1zrsxikh.jpg)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'cover',
-        backgroundRepeat: 'no-repeat',
-      }}
-      p={3}
-    >
+    display="flex"
+    flexDirection="column"
+    alignItems="center"
+    justifyContent="center"
+    minHeight="100vh"
+    bgcolor="#f5f5f5"
+    sx={{
+      background: 'radial-gradient(circle, rgba(208,208,208,1) 34%, rgba(148,187,233,1) 100%)', // Radial gradient background
+      minHeight: '100vh', // Full height background
+      color: 'black', // White text
+    }}
+    p={3}
+  >
       
       <Avatar
         src={userDetails.profilePicture}
@@ -205,7 +204,8 @@ const UserProfile = () => {
           display="flex"
           flexDirection="column"
           alignItems="center"
-          bgcolor="white"
+          bgcolor='' // Linear gradient background color
+
           p={3}
           borderRadius={2}
           boxShadow={3}

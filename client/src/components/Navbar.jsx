@@ -7,7 +7,6 @@ import SearchBar from '../components/SearchComponent';
 import CreateService from '../pages/CreateService';
 // material ui imports
 import {
-  CssBaseline,
   Button,
   Dialog,
   DialogActions,
@@ -47,8 +46,7 @@ function Navbar() {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: '10px',
-        backgroundColor: '#001f3f', // Dark blue background
+        backgroundColor: '#333c4d', 
         color: 'white', // White text
       }}
     >
@@ -60,7 +58,9 @@ function Navbar() {
         variant="contained"
         sx={{
           marginLeft: '10px',
-          backgroundColor: '#001f3f', // White button
+          backgroundColor: '#333c4d', 
+          border: '1px solid white', // White border
+          borderRadius: '20px',
           color: 'white', // Dark blue text
           '&:hover': {
             backgroundColor: 'gray', // Light gray hover
@@ -92,9 +92,11 @@ function Navbar() {
           sx={{
             marginRight: '10px',
             marginLeft: '10px',
-            mt: 2,
             cursor: 'pointer',
             color: 'white', // White text
+            '&:hover':{
+               color: 'gray', // Light gray text
+            }
           }}
         >
           Welcome {username}
@@ -104,7 +106,7 @@ function Navbar() {
           sx={{
             width: 40,
             height: 40,
-            mt: 2,
+            
             cursor: 'pointer',
             border: '2px solid white', // Border for visibility
           }}
@@ -117,9 +119,11 @@ function Navbar() {
             marginLeft: '15px',
             color: 'white', // White text
             borderColor: 'white', // White border
+            borderRadius: '20px',
             '&:hover': {
-              borderColor: '#e0e0e0',
-              color: '#e0e0e0',
+              borderColor: 'gray', // Light gray border
+              
+              color: 'gray', // Light gray text
             },
           }}
           onClick={handleLogOut}

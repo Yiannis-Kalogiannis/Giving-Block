@@ -5,21 +5,7 @@ import { Box } from '@mui/material'; // Importing Material UI components
 
 function HomePage() {
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: '100vh',
-        backgroundImage: 'url("/assets/Home page.jpg")', // Path to your image
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        position: 'relative',
-        backgroundAttachment: 'fixed',  // Fixes the background image
-        
-        zIndex: 0,
-      }}
-    >
+    <Box>
       {/* Overlay to add opacity */}
       <Box
         sx={{
@@ -35,18 +21,17 @@ function HomePage() {
 
       {/* Navbar Component */}
       <Box
-  sx={{
-    position: 'fixed',  // Keep navbar fixed at the top
-    top: 0,             // Align navbar to the top of the screen
-    left: 0,            // Ensure navbar is aligned with the left edge
-    right: 0,           // Ensure navbar is aligned with the right edge
-    zIndex: 1100,       // Ensure navbar is above other content
-    width: '100%',      // Full width
-    
-  }}
->
-  <Navbar />
-</Box>
+        sx={{
+          position: 'fixed', // Keep navbar fixed at the top
+          top: 0, // Align navbar to the top of the screen
+          left: 0, // Ensure navbar is aligned with the left edge
+          right: 0, // Ensure navbar is aligned with the right edge
+          zIndex: 1100, // Ensure navbar is above other content
+          width: '100%', // Full width
+        }}
+      >
+        <Navbar />
+      </Box>
 
       {/* Service List Component */}
       <Box sx={{ flexGrow: 1, overflow: 'Auto', marginTop: '67px' }}>

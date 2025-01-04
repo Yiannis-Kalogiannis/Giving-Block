@@ -115,7 +115,7 @@ function Register() {
       <Box
         sx={{
           maxWidth: 400,
-          backgroundColor: 'rgb(60, 65, 77)',
+          background: 'linear-gradient(rgb(182, 204, 225),rgb(88, 102, 119))', // Linear gradient background color
           width: '100%',
           padding: 3,
           borderRadius: 2,
