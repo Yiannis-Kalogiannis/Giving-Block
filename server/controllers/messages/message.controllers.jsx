@@ -32,7 +32,7 @@ const sendMessages = async (req, res) => {
             conversation.messages.push(newMessage._id);
             await conversation.save();
 
-            return res.status(200).json({ message: "Message sent successfully", newMessage });
+            return res.status(200).json(newMessage);
         }
 
         // Handle adding a new message to an existing conversation
@@ -45,7 +45,7 @@ const sendMessages = async (req, res) => {
         conversation.messages.push(newMessage._id);
         await conversation.save();
 
-        return res.status(200).json({ message: "Message sent successfully", newMessage });
+        return res.status(200).json(newMessage);
     } catch (error) {
         console.log("Error in sendMessages", error.message);
         res.status(500).json({ error: "Internal server error" });

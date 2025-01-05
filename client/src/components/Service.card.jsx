@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import useUserStore from '../store/useUserStore';
-import useEditDeleteStore from '../store/useEditAndDeletestore';
-import PropTypes from 'prop-types';  // Import PropTypes
+import useEditDeleteStore from '../store/useEditAndDeleteStore';
+
 // import { useNavigate } from 'react-router-dom';
 
 // Import MUI components and icons
@@ -395,27 +395,4 @@ const ServiceCard = ({ service = {} }) => {
   );
 };
 
-
-ServiceCard.propTypes = {
-  service: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    title: PropTypes.string,
-    body: PropTypes.string,
-    address: PropTypes.string,
-    city: PropTypes.string,
-    country: PropTypes.string,
-    zip: PropTypes.string,
-    phone: PropTypes.string,
-    status: PropTypes.bool,
-    serviceType: PropTypes.string,
-    serviceImage: PropTypes.string,
-    userId: PropTypes.shape({
-      _id: PropTypes.string,
-      profilePicture: PropTypes.string,
-      firstName: PropTypes.string,
-      lastName: PropTypes.string,
-      username: PropTypes.string,
-    }),
-  }),
-};
 export default ServiceCard;

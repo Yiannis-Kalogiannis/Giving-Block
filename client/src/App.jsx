@@ -6,6 +6,7 @@ import Register from '../src/pages/Register.jsx';
 import Login from './pages/LogIn.jsx';
 import HomePage from './pages/HomePage.jsx';
 import UserProfile from './pages/UserProfile.jsx';
+import MainChatPage from '../src/pages/chat/MainChatPage.jsx';
 
 function App() {
   return (
@@ -29,6 +30,14 @@ function App() {
                 <UserProfile />
               </ProtectedRoute>
             }
+          />
+          <Route
+          path="/Chat"
+          element={
+            <ProtectedRoute>
+              <MainChatPage />
+            </ProtectedRoute>
+          }
           />
         </Routes>
       </BrowserRouter>
