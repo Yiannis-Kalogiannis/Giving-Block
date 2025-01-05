@@ -1,4 +1,4 @@
-import React from "react";
+
 import { Box, Avatar, Typography, Divider } from "@mui/material";
 import useConversationStore from "../../store/chat.store/useConvarsationStore";
 
@@ -12,13 +12,13 @@ const isSelected = selectedConversation?._id === conversation._id;
         onClick={() => setSelectedConversation(conversation)}
         sx={{
             display: "flex",
-            alignItems: "center",
+            alignItems: "start",
             padding: "10px",
             cursor: "pointer",
-            backgroundColor: isSelected ? "blue" : "white", // Conditional background color
+            backgroundColor: isSelected ? "gray" : "transparent", // Conditional background color
           color: isSelected ? "white" : "black", // Conditional text color
             '&:hover': {
-              backgroundColor: "blue",
+              backgroundColor: "gray",
               color: "white",
             },
           }}

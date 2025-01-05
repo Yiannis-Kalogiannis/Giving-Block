@@ -21,7 +21,7 @@ function useGetMessages() {
         );
 
         setMessages(response.data);
-        console.log('Messages:', response.data);
+        // console.log('Messages:', response.data);
       } catch (error) {
         console.error(error);
         alert(error.message);

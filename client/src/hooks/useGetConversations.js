@@ -17,7 +17,7 @@ const useGetConversations = () => {
                       Authorization: `Bearer ${token}`, 
                     },
                   });
-                  console.log("Conversations:", res.data.filteredUsers);
+                //   console.log("Conversations:", res.data.filteredUsers);
                 setConversations(res.data.filteredUsers);
                 setLoading(false);
             } catch (err) {
@@ -27,6 +27,7 @@ const useGetConversations = () => {
             }
         };
         getConversations();
+        // console.log("Conversations:", conversations);
     },[]);
     
     return { conversations, loading };

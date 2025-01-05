@@ -14,21 +14,22 @@ function MessageContainer() {
     }, [setSelectedConversation]);
     
     return ( 
-        <Box display="flex" flexDirection="column" height="100%">
+        <Box display="flex" flexDirection="column" height="100%" 
+            sx={{ borderLeft: '1px solid rgba(0, 0, 0, 0.12)' }}>
             { !selectedConversation? (
                 <NoChatSelected />
             ) : (
                 <>
                     {/* Header */}
-                    <Box bgcolor="lightblue" color="darkblue" p={1}>
-                        <Typography variant="h6">To: <span>{selectedConversation.username}</span></Typography>
+                    <Box  color="black" >
+                        <Typography variant="h10">To: <span>{selectedConversation.username}</span></Typography>
                     </Box>
 
                     {/* Messages */}
                     <Box 
                         flex={1} 
-                        p={2} 
-                        sx={{ overflowY: 'auto', display: 'flex', flexDirection: 'column-reverse' }}
+                        p={5} 
+                        sx={{ overflowY: 'auto', display: 'flex', flexDirection: 'column-reverse', maxHeight: '100%' }}
                     >
                         <Messages />
                     </Box>
@@ -37,7 +38,7 @@ function MessageContainer() {
                     <Divider />
 
                     {/* Message Input */}
-                    <Box p={2}>
+                    <Box>
                         <MessageInput />
                     </Box>
                 </>
