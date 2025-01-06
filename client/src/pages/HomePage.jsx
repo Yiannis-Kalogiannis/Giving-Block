@@ -1,9 +1,19 @@
+import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import ServiceList from '../components/ServiceList';
 import Footer from '../components/Footer';
-import { Box } from '@mui/material'; // Importing Material UI components
+import MainChatPage from './chat/MainChatPage';
+import { Box, Fab, Button } from '@mui/material';
+import ChatIcon from '@mui/icons-material/Chat';
+import CloseIcon from '@mui/icons-material/Close';
 
 function HomePage() {
+  const [isChatOpen, setIsChatOpen] = useState(false);
+
+  const toggleChat = () => {
+    setIsChatOpen((prev) => !prev);
+  };
+
   return (
     <Box>
       {/* Overlay to add opacity */}
@@ -34,8 +44,60 @@ function HomePage() {
       </Box>
 
       {/* Service List Component */}
-      <Box sx={{ flexGrow: 1, overflow: 'Auto', marginTop: '67px' }}>
+      <Box sx={{ flexGrow: 1, overflow: 'auto', marginTop: '67px' }}>
         <ServiceList />
+      </Box>
+
+      {/* Collapsible Chat Component */}
+      <Box
+        sx={{
+          position: 'fixed',
+          bottom: 16,
+          right: 16,
+          width: isChatOpen ? 600 : 'auto',
+          height: isChatOpen ? 600 : 'auto',
+          boxShadow: 4,
+          borderRadius: 2,
+          backgroundColor: 'background.paper',
+          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'column',
+          transition: 'width 0.3s, height 0.3s',
+          zIndex: 1200,
+        }}
+      >
+        {!isChatOpen && (
+          <Fab color="primary" onClick={toggleChat}>
+            <ChatIcon />
+          </Fab>
+        )}
+
+        {isChatOpen && (
+          <>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: 1,
+                backgroundColor: 'gray',
+                color: 'white',
+              }}
+            >
+              <Button onClick={toggleChat} sx={{ color: 'white' }}>
+                <CloseIcon />
+              </Button>
+            </Box>
+            <Box
+              sx={{
+                flex: 1,
+                overflow: 'auto',
+              }}
+            >
+              <MainChatPage />
+            </Box>
+          </>
+        )}
       </Box>
 
       {/* Footer Component */}

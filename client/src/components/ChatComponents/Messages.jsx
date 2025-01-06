@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-import { Box } from "@mui/material";  // Import Box from Material-UI
 import Message from "./Message";
 import useGetMessages from "../../hooks/useGetMessages";
 
@@ -14,28 +13,24 @@ function Messages() {
   }, [Messages]); // Scroll when messages change
 
   return (
-    <Box
-      className="messages"
-      sx={{
-        overflowY: "scroll",
-        height: "100%", // Ensure it has a defined height to scroll within
-        padding: "1rem", // Optional, for padding around messages
-      }}
-    >
+    <div style={{ overflowY: "scroll", height: "100%", padding: "1rem",  backgroundColor: "lightgray" }}>
       {loading ? (
         <h1>Loading...</h1>
       ) : Array.isArray(Messages) ? (
         Messages.map((message) => (
-          <div key={message._id} ref={lastMessageRef}>
+          <div
+            key={message._id}
+            ref={lastMessageRef}
+            style={{ marginBottom: "1rem", maxWidth: "100%" }}
+          >
             <Message message={message} />
           </div>
         ))
       ) : (
-        <h6>Type a message to start a conversation</h6>
+        <p>Type a message to start a conversation</p>
       )}
-    </Box>
+    </div>
   );
 }
 
 export default Messages;
-

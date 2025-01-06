@@ -6,51 +6,54 @@ function MainChatPage() {
   return (
     <Box
       display="flex"
-      height="80vh"
+      height="54.6vh" // Full viewport height
+      flexDirection="column" // Change to column to avoid overflow issues
       borderRadius={2}
       boxShadow={3}
-      overflow="hidden"
       sx={{
-        bgcolor: "transparent", // Transparent background
-        backdropFilter: "blur(10px)", // Optional: Blur effect for a frosted glass look
-        border: "1px solid rgba(255, 255, 255, 0.2)", // Optional: Subtle border for definition
-        maxWidth: "60%", // Limit the width of the chat container
-       
+        bgcolor: "transparent",
+        backdropFilter: "blur(10px)",
+        border: "1px solid rgba(94, 34, 34, 0)",
       }}
     >
-      {/* Sidebar */}
       <Box
-        sx={{
-          bgcolor: "rgba(28, 24, 24, 0.1)", // Semi-transparent white for a modern feel
-          borderRight: "1px solid rgba(255, 255, 255, 0.2)", // Optional: Border for separation
-        }}
-        color="Black"
-        p={2}
-        maxWidth="25%"
         display="flex"
-        flexDirection="column"
-        justifyContent="space-between"
-        borderRight="1px solid rgba(255, 255, 255, 0.2)"
+        flex={1} // Ensure the content takes the remaining space
+        overflow="hidden" // Prevent overflow
       >
-        <Sidebar />
-      </Box>
+        {/* Sidebar */}
+        <Box
+          sx={{
+            bgcolor: "rgba(125, 147, 154, 0.17)",
+            borderRight: "1px solid rgb(178, 173, 173)",
+          }}
+          color="Black"
+          p={2}
+          minWidth="25%"
+          display="flex"
+          flexDirection="column"
+          justifyContent="space-between"
+          
+        >
+          <Sidebar />
+        </Box>
 
-      {/* Divider */}
-      <Divider orientation="vertical" flexItem sx={{ bgcolor: "rgba(255, 255, 255, 0.2)" }} />
+        {/* Divider */}
+        <Divider orientation="vertical" flexItem sx={{ bgcolor: "rgba(165, 165, 165, 0)" }} />
 
-      {/* Message Container */}
-      <Box
-        flex={1}
-        p={3}
-        sx={{
-          bgcolor: "rgba(157, 168, 182, 0.8)", // Semi-transparent white for a modern feel
-          display: "flex",
-          flexDirection: "column",
-          borderRadius: "0 8px 8px 0",
-          boxShadow: "inset 0 0 10px rgba(0, 0, 0, 0.1)", // Subtle inner shadow for depth
-        }}
-      >
-        <MessageContainer />
+        {/* Message Container */}
+        <Box
+          flex={1} // Take the remaining space
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            overflow: "hidden", // Prevent overflow of content
+            maxHeight: "calc(100vh - 60px)", // Fixed height for the message container (adjust to suit)
+            backgroundColor: "rgba(0, 0, 255, 0.1)",
+          }}
+        >
+          <MessageContainer />
+        </Box>
       </Box>
     </Box>
   );

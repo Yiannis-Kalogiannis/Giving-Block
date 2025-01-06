@@ -13,7 +13,7 @@ const isSelected = selectedConversation?._id === conversation._id;
         sx={{
             display: "flex",
             alignItems: "start",
-            padding: "10px",
+            padding: "1px",
             cursor: "pointer",
             backgroundColor: isSelected ? "gray" : "transparent", // Conditional background color
           color: isSelected ? "white" : "black", // Conditional text color
@@ -26,9 +26,9 @@ const isSelected = selectedConversation?._id === conversation._id;
         <Avatar
           src={conversation.profilePicture}
           alt={conversation.username}
-          sx={{ width: 48, height: 48, marginRight: "10px" }}
+          sx={{ width: 28, height: 28, marginRight: "10px" }}
         />
-        <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <Box sx={{ display: "flex", flexDirection: "column", }}>
           <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>
             {conversation.username}
           </Typography>

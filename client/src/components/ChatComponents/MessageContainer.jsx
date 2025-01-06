@@ -1,58 +1,53 @@
-import { Box, Typography, Divider } from "@mui/material";
 import Messages from './Messages';
 import MessageInput from './MessageInput';
-import useConversationStore from "../../store/chat.store/useConvarsationStore";
-import { useEffect } from "react";
-
+import useConversationStore from '../../store/chat.store/useConvarsationStore';
+import { useEffect } from 'react';
 
 function MessageContainer() {
-    const {selectedConversation, setSelectedConversation} = useConversationStore(); // Get selected conversation from store
-    
-    useEffect(() => {
-        // Set selected conversation to null when component unmounts
-        return () => setSelectedConversation(null);
-    }, [setSelectedConversation]);
-    
-    return ( 
-        <Box display="flex" flexDirection="column" height="100%" 
-            sx={{ borderLeft: '1px solid rgba(0, 0, 0, 0.12)' }}>
-            { !selectedConversation? (
-                <NoChatSelected />
-            ) : (
-                <>
-                    {/* Header */}
-                    <Box  color="black" >
-                        <Typography variant="h10">To: <span>{selectedConversation.username}</span></Typography>
-                    </Box>
+  const { selectedConversation, setSelectedConversation } = useConversationStore(); // Get selected conversation from store
 
-                    {/* Messages */}
-                    <Box 
-                        flex={1} 
-                        p={5} 
-                        sx={{ overflowY: 'auto', display: 'flex', flexDirection: 'column-reverse', maxHeight: '100%' }}
-                    >
-                        <Messages />
-                    </Box>
+  useEffect(() => {
+    // Set selected conversation to null when component unmounts
+    return () => setSelectedConversation(null);
+  }, [setSelectedConversation]);
 
-                    {/* Divider */}
-                    <Divider />
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      {!selectedConversation ? (
+        <NoChatSelected />
+      ) : (
+        <>
+          {/* Header */}
+          <div>
+            <p>
+              To: <span>{selectedConversation.username}</span>
+            </p>
+          </div>
 
-                    {/* Message Input */}
-                    <Box>
-                        <MessageInput />
-                    </Box>
-                </>
-            )}
-        </Box>
-    );
+          {/* Messages */}
+          <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column-reverse' }}>
+            <Messages />
+          </div>
+
+          {/* Divider */}
+          <hr />
+
+          {/* Message Input */}
+          <div>
+            <MessageInput />
+          </div>
+        </>
+      )}
+    </div>
+  );
 }
 
 const NoChatSelected = () => {
-    return (
-        <Box display="flex" justifyContent="center" alignItems="center" height="100%">
-            <Typography variant="h4">Select a chat to start messaging</Typography>
-        </Box>
-    );
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+      <h4>Select a chat to start messaging</h4>
+    </div>
+  );
 };
 
 export default MessageContainer;

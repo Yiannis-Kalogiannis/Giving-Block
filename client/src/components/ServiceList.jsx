@@ -4,12 +4,15 @@ import ServiceCard from './Service.card';
 import useServiceStore from '../store/useServiceStore';
 import useSearchStore from '../store/useSearchStore';
 import { CircularProgress, Typography, Box, Grid } from '@mui/material';
+import useAuthStore from '../store/UseAuthStore';
+
 
 const ServiceList = () => {
   const { query, serviceType, status, filteredUserId } = useSearchStore();
   const services = useServiceStore((state) => state.services);
   const setServices = useServiceStore((state) => state.setServices);
   const [loading, setLoading] = useState(false);
+  const{ isAuthenticated} = useAuthStore();
 
   const fetchServices = async () => {
     try {
@@ -23,6 +26,7 @@ const ServiceList = () => {
       );
       setServices([...response.data]); // Ensure a new reference is set
       console.log('Fetched services:', response.data);
+      console.log("test",isAuthenticated)
     } catch (error) {
       console.error('Error fetching services:', error);
     } finally {

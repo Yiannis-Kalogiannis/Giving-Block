@@ -6,11 +6,12 @@ const serviceRoutes = require("./routes/serviceRoutes.jsx");
 const messageRoutes = require('./routes/messages.routes.jsx');require("dotenv").config();
 const fileUpload = require('express-fileupload');
 
+const app = express();
+
 const connection = require('./config/connection.jsx');
 const port = process.env.PORT;
 
 // middleware
-const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(fileUpload({ useTempFiles: true }));

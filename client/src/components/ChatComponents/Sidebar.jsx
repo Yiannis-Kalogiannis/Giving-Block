@@ -1,15 +1,11 @@
 import Conversations from './Conversations';
 
 function Sidebar() {
-    return ( 
-        <>
+    return (
         <div className="sidebar">
-            
-                <Conversations />
-
+            <Conversations />
         </div>
-        </>
-     );
+    );
 }
 
 export default Sidebar;
