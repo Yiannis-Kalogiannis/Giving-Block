@@ -5,8 +5,8 @@ import { create } from 'zustand';
 const useConversationStore = create((set) => ({
     selectedConversation: null,
     setSelectedConversation: (conversation) => set({ selectedConversation: conversation }),
-    Messages: [],
-    setMessages: (messages) => set({ Messages: messages }),
+    messages: [],
+    setMessages: (messages) => set({ messages }),
 }));
 
 export default useConversationStore;

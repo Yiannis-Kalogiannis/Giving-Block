@@ -6,7 +6,7 @@ function MainChatPage() {
   return (
     <Box
       display="flex"
-      height="54.6vh" // Full viewport height
+      height="100%" // Full viewport height
       flexDirection="column" // Change to column to avoid overflow issues
       borderRadius={2}
       boxShadow={3}
@@ -24,7 +24,7 @@ function MainChatPage() {
         {/* Sidebar */}
         <Box
           sx={{
-            bgcolor: "rgba(125, 147, 154, 0.17)",
+            bgcolor: "rgba(188, 207, 213, 0.17)",
             borderRight: "1px solid rgb(178, 173, 173)",
           }}
           color="Black"
@@ -33,7 +33,7 @@ function MainChatPage() {
           display="flex"
           flexDirection="column"
           justifyContent="space-between"
-          
+          maxHeight={545} // Fixed height for the sidebar (adjust to suit)
         >
           <Sidebar />
         </Box>
@@ -48,8 +48,8 @@ function MainChatPage() {
             display: "flex",
             flexDirection: "column",
             overflow: "hidden", // Prevent overflow of content
-            maxHeight: "calc(100vh - 60px)", // Fixed height for the message container (adjust to suit)
-            backgroundColor: "rgba(0, 0, 255, 0.1)",
+            maxHeight: "calc(100vh - 20px)", // Fixed height for the message container (adjust to suit)
+            backgroundColor: "rgba(230, 230, 250, 0.1)",
           }}
         >
           <MessageContainer />

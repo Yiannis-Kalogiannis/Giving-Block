@@ -5,11 +5,11 @@ const userRoutes = require("./routes/userRoutes.jsx");
 const serviceRoutes = require("./routes/serviceRoutes.jsx");
 const messageRoutes = require('./routes/messages.routes.jsx');require("dotenv").config();
 const fileUpload = require('express-fileupload');
-
-const app = express();
+const {app, server} = require('./socket/socket.js');
 
 const connection = require('./config/connection.jsx');
 const port = process.env.PORT;
+
 
 // middleware
 app.use(express.json());
@@ -25,7 +25,7 @@ app.use('/messages', messageRoutes);
 
 
 // Start the server
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`The server is running on port ${port}`);
 });
 

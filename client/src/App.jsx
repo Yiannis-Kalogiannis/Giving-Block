@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ProtectedRoute from '../src/hooks/ProtectedRoute.jsx';
+import { SocketContextProvider } from '../src/context/SocketContext.jsx'
 
 // Pages imports
 import Register from '../src/pages/Register.jsx';
@@ -13,7 +14,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
-  
+      <SocketContextProvider>
     <Routes>
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
@@ -42,6 +43,7 @@ function App() {
         }
       />
     </Routes>
+    </SocketContextProvider>
 </BrowserRouter>
 
     </>

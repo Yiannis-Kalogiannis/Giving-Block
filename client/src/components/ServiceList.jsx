@@ -5,6 +5,8 @@ import useServiceStore from '../store/useServiceStore';
 import useSearchStore from '../store/useSearchStore';
 import { CircularProgress, Typography, Box, Grid } from '@mui/material';
 import useAuthStore from '../store/UseAuthStore';
+import { useSocketContext } from '../context/SocketContext';
+
 
 
 const ServiceList = () => {
@@ -12,12 +14,14 @@ const ServiceList = () => {
   const services = useServiceStore((state) => state.services);
   const setServices = useServiceStore((state) => state.setServices);
   const [loading, setLoading] = useState(false);
-  const{ isAuthenticated} = useAuthStore();
+ 
+  const {onlineUsers} = useSocketContext();
+  
 
   const fetchServices = async () => {
     try {
       setLoading(true);
-      console.log('Fetching services with:', { query, serviceType, status, filteredUserId });
+      // console.log('Fetching services with:', { query, serviceType, status, filteredUserId });
       const response = await axios.get(
         'http://localhost:8080/services/getAllServices',
         {
@@ -25,8 +29,9 @@ const ServiceList = () => {
         }
       );
       setServices([...response.data]); // Ensure a new reference is set
-      console.log('Fetched services:', response.data);
-      console.log("test",isAuthenticated)
+      // console.log('Fetched services:', response.data);
+    
+      console.log("Online Users Received:", onlineUsers); // Log the received users
     } catch (error) {
       console.error('Error fetching services:', error);
     } finally {
@@ -38,6 +43,7 @@ const ServiceList = () => {
     fetchServices();
   }, [query, serviceType, status, services.length, filteredUserId]);
 
+  
   return (
     <Box
     sx={{
@@ -75,7 +81,7 @@ const ServiceList = () => {
                   },
                 }}
               >
-                <ServiceCard service={service} />
+                <ServiceCard service={service}/>
               </Grid>
             ))}
         </Grid>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import useUserStore from '../store/useUserStore';
 import useEditDeleteStore from '../store/useEditAndDeleteStore';
+import useConvarsationStore from '../store/chat.store/useConvarsationStore';
 
 // import { useNavigate } from 'react-router-dom';
 
@@ -31,6 +32,7 @@ import {
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import useChatStore from '../store/chat.store/useOpenChatStore';
 
 // Styled Components
 const ExpandMore = styled((props) => {
@@ -46,6 +48,13 @@ const ExpandMore = styled((props) => {
 
 const ServiceCard = ({ service = {} }) => {
   // const navigate = useNavigate();
+  const { toggleChat } = useChatStore(); // Access the toggleChat function from Zustand store
+  const { setSelectedConversation, selectedConversation } = useConvarsationStore();
+
+  const handleShareButtonClick = () => {
+    toggleChat(); // Toggle chat visibility
+  };
+
   const [expanded, setExpanded] = useState(false);
   const { userId } = useUserStore();
   const [openEditModal, setOpenEditModal] = useState(false); // Modal state
@@ -87,6 +96,7 @@ const ServiceCard = ({ service = {} }) => {
   const handleSaveEdit = async () => {
     const formData = new FormData();
 
+    
     // Append all service fields to FormData
     Object.keys(editedService).forEach((key) => {
       if (key === 'serviceImage' && editedService[key]) {
@@ -96,12 +106,13 @@ const ServiceCard = ({ service = {} }) => {
         formData.append(key, editedService[key]);
       }
     });
-
+    
     // Send formData to the edit service action
     await editService(service._id, formData);
     setOpenEditModal(false); // Close the modal after saving
   };
-
+  
+ 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
@@ -227,9 +238,12 @@ const ServiceCard = ({ service = {} }) => {
           <IconButton aria-label="add to favorites">
             <FavoriteIcon sx={{ color: 'white' }} />
           </IconButton>
-          <IconButton aria-label="share">
-            <ShareIcon sx={{ color: 'white' }} />
-          </IconButton>
+          <IconButton onClick={() => {
+    handleShareButtonClick(); // First function
+    setSelectedConversation(); // Second function
+  }}  aria-label="share">
+          <ShareIcon sx={{ color: 'white' }} />  
+               </IconButton>
           <ExpandMore
             expand={expanded}
             onClick={handleExpandClick}

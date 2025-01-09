@@ -6,13 +6,12 @@ import MainChatPage from './chat/MainChatPage';
 import { Box, Fab, Button } from '@mui/material';
 import ChatIcon from '@mui/icons-material/Chat';
 import CloseIcon from '@mui/icons-material/Close';
+import useChatStore from '../store/chat.store/useOpenChatStore';
 
 function HomePage() {
-  const [isChatOpen, setIsChatOpen] = useState(false);
+  const { isChatOpen, toggleChat, closeChat } = useChatStore(); // Access state and actions from the store
 
-  const toggleChat = () => {
-    setIsChatOpen((prev) => !prev);
-  };
+
 
   return (
     <Box>
@@ -45,7 +44,7 @@ function HomePage() {
 
       {/* Service List Component */}
       <Box sx={{ flexGrow: 1, overflow: 'auto', marginTop: '67px' }}>
-        <ServiceList />
+        <ServiceList/>
       </Box>
 
       {/* Collapsible Chat Component */}
@@ -57,8 +56,8 @@ function HomePage() {
           width: isChatOpen ? 600 : 'auto',
           height: isChatOpen ? 600 : 'auto',
           boxShadow: 4,
-          borderRadius: 2,
-          backgroundColor: 'background.paper',
+          borderRadius: 7,
+          
           overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column',

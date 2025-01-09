@@ -4,7 +4,7 @@ import useConversationStore from '../store/chat.store/useConvarsationStore';
 
 function useGetMessages() {
   const [loading, setLoading] = useState(false);
-  const { Messages, setMessages, selectedConversation } =
+  const { messages, setMessages, selectedConversation } =
     useConversationStore();
   const token = localStorage.getItem('token');
   useEffect(() => {
@@ -33,7 +33,7 @@ function useGetMessages() {
     if (selectedConversation?._id) getMessages();
   }, [selectedConversation?._id, setMessages]);
 
-  return { loading, Messages};
+  return { loading, messages};
 }
 
 export default useGetMessages;
