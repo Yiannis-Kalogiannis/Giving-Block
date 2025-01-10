@@ -12,21 +12,19 @@ const useSendMessage = () => {
     try {
       const response = await axios.post(
         `http://localhost:8080/messages/send/${selectedConversation._id}`,
-        { message }, // Include the message in the request body
+        { message },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
         }
       );
-
-      // Response data contains the new message
+  
       const newMessage = response.data;
       console.log('New message sent:', newMessage);
-
-      // Ensure the message belongs to the current conversation
+  
       if (newMessage.receiverId === selectedConversation._id || newMessage.senderId === selectedConversation._id) {
-        setMessages([...messages, newMessage]);
+        setMessages((prevMessages) => [...prevMessages, newMessage]); // <-- Use functional update
       }
     } catch (error) {
       console.error('Error sending message:', error);
@@ -35,7 +33,7 @@ const useSendMessage = () => {
       setLoading(false);
     }
   };
-
+  
   return { sendMessage, loading };
 };
 
