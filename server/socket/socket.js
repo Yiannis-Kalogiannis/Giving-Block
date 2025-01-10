@@ -15,7 +15,7 @@ const io = new Server(server, {
 
 const userSocketMap = {}; // {userId: socketId}
 
-// Export the function using CommonJS
+// Export the function to get the receiver's socket id
 const getReceiverSocketId = (receiverId) => {
     console.log('Receiver ID:', receiverId);
   console.log('User Socket Map:', userSocketMap);
@@ -28,19 +28,21 @@ const getReceiverSocketId = (receiverId) => {
 
 
 
-
+// io.on() is used to listen to the events. can be used both on client and server side
 io.on('connection', (socket) => {
   console.log('A user connected:', socket.id);
   console.log('Handshake User ID:', socket.handshake.query.userId);
   
+  // Get the user ID from the query params and store the socket ID in the userSocketMap
   const userId = socket.handshake.query.userId;
   if (userId !== undefined) {
     userSocketMap[userId] = socket.id;
     console.log('User connected with ID:', userId); // Debugging
-    console.log("Usersocket map:", userSocketMap); // Debugging
+    console.log("UserSocket map:", userSocketMap); // Debugging
   }
   
-  // Emit to all clients
+  
+  // Emit the online users list to all clients
   io.emit('getOnlineUsers', Object.keys(userSocketMap));
   
   

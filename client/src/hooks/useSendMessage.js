@@ -1,38 +1,42 @@
 import axios from 'axios';
 import { useState } from 'react';
-import useConversationStore from '../store/chat.store/useConvarsationStore';
+import useConversationStore from '../store/chat.store/useConversationStore';
 
-function useSendMessage() {
+
+const useSendMessage = () => {
   const [loading, setLoading] = useState(false);
-  const { messages, setMessages, selectedConversation } =
-    useConversationStore();
-  const token = localStorage.getItem('token');
+  const { messages, setMessages, selectedConversation } = useConversationStore();
+
   const sendMessage = async (message) => {
     setLoading(true);
     try {
       const response = await axios.post(
         `http://localhost:8080/messages/send/${selectedConversation._id}`,
-        { message },
+        { message }, // Include the message in the request body
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
         }
       );
-      if (Array.isArray(messages)) {
-        setMessages([...messages, response.data]); // If it's an array, add the new message
-      } else {
-        setMessages([response.data]); // Otherwise, initialize with the new message
+
+      // Response data contains the new message
+      const newMessage = response.data;
+      console.log('New message sent:', newMessage);
+
+      // Ensure the message belongs to the current conversation
+      if (newMessage.receiverId === selectedConversation._id || newMessage.senderId === selectedConversation._id) {
+        setMessages([...messages, newMessage]);
       }
     } catch (error) {
-      console.error(error);
-      alert(error.message);
+      console.error('Error sending message:', error);
+      alert(error.response?.data?.message || error.message);
     } finally {
       setLoading(false);
     }
   };
 
   return { sendMessage, loading };
-}
+};
 
 export default useSendMessage;

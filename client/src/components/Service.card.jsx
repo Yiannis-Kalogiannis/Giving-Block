@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import useUserStore from '../store/useUserStore';
 import useEditDeleteStore from '../store/useEditAndDeleteStore';
-import useConvarsationStore from '../store/chat.store/useConvarsationStore';
 
 // import { useNavigate } from 'react-router-dom';
 
@@ -49,7 +48,7 @@ const ExpandMore = styled((props) => {
 const ServiceCard = ({ service = {} }) => {
   // const navigate = useNavigate();
   const { toggleChat } = useChatStore(); // Access the toggleChat function from Zustand store
-  const { setSelectedConversation, selectedConversation } = useConvarsationStore();
+ 
 
   const handleShareButtonClick = () => {
     toggleChat(); // Toggle chat visibility
@@ -240,7 +239,7 @@ const ServiceCard = ({ service = {} }) => {
           </IconButton>
           <IconButton onClick={() => {
     handleShareButtonClick(); // First function
-    setSelectedConversation(); // Second function
+   
   }}  aria-label="share">
           <ShareIcon sx={{ color: 'white' }} />  
                </IconButton>

@@ -1,10 +1,11 @@
 import Messages from './Messages';
 import MessageInput from './MessageInput';
-import useConversationStore from '../../store/chat.store/useConvarsationStore';
+import useConversationStore from '../../store/chat.store/useConversationStore';
 import { useEffect } from 'react';
 
 function MessageContainer() {
-  const { selectedConversation, setSelectedConversation } = useConversationStore(); // Get selected conversation from store
+  const { selectedConversation, setSelectedConversation } =
+    useConversationStore(); // Get selected conversation from store
 
   useEffect(() => {
     // Set selected conversation to null when component unmounts
@@ -25,7 +26,14 @@ function MessageContainer() {
           </div>
 
           {/* Messages */}
-          <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column-reverse' }}>
+          <div
+            style={{
+              flex: 1,
+              overflowY: 'auto',
+              display: 'flex',
+              flexDirection: 'column-reverse',
+            }}
+          >
             <Messages />
           </div>
 
@@ -44,7 +52,14 @@ function MessageContainer() {
 
 const NoChatSelected = () => {
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100%',
+      }}
+    >
       <h4>Select a chat to start messaging</h4>
     </div>
   );

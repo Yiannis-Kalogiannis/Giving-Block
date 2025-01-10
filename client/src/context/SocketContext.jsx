@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useContext } from "react";
+import { createContext, useState, useEffect, useContext, useRef } from "react";
 import io from "socket.io-client";
 import useUserStore from "../store/useUserStore";
 
@@ -9,18 +9,18 @@ export const useSocketContext = () => {
 };
 
 export const SocketContextProvider = ({ children }) => {
-  const [socket, setSocket] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const { userId } = useUserStore();
+  const socketRef = useRef(null); // Use ref to persist socket instance across renders
 
   useEffect(() => {
     if (userId) {
       console.log("Initializing socket connection for userId:", userId);
 
       // Clean up any existing socket instance before creating a new one
-      if (socket) {
+      if (socketRef.current) {
         console.log("Closing previous socket instance...");
-        socket.close();
+        socketRef.current.close();
       }
 
       const newSocket = io("http://localhost:8080", {
@@ -43,26 +43,27 @@ export const SocketContextProvider = ({ children }) => {
         console.error("Socket connection error:", error.message);
       });
 
-      // Set socket instance
-      setSocket(newSocket);
+      // Set socket instance using ref
+      socketRef.current = newSocket;
 
       // Cleanup on unmount
       return () => {
         console.log("Cleaning up socket...");
-        newSocket.close();
+        socketRef.current?.close();
+        socketRef.current = null;
       };
     } else {
       // Handle case where userId is missing
       console.warn("No userId provided, closing socket if active...");
-      if (socket) {
-        socket.close();
-        setSocket(null);
+      if (socketRef.current) {
+        socketRef.current.close();
+        socketRef.current = null;
       }
     }
   }, [userId]);
 
   return (
-    <SocketContext.Provider value={{ socket, onlineUsers }}>
+    <SocketContext.Provider value={{ socket: socketRef.current, onlineUsers }}>
       {children}
     </SocketContext.Provider>
   );
