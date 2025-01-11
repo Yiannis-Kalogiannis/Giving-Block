@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../schemas/usersSchema.jsx');
 const uploadImage = require('../utility/upload.image.jsx');
+const fs = require('fs');
 
 const saltRounds = +process.env.SALT_ROUNDS;
 
@@ -124,6 +125,7 @@ let userRegister = async (req, res) => {
     let profileImage;
     if (req.files && req.files.profilePicture) {
       profileImage = await uploadImage(req.files.profilePicture.tempFilePath); // Cloudinary upload
+      
     }
 
     // Hash password
