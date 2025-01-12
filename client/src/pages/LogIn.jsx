@@ -2,28 +2,34 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import useAuthStore from '../store/UseAuthStore'; // Import Zustand store
-import { TextField, Button, Box, Typography } from '@mui/material';
+import {
+  TextField,
+  Button,
+  Box,
+  Typography,
+  IconButton,
+  InputAdornment,
+} from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import useUserStore from '../store/useUserStore';
+import BlurText from './css/BlurText';
+import Swal from 'sweetalert2'
 
 function Login() {
   const navigate = useNavigate();
   const login = useAuthStore((state) => state.login); // Zustand's login function
   const [loggedData, setLoggedData] = useState({ email: '', password: '' });
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
   const setUserFromToken = useUserStore((state) => state.setUserFromToken);
 
   // Handle input change
-  function handleChange(e) {
-    try {
-      e.preventDefault();
-      const { name, value } = e.target;
-      setLoggedData({
-        ...loggedData,
-        [name]: value,
-      });
-    } catch (error) {
-      console.log(`Error updating input data: ${error}`);
-    }
-  }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setLoggedData({
+      ...loggedData,
+      [name]: value,
+    });
+  };
 
   // Trigger login on Enter key press
   const handleEnter = (e) => {
@@ -32,14 +38,22 @@ function Login() {
     }
   };
 
+  // Toggle password visibility
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
+
   // Login logic with Zustand's store
   const logIn = async () => {
     try {
       const { email, password } = loggedData;
 
-      // Validate if fields are filled
       if (!email || !password) {
-        return alert('Both fields are required');
+        return Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Please fill in all fields",
+        });
       }
 
       const response = await axios.post(
@@ -48,51 +62,66 @@ function Login() {
       );
 
       if (response.status === 200 || response.status === 201) {
-        const { token, user } = response.data;  // Destructure token and user from response
-        login(token, user); // Call Zustand's login function to update global state
-        alert(response.data.message);
-        navigate('/'); // Redirect to homepage
-        setUserFromToken(token); // Update user data in Zustand store
+        const { token, user } = response.data;
+        login(token, user);
+        Swal.fire({
+          title: (response.data.message),
+          icon: "success",
+          draggable: true
+        });
+        navigate('/');
+        setUserFromToken(token);
       } else {
         console.warn('Unexpected response:', response);
       }
     } catch (error) {
       if (error.response) {
-        console.error(
-          'Server responded with error:',
-          error.response.data.message
-        );
-        alert(error.response.data.message);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: (error.response.data.message),
+        });
       } else {
-        console.error('Unexpected error:', error);
-        alert('An unexpected error occurred. Please try again.');
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        });
       }
     }
   };
 
   return (
     <Box
-    sx={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100vh',
-      backgroundImage:
-        'url("https://res.cloudinary.com/dj02fukkg/image/upload/v1735410370/Giving%20block/x9031cflh1tjsl0217yk.jpg")',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-    }}
-  >
+      sx={{
+        flexDirection: 'column',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        backgroundImage:
+          'url("https://res.cloudinary.com/dj02fukkg/image/upload/v1735410370/Giving%20block/x9031cflh1tjsl0217yk.jpg")',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
       <Box
         sx={{
           width: '100%',
           maxWidth: 400,
-          background: 'linear-gradient(rgb(182, 204, 225),rgb(88, 102, 119))', // Linear gradient background color
-
+          background: 'linear-gradient(rgb(182, 204, 225),rgb(88, 102, 119))',
           padding: 3,
           borderRadius: 2,
         }}
       >
+        <BlurText
+          text="GIVING BLOCK"
+          delay={150}
+          animateBy="words"
+          direction="top"
+          textSize="1rem"
+        />
+
         <Typography
           variant="h4"
           align="center"
@@ -117,13 +146,22 @@ function Login() {
           fullWidth
           label="Password"
           name="password"
-          type="password"
+          type={showPassword ? 'text' : 'password'} // Dynamically change the input type
           value={loggedData.password}
           variant="outlined"
           margin="normal"
           onChange={handleChange}
           onKeyDown={handleEnter}
           sx={{ backgroundColor: 'white' }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={togglePasswordVisibility} edge="end">
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
 
         <Button

@@ -125,7 +125,6 @@ let userRegister = async (req, res) => {
     let profileImage;
     if (req.files && req.files.profilePicture) {
       profileImage = await uploadImage(req.files.profilePicture.tempFilePath); // Cloudinary upload
-      
     }
 
     // Hash password

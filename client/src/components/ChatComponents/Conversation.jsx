@@ -9,16 +9,14 @@ const Conversation = ({ conversation, lastIndex }) => {
   const { onlineUsers } = useSocketContext();
   const isOnline = onlineUsers.includes(conversation._id);
 
-//  console.log("selected conversation:", selectedConversation)
-
   return (
     <>
       <Box
         onClick={() => setSelectedConversation(conversation)}
         sx={{
           display: 'flex',
-          alignItems: 'start',
-          padding: '1px',
+          alignItems: 'center', // Align avatar and text
+          padding: '8px',
           cursor: 'pointer',
           backgroundColor: isSelected ? 'gray' : 'transparent', // Conditional background color
           color: isSelected ? 'white' : 'black', // Conditional text color
@@ -28,11 +26,29 @@ const Conversation = ({ conversation, lastIndex }) => {
           },
         }}
       >
-        <Avatar
-          src={isOnline ? conversation.profilePicture : ''}
-          alt={conversation.username}
-          sx={{ width: 28, height: 28, marginRight: '10px' }}
-        />
+        <Box sx={{ position: 'relative', marginRight: '10px' }}>
+          {/* Avatar */}
+          <Avatar
+            src={conversation.profilePicture}
+            alt={conversation.username}
+            sx={{ width: 40, height: 40 }}
+          />
+          {/* Green Dot */}
+          {isOnline && (
+            <Box
+              sx={{
+                position: 'absolute',
+                bottom: 0,
+                right: 0,
+                width: 10,
+                height: 10,
+                backgroundColor: 'green',
+                borderRadius: '50%',
+                border: '2px solid white', // Add border for better visibility
+              }}
+            />
+          )}
+        </Box>
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>
             {conversation.username}

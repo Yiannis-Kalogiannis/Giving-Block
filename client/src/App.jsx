@@ -8,11 +8,15 @@ import Login from './pages/LogIn.jsx';
 import HomePage from './pages/HomePage.jsx';
 import UserProfile from './pages/UserProfile.jsx';
 import MainChatPage from '../src/pages/chat/MainChatPage.jsx';
+import { Toaster } from 'react-hot-toast';
+
+
 
 
 function App() {
   return (
     <>
+     <Toaster   />
       <BrowserRouter>
       <SocketContextProvider>
     <Routes>
@@ -49,5 +53,10 @@ function App() {
     </>
   );
 }
+
+
+
+
+
 
 export default App;

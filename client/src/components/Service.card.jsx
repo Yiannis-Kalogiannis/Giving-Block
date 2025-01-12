@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
 import useUserStore from '../store/useUserStore';
 import useEditDeleteStore from '../store/useEditAndDeleteStore';
+import useConversationStore from '../store/chat.store/useConversationStore';
 
 // import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+
 
 // Import MUI components and icons
 import { styled } from '@mui/material/styles';
@@ -28,8 +31,7 @@ import {
   MenuItem,
 } from '@mui/material';
 
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
+import ChatIcon from '@mui/icons-material/Chat';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import useChatStore from '../store/chat.store/useOpenChatStore';
 
@@ -47,13 +49,18 @@ const ExpandMore = styled((props) => {
 
 const ServiceCard = ({ service = {} }) => {
   // const navigate = useNavigate();
-  const { toggleChat } = useChatStore(); // Access the toggleChat function from Zustand store
- 
-
-  const handleShareButtonClick = () => {
+  const { toggleChat,  } = useChatStore(); // Access the toggleChat function from Zustand store
+  
+  const handleChatIconButtonClick = () => {
     toggleChat(); // Toggle chat visibility
-  };
 
+    setTimeout(() => {
+      setSelectedConversation(service.userId);
+      console.log('Chat toggled and conversation set:', service.userId);
+    }, 100);
+  };
+  
+  const { setSelectedConversation } = useConversationStore();
   const [expanded, setExpanded] = useState(false);
   const { userId } = useUserStore();
   const [openEditModal, setOpenEditModal] = useState(false); // Modal state
@@ -79,13 +86,27 @@ const ServiceCard = ({ service = {} }) => {
     };
   }, [serviceImagePreview]);
 
-  const handleExpandClick = () => { // Toggle the expanded state
+  const handleExpandClick = () => {
+    // Toggle the expanded state
     setExpanded(!expanded);
   };
 
   const handleDelete = () => {
-    alert('Are you sure you want to delete this service?');
-    deleteService(service._id); // Call the delete action from the store
+    Swal.fire({
+      title: 'Do you want to delete this service?',
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Delete',
+      denyButtonText: `Don't delete`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Only delete the service if the user confirms
+        deleteService(service._id); // Call the delete action from the store
+        Swal.fire('Deleted!', 'The service has been deleted.', 'success');
+      } else if (result.isDenied) {
+        Swal.fire('Action cancelled', 'The service was not deleted.', 'info');
+      }
+    });
   };
 
   const handleEdit = () => {
@@ -93,25 +114,53 @@ const ServiceCard = ({ service = {} }) => {
   };
 
   const handleSaveEdit = async () => {
-    const formData = new FormData();
-
-    
-    // Append all service fields to FormData
-    Object.keys(editedService).forEach((key) => {
-      if (key === 'serviceImage' && editedService[key]) {
-        // Append the file separately
-        formData.append(key, editedService[key]);
-      } else if (key !== 'serviceImage') {
-        formData.append(key, editedService[key]);
+    Swal.fire({
+      title: 'Do you want to save the changes?',
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      denyButtonText: `Don't save`,
+      didOpen: () => {
+        // Ensure SweetAlert is placed above the modal
+        const swalPopup = Swal.getPopup();
+        if (swalPopup) {
+          swalPopup.style.zIndex = '2001'; // Set a high z-index (higher than Material-UI modal, which defaults to 1300+)
+        }
+  
+        // Adjust backdrop z-index (if necessary)
+        const swalBackdrop = document.querySelector('.swal2-container');
+        if (swalBackdrop) {
+          swalBackdrop.style.zIndex = '2000'; // Ensure the backdrop also has a higher z-index
+        }
+      },
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const formData = new FormData();
+  
+        // Append all service fields to FormData
+        Object.keys(editedService).forEach((key) => {
+          if (key === 'serviceImage' && editedService[key]) {
+            formData.append(key, editedService[key]);
+          } else if (key !== 'serviceImage') {
+            formData.append(key, editedService[key]);
+          }
+        });
+  
+        // Call edit service
+        await editService(service._id, formData);
+        setOpenEditModal(false); // Close modal
+        Swal.fire('Saved!', 'Your changes have been saved.', 'success');
+      } else if (result.isDenied) {
+        Swal.fire(
+          'Changes are not saved',
+          'You chose not to save the changes.',
+          'info'
+        );
       }
     });
-    
-    // Send formData to the edit service action
-    await editService(service._id, formData);
-    setOpenEditModal(false); // Close the modal after saving
   };
   
- 
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
@@ -135,27 +184,27 @@ const ServiceCard = ({ service = {} }) => {
 
   return (
     <>
-   <Card
- sx={{ 
-  maxWidth: 345,
-  margin: '20px auto',
-  borderRadius: 2,
-  boxShadow: 5,
-  background: 'linear-gradient(rgb(180, 180, 180),rgb(65, 97, 134))', // Linear gradient background color
-}}
->
+      <Card
+        sx={{
+          maxWidth: 345,
+          margin: '20px auto',
+          borderRadius: 2,
+          boxShadow: 5,
+          background: 'linear-gradient(rgb(180, 180, 180),rgb(65, 97, 134))', // Linear gradient background color
+        }}
+      >
         {/* Card Header */}
         <CardContent
-          sx={{ display: 'flex', alignItems: 'center', padding: '16px', }}
+          sx={{ display: 'flex', alignItems: 'center', padding: '16px' }}
         >
           <Avatar
-          sx={{
-            width: 50,
-            height: 50,
-            mr: 2,
-            cursor: 'pointer',
-            
-          }}
+              onClick={() => handleChatIconButtonClick()}
+            sx={{
+              width: 50,
+              height: 50,
+              mr: 2,
+              cursor: 'pointer',
+            }}
             src={
               service.userId?.profilePicture
                 ? service.userId.profilePicture
@@ -172,7 +221,9 @@ const ServiceCard = ({ service = {} }) => {
               </Typography>
             )}
             {service.userId?.lastName && (
-              <Typography variant="body2" sx={{ color: 'white' }}>{service.userId.lastName}</Typography>
+              <Typography variant="body2" sx={{ color: 'white' }}>
+                {service.userId.lastName}
+              </Typography>
             )}
             {service.userId?.username && (
               <Typography variant="body2" sx={{ color: 'white' }}>
@@ -196,13 +247,16 @@ const ServiceCard = ({ service = {} }) => {
             </Typography>
             {service.serviceType && (
               <Typography
-                variant="body2"
-                sx={{ fontSize: '0.8rem', marginTop: 1, color: 'white' }}
-              >
-                {service.serviceType === 'help-wanted'
-                  ? 'Help Wanted'
-                  : 'Offering Help'}
-              </Typography>
+              variant="body2"
+              sx={{
+                fontSize: '0.9rem',
+                marginTop: 1,
+                color: service.serviceType === 'help-wanted' ? '#FFA500' : '#007BFF', 
+                fontWeight: 'bold', // Emphasize text
+              }}
+            >
+              {service.serviceType === 'help-wanted' ? 'Help Wanted' : 'Offering Help'}
+            </Typography>
             )}
           </Box>
         </CardContent>
@@ -221,12 +275,20 @@ const ServiceCard = ({ service = {} }) => {
         {/* Service Details */}
         <CardContent>
           {service.title && (
-            <Typography variant="body2" color="textSecondary" sx={{ color: 'white' }}>
+            <Typography
+              variant="body2"
+              color="textSecondary"
+              sx={{ color: 'white' }}
+            >
               <strong>Title:</strong> {service.title}
             </Typography>
           )}
           {service.body && (
-            <Typography variant="body2" color="textSecondary" sx={{ color: 'white' }}>
+            <Typography
+              variant="body2"
+              color="textSecondary"
+              sx={{ color: 'white' }}
+            >
               <strong>Description:</strong> {service.body}
             </Typography>
           )}
@@ -234,15 +296,15 @@ const ServiceCard = ({ service = {} }) => {
 
         {/* Card Actions */}
         <CardActions disableSpacing>
-          <IconButton aria-label="add to favorites">
-            <FavoriteIcon sx={{ color: 'white' }} />
+         
+          <IconButton
+            onClick={() => {
+              handleChatIconButtonClick(); 
+            }}
+            aria-label="share"
+          >
+            <ChatIcon sx={{ color: 'white' }} />
           </IconButton>
-          <IconButton onClick={() => {
-    handleShareButtonClick(); // First function
-   
-  }}  aria-label="share">
-          <ShareIcon sx={{ color: 'white' }} />  
-               </IconButton>
           <ExpandMore
             expand={expanded}
             onClick={handleExpandClick}
@@ -265,7 +327,7 @@ const ServiceCard = ({ service = {} }) => {
               >
                 <Typography variant="body2" color="white">
                   delete
-                </Typography >
+                </Typography>
               </IconButton>
               <IconButton
                 onClick={handleEdit}
@@ -287,27 +349,47 @@ const ServiceCard = ({ service = {} }) => {
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>
             {service.city && (
-              <Typography variant="body2" color="textSecondary" sx={{ color: 'white' }}>
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                sx={{ color: 'white' }}
+              >
                 <strong>City:</strong> {service.city}
               </Typography>
             )}
             {service.address && (
-              <Typography variant="body2" color="textSecondary" sx={{ color: 'white' }}>
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                sx={{ color: 'white' }}
+              >
                 <strong>Address:</strong> {service.address}
               </Typography>
             )}
             {service.country && (
-              <Typography variant="body2" color="textSecondary" sx={{ color: 'white' }}>
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                sx={{ color: 'white' }}
+              >
                 <strong>Country:</strong> {service.country}
               </Typography>
             )}
             {service.zip && (
-              <Typography variant="body2" color="textSecondary" sx={{ color: 'white' }}>
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                sx={{ color: 'white' }}
+              >
                 <strong>Zip-code:</strong> {service.zip}
               </Typography>
             )}
             {service.phone && (
-              <Typography variant="body2" color="textSecondary" sx={{ color: 'white' }}>
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                sx={{ color: 'white' }}
+              >
                 <strong>Phone:</strong> {service.phone}
               </Typography>
             )}
@@ -379,11 +461,15 @@ const ServiceCard = ({ service = {} }) => {
           {/* Status Toggle */}
           <FormControl fullWidth margin="normal">
             <InputLabel>Status</InputLabel>
-            <Select name="status" value={editedService.status} onChange={handleChange}>
+            <Select
+              name="status"
+              value={editedService.status}
+              onChange={handleChange}
+            >
               <MenuItem value={true}>Active</MenuItem>
               <MenuItem value={false}>Completed</MenuItem>
             </Select>
-          </FormControl >
+          </FormControl>
           {/* Image Input and Preview */}
           <input
             type="file"

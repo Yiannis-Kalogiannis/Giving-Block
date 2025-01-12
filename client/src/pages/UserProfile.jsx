@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import useUserStore from '../store/useUserStore';
 import { Avatar, Box, Typography, Button, TextField } from '@mui/material';
+import Swal from 'sweetalert2';
 
 const UserProfile = () => {
   const { userId } = useUserStore();
@@ -52,55 +53,84 @@ const UserProfile = () => {
   // Update user details
   const handleSaveNewUserData = async (e) => {
     e.preventDefault();
-
-    const {
-      newPassword,
-      newPasswordConfirmation,
-      oldPassword,
-      ...otherFields
-    } = editedUserData;
-
-    if (newPassword && newPassword !== newPasswordConfirmation) {
-      console.log('Passwords do not match');
-      return;
-    }
-
-    const updatedFields = Object.keys(otherFields).reduce((acc, key) => {
-      if (otherFields[key]) acc[key] = otherFields[key];
-      return acc;
-    }, {});
-
-    if (newPassword) {
-      updatedFields.newPassword = newPassword;
-      updatedFields.oldPassword = oldPassword;
-    }
-
-    try {
-      const response = await axios.put(
-        `http://localhost:8080/users/updateUser/${userId}`,
-        updatedFields,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
+  
+    Swal.fire({
+      title: 'Do you want to save the changes?',
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      denyButtonText: `Don't save`,
+      didOpen: () => {
+        const swalPopup = Swal.getPopup();
+        if (swalPopup) {
+          swalPopup.style.zIndex = '2001'; // Set a high z-index
         }
-      );
-      setUserDetails(response.data.user);
-
-      setEditedUserData({
-        email: '',
-        firstName: '',
-        lastName: '',
-        newPassword: '',
-        newPasswordConfirmation: '',
-        oldPassword: '',
-      });
-      setEditForm(false);
-      console.log('User updated successfully:', response.data);
-    } catch (error) {
-      console.error('Failed to update user credentials:', error);
-    }
+  
+        const swalBackdrop = document.querySelector('.swal2-container');
+        if (swalBackdrop) {
+          swalBackdrop.style.zIndex = '2000'; // Ensure the backdrop also has a high z-index
+        }
+      },
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const {
+          newPassword,
+          newPasswordConfirmation,
+          oldPassword,
+          ...otherFields
+        } = editedUserData;
+  
+        if (newPassword && newPassword !== newPasswordConfirmation) {
+          Swal.fire('Error', 'Passwords do not match', 'error');
+          return;
+        }
+  
+        const updatedFields = Object.keys(otherFields).reduce((acc, key) => {
+          if (otherFields[key]) acc[key] = otherFields[key];
+          return acc;
+        }, {});
+  
+        if (newPassword) {
+          updatedFields.newPassword = newPassword;
+          updatedFields.oldPassword = oldPassword;
+        }
+  
+        try {
+          const response = await axios.put(
+            `http://localhost:8080/users/updateUser/${userId}`,
+            updatedFields,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+              },
+            }
+          );
+          setUserDetails(response.data.user);
+  
+          setEditedUserData({
+            email: '',
+            firstName: '',
+            lastName: '',
+            newPassword: '',
+            newPasswordConfirmation: '',
+            oldPassword: '',
+          });
+          setEditForm(false);
+          Swal.fire('Saved!', 'Your changes have been saved.', 'success');
+        } catch (error) {
+          console.error('Failed to update user credentials:', error);
+          Swal.fire('Error', 'Failed to save changes. Please try again.', 'error');
+        }
+      } else if (result.isDenied) {
+        Swal.fire(
+          'Changes are not saved',
+          'You chose not to save the changes.',
+          'info'
+        );
+      }
+    });
   };
+  
 
   return (
     <Box

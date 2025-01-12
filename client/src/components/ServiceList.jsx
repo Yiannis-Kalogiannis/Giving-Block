@@ -4,7 +4,6 @@ import ServiceCard from './Service.card';
 import useServiceStore from '../store/useServiceStore';
 import useSearchStore from '../store/useSearchStore';
 import { CircularProgress, Typography, Box, Grid } from '@mui/material';
-import useAuthStore from '../store/UseAuthStore';
 import { useSocketContext } from '../context/SocketContext';
 
 
@@ -67,7 +66,7 @@ const ServiceList = () => {
             services.map((service) => (
               <Grid
                 item
-                key={service._id}
+                key={String(service._id)}
                 xs={12}
                 sm={6}
                 md={4}

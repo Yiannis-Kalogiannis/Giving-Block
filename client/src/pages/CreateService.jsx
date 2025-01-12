@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import useServiceStore from '../store/useServiceStore';
 import PropTypes from 'prop-types';
+import toast  from 'react-hot-toast';
 function CreateService({ handleClose }) {
     const { username, userId, token } = useUserStore();  // Get username and userId from the store
     const [newService, setNewService] = useState({
@@ -31,7 +32,6 @@ function CreateService({ handleClose }) {
     const [serviceImagePreview, setServiceImagePreview] = useState(null);
     const services = useServiceStore((state) => state.services);
     const setServices = useServiceStore((state) => state.setServices);
-
     useEffect(() => {
         return () => {
             if (serviceImagePreview) {
@@ -63,7 +63,7 @@ function CreateService({ handleClose }) {
 
             // Validate all required fields 
             if (!title || !body || !address || !city || !country || !zip || !phone || !serviceType) {
-                alert('All fields are required');
+                toast.error("All fields are required");
                 return;
             }
 
@@ -93,7 +93,7 @@ function CreateService({ handleClose }) {
             );
 
             if (response.status === 201) {
-                alert('Service created successfully');
+                toast.success('Service created successfully');
                 handleClose();  // Close the dialog
                 setServices([...services, response.data]);  // Update the services list
             }
@@ -102,7 +102,6 @@ function CreateService({ handleClose }) {
                 console.error(error.response.data);
             } else {
                 console.error(error.message);
-                alert('An error occurred. Please try again later');
             }
         }
     };
