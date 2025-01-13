@@ -388,23 +388,55 @@ const serviceSchema = new mongoose.Schema(
 Stores messages exchanged between users regarding tasks or services.
 
 ```javascript
-const chatSchema = new mongoose.Schema(
+
+// Message Schema
+const messageSchema = new mongoose.Schema(
   {
-    msgContent: { type: String, required: true },
-    sender: {
+    senderId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
-    receiver: {
+    receiverId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
-    readStatus: { type: Boolean, default: false },
+    message: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );
+
+const Message = mongoose.model('Message', messageSchema);
+```
+
+```js
+// Conversation Schema
+const conversationSchema = new mongoose.Schema(
+  {
+    participants: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
+    messages: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Message',
+        default: [],
+      },
+    ],
+  },
+  { timestamps: true }
+);
+
+const Conversation = mongoose.model('Conversation', conversationSchema);
+
+module.exports = { Message, Conversation };
 ```
 
 **Key Fields:**
@@ -505,22 +537,12 @@ const chatSchema = new mongoose.Schema(
 
 ### Issues Encountered
 
-⚠️ **List Reload Issue**: The list does not reload after rendering (update or delete service).
-
-⚠️ **User Image and info Persistence**: When logging out and logging in again, the user image and name remain the same unless the page is reloaded.
-
-⚠️ **Default Service Image**: Ensure a default image is added to services even if the user hasn't uploaded one.
-
-⚠️ **Default Profile Image**: Ensure a default image is added to user profiles even if the user hasn't uploaded one.
-
-⚠️ **Close form after submitting new service**: Create service page is a modal that wont close after press submit, tried to add the handle close function from parent component (navbar) but wont work
-
-⚠️ **Delete image after resize**: Make SHARP(the resize tool) to delete the image after resizing it
+all issues iencountered are fixed
 
 ## 🔒 Security
 
-blank
+----
 
 ## 🔧 Future Enhancements(wishlist/as i code things i remember to add)
 
-blank
+-----
