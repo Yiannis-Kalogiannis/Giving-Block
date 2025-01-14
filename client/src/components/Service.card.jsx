@@ -7,7 +7,6 @@ import { useSocketContext } from '../context/SocketContext';
 // import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
-
 // Import MUI components and icons
 import { styled } from '@mui/material/styles';
 import {
@@ -36,7 +35,6 @@ import ChatIcon from '@mui/icons-material/Chat';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import useChatStore from '../store/chat.store/useOpenChatStore';
 
-
 // Styled Components
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -51,14 +49,20 @@ const ExpandMore = styled((props) => {
 
 const ServiceCard = ({ service = {} }) => {
   // const navigate = useNavigate();
-  const { toggleChat,  } = useChatStore(); // Access the toggleChat function from Zustand store
+  const { toggleChat } = useChatStore(); // Access the toggleChat function from Zustand store
   const { onlineUsers } = useSocketContext();
-  const isOnline = onlineUsers.includes(service.userId?._id);
-  console.log("testing0:", service.userId._id)  
-  console.log("testing:", onlineUsers)  
-  console.log("testing2:", isOnline)  
-  
+  const isOnline = onlineUsers.includes(service.userId?.id);
+  console.log('testing0:', service.userId?.id);
+  console.log('testing:', onlineUsers);
+  console.log('testing2:', isOnline);
+
   const handleChatIconButtonClick = () => {
+    // Check if the clicked user is the logged-in user
+    if (userId === service.userId?._id) {
+      console.log('You cannot start a chat with yourself.');
+      return; // Exit the function if the user is clicking on themselves
+    }
+
     toggleChat(); // Toggle chat visibility
 
     setTimeout(() => {
@@ -66,7 +70,7 @@ const ServiceCard = ({ service = {} }) => {
       console.log('Chat toggled and conversation set:', service.userId);
     }, 100);
   };
-  
+
   const { setSelectedConversation } = useConversationStore();
   const [expanded, setExpanded] = useState(false);
   const { userId } = useUserStore();
@@ -133,7 +137,7 @@ const ServiceCard = ({ service = {} }) => {
         if (swalPopup) {
           swalPopup.style.zIndex = '2001'; // Set a high z-index (higher than Material-UI modal, which defaults to 1300+)
         }
-  
+
         // Adjust backdrop z-index (if necessary)
         const swalBackdrop = document.querySelector('.swal2-container');
         if (swalBackdrop) {
@@ -143,7 +147,7 @@ const ServiceCard = ({ service = {} }) => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         const formData = new FormData();
-  
+
         // Append all service fields to FormData
         Object.keys(editedService).forEach((key) => {
           if (key === 'serviceImage' && editedService[key]) {
@@ -152,7 +156,7 @@ const ServiceCard = ({ service = {} }) => {
             formData.append(key, editedService[key]);
           }
         });
-  
+
         // Call edit service
         await editService(service._id, formData);
         setOpenEditModal(false); // Close modal
@@ -166,7 +170,6 @@ const ServiceCard = ({ service = {} }) => {
       }
     });
   };
-  
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -204,38 +207,37 @@ const ServiceCard = ({ service = {} }) => {
         <CardContent
           sx={{ display: 'flex', alignItems: 'center', padding: '16px' }}
         >
-          
           <Box sx={{ position: 'relative', display: 'inline-block', mr: 2 }}>
-  <Avatar
-    onClick={() => handleChatIconButtonClick()}
-    sx={{
-      width: 50,
-      height: 50,
-      cursor: 'pointer',
-    }}
-    src={
-      service.userId?.profilePicture
-        ? service.userId.profilePicture
-        : ''
-    }
-    alt="Profile"
-  />
-  {/* Green Dot */}
-  {isOnline && (
-    <Box
-      sx={{
-        position: 'absolute',
-        bottom: 0,
-        right: 0,
-        width: 10,
-        height: 10,
-        backgroundColor: 'green',
-        borderRadius: '50%',
-        border: '2px solid white', // Add border for better visibility
-      }}
-    />
-  )}
-</Box>
+            <Avatar
+              onClick={() => handleChatIconButtonClick()}
+              sx={{
+                width: 50,
+                height: 50,
+                cursor: 'pointer',
+              }}
+              src={
+                service.userId?.profilePicture
+                  ? service.userId.profilePicture
+                  : ''
+              }
+              alt="Profile"
+            />
+            {/* Green Dot */}
+            {isOnline && (
+              <Box
+                sx={{
+                  position: 'absolute',
+                  bottom: 0,
+                  right: 0,
+                  width: 10,
+                  height: 10,
+                  backgroundColor: 'green',
+                  borderRadius: '50%',
+                  border: '2px solid white', // Add border for better visibility
+                }}
+              />
+            )}
+          </Box>
 
           <Box sx={{ flexGrow: 1 }}>
             {service.userId?.firstName && (
@@ -270,16 +272,21 @@ const ServiceCard = ({ service = {} }) => {
             </Typography>
             {service.serviceType && (
               <Typography
-              variant="body2"
-              sx={{
-                fontSize: '0.9rem',
-                marginTop: 1,
-                color: service.serviceType === 'help-wanted' ? '#FFA500' : '#007BFF', 
-                fontWeight: 'bold', // Emphasize text
-              }}
-            >
-              {service.serviceType === 'help-wanted' ? 'Help Wanted' : 'Offering Help'}
-            </Typography>
+                variant="body2"
+                sx={{
+                  fontSize: '0.9rem',
+                  marginTop: 1,
+                  color:
+                    service.serviceType === 'help-wanted'
+                      ? '#FFA500'
+                      : '#007BFF',
+                  fontWeight: 'bold', // Emphasize text
+                }}
+              >
+                {service.serviceType === 'help-wanted'
+                  ? 'Help Wanted'
+                  : 'Offering Help'}
+              </Typography>
             )}
           </Box>
         </CardContent>
@@ -319,10 +326,9 @@ const ServiceCard = ({ service = {} }) => {
 
         {/* Card Actions */}
         <CardActions disableSpacing>
-         
           <IconButton
             onClick={() => {
-              handleChatIconButtonClick(); 
+              handleChatIconButtonClick();
             }}
             aria-label="share"
           >

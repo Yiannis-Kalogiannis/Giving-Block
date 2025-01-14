@@ -388,23 +388,55 @@ const serviceSchema = new mongoose.Schema(
 Stores messages exchanged between users regarding tasks or services.
 
 ```javascript
-const chatSchema = new mongoose.Schema(
+
+// Message Schema
+const messageSchema = new mongoose.Schema(
   {
-    msgContent: { type: String, required: true },
-    sender: {
+    senderId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
-    receiver: {
+    receiverId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
-    readStatus: { type: Boolean, default: false },
+    message: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );
+
+const Message = mongoose.model('Message', messageSchema);
+```
+
+```js
+// Conversation Schema
+const conversationSchema = new mongoose.Schema(
+  {
+    participants: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
+    messages: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Message',
+        default: [],
+      },
+    ],
+  },
+  { timestamps: true }
+);
+
+const Conversation = mongoose.model('Conversation', conversationSchema);
+
+module.exports = { Message, Conversation };
 ```
 
 **Key Fields:**
@@ -519,8 +551,8 @@ const chatSchema = new mongoose.Schema(
 
 ## 🔒 Security
 
-blank
+----
 
 ## 🔧 Future Enhancements(wishlist/as i code things i remember to add)
 
-blank
+-----
