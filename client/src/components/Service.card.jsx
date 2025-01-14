@@ -223,7 +223,7 @@ const ServiceCard = ({ service = {} }) => {
               alt="Profile"
             />
             {/* Green Dot */}
-            {isOnline && (
+            {isOnline && userId !== service.userId?._id && (
               <Box
                 sx={{
                   position: 'absolute',
