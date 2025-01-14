@@ -51,8 +51,8 @@ const ServiceCard = ({ service = {} }) => {
   // const navigate = useNavigate();
   const { toggleChat } = useChatStore(); // Access the toggleChat function from Zustand store
   const { onlineUsers } = useSocketContext();
-  const isOnline = onlineUsers.includes(service.userId?.id);
-  console.log('testing0:', service.userId?.id);
+  const isOnline = onlineUsers.includes(service.userId?._id);
+  console.log('testing0:', service.userId?._id);
   console.log('testing:', onlineUsers);
   console.log('testing2:', isOnline);
 
