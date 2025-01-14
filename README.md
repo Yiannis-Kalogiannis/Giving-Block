@@ -537,17 +537,7 @@ module.exports = { Message, Conversation };
 
 ### Issues Encountered
 
-⚠️ **List Reload Issue**: The list does not reload after rendering (update or delete service).
-
-⚠️ **User Image and info Persistence**: When logging out and logging in again, the user image and name remain the same unless the page is reloaded.
-
-⚠️ **Default Service Image**: Ensure a default image is added to services even if the user hasn't uploaded one.
-
-⚠️ **Default Profile Image**: Ensure a default image is added to user profiles even if the user hasn't uploaded one.
-
-⚠️ **Close form after submitting new service**: Create service page is a modal that wont close after press submit, tried to add the handle close function from parent component (navbar) but wont work
-
-⚠️ **Delete image after resize**: Make SHARP(the resize tool) to delete the image after resizing it
+all issues iencountered are fixed
 
 ## 🔒 Security
 
