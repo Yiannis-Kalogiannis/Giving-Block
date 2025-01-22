@@ -6,16 +6,13 @@ import useSearchStore from '../store/useSearchStore';
 import { CircularProgress, Typography, Box, Grid } from '@mui/material';
 import { useSocketContext } from '../context/SocketContext';
 
-
-
 const ServiceList = () => {
   const { query, serviceType, status, filteredUserId } = useSearchStore();
   const services = useServiceStore((state) => state.services);
   const setServices = useServiceStore((state) => state.setServices);
   const [loading, setLoading] = useState(false);
- 
-  const {onlineUsers} = useSocketContext();
-  
+
+  const { onlineUsers } = useSocketContext();
 
   const fetchServices = async () => {
     try {
@@ -24,13 +21,18 @@ const ServiceList = () => {
       const response = await axios.get(
         'http://localhost:8080/services/getAllServices',
         {
-          params: { query, serviceType, status: status || undefined, filteredUserId: filteredUserId || undefined },
+          params: {
+            query,
+            serviceType,
+            status: status || undefined,
+            filteredUserId: filteredUserId || undefined,
+          },
         }
       );
       setServices([...response.data]); // Ensure a new reference is set
       // console.log('Fetched services:', response.data);
-    
-      console.log("Online Users Received:", onlineUsers); // Log the received users
+
+      console.log('Online Users Received:', onlineUsers); // Log the received users
     } catch (error) {
       console.error('Error fetching services:', error);
     } finally {
@@ -42,22 +44,32 @@ const ServiceList = () => {
     fetchServices();
   }, [query, serviceType, status, services.length, filteredUserId]);
 
-  
   return (
     <Box
-    sx={{
-      padding: 1,
-      background: 'radial-gradient(circle, rgba(208,208,208,1) 34%, rgba(148,187,233,1) 100%)', // Radial gradient background
-      minHeight: '100vh', // Full height background
-      color: 'white', // White text
-    }}
-  >
+      sx={{
+        padding: 1,
+        background:
+          'radial-gradient(circle, rgba(208,208,208,1) 34%, rgba(148,187,233,1) 100%)', // Radial gradient background
+        minHeight: '100vh', // Full height background
+        color: 'white', // White text
+      }}
+    >
       {loading ? (
-        <Box display="flex" justifyContent="center" alignItems="center" sx={{ minHeight: '100vh' }}>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          sx={{ minHeight: '100vh' }}
+        >
           <CircularProgress sx={{ color: 'white' }} />
         </Box>
       ) : Array.isArray(services) && services.length === 0 ? (
-        <Typography variant="h6" color="inherit" textAlign="center" sx={{ marginTop: 2 }}>
+        <Typography
+          variant="h6"
+          color="inherit"
+          textAlign="center"
+          sx={{ marginTop: 2 }}
+        >
           No services available
         </Typography>
       ) : (
@@ -80,7 +92,7 @@ const ServiceList = () => {
                   },
                 }}
               >
-                <ServiceCard service={service}/>
+                <ServiceCard service={service} />
               </Grid>
             ))}
         </Grid>

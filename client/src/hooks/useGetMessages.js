@@ -18,11 +18,10 @@ const useGetMessages = () => {
           },
         }
       );
-console.log('response:', response.data);
+      console.log('response:', response.data);
       // Check if response data is an array
-     
-        setMessages(response.data);
-      
+
+      setMessages(response.data);
     } catch (error) {
       console.error(error);
       alert(error.message);
@@ -31,10 +30,8 @@ console.log('response:', response.data);
     }
   };
   useEffect(() => {
-    
-
     if (selectedConversation?._id) getMessages();
-  }, [selectedConversation?._id ,setMessages]);
+  }, [selectedConversation?._id, setMessages]);
 
   return { loading, messages };
 };

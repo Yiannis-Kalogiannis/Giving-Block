@@ -33,8 +33,8 @@ Giving-Block is a web platform designed to foster community support within neigh
 
 7. [Page Structure](#7️⃣-page-structure-🌐)
 8. [Development Log](#8️⃣-development-log-⌛)
-9. [Functionalities](#9️⃣-functionalities)  
-12. [Issues](#-Issues-⚠️)
+9. [Functionalities](#9️⃣-functionalities)
+10. [Issues](#-Issues-⚠️)
 11. [Security](#🔒-security)
 12. [Future Enhancements](#🔧-future-enhancements)
 
@@ -388,7 +388,6 @@ const serviceSchema = new mongoose.Schema(
 Stores messages exchanged between users regarding tasks or services.
 
 ```javascript
-
 // Message Schema
 const messageSchema = new mongoose.Schema(
   {
@@ -510,12 +509,11 @@ module.exports = { Message, Conversation };
 - 🔍 Enhanced the search bar by adding a modal for creating services.
 - 🧹 Minor improvements to home page and service card styling.
 
+## 9 Functionalities
 
-## 9 Functionalities 
+**Upload Images**
 
- **Upload Images**
-
- ***documentation of how i manage to upload using cloudinary***
+**_documentation of how i manage to upload using cloudinary_**
 
 - Created the Upload Middleware:
   I created a middleware file upload.image.jsx to handle image uploads using Cloudinary. This middleware configures Cloudinary with my credentials and defines a function to upload images and return their URLs.
@@ -532,7 +530,6 @@ module.exports = { Message, Conversation };
 - Integrated Frontend to Display Profile Pictures:
   In the Service.card.jsx file, I updated the component to display the user's profile picture using the URL stored in the profilePicture field. If the profile picture is not available, a default avatar is displayed.
 
-
 ## 10 Issues ⚠️
 
 ### Issues Encountered
@@ -541,8 +538,8 @@ all issues iencountered are fixed
 
 ## 🔒 Security
 
-----
+---
 
 ## 🔧 Future Enhancements(wishlist/as i code things i remember to add)
 
------
+---

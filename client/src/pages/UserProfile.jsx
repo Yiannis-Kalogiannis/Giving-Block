@@ -53,7 +53,7 @@ const UserProfile = () => {
   // Update user details
   const handleSaveNewUserData = async (e) => {
     e.preventDefault();
-  
+
     Swal.fire({
       title: 'Do you want to save the changes?',
       showDenyButton: true,
@@ -65,7 +65,7 @@ const UserProfile = () => {
         if (swalPopup) {
           swalPopup.style.zIndex = '2001'; // Set a high z-index
         }
-  
+
         const swalBackdrop = document.querySelector('.swal2-container');
         if (swalBackdrop) {
           swalBackdrop.style.zIndex = '2000'; // Ensure the backdrop also has a high z-index
@@ -79,22 +79,22 @@ const UserProfile = () => {
           oldPassword,
           ...otherFields
         } = editedUserData;
-  
+
         if (newPassword && newPassword !== newPasswordConfirmation) {
           Swal.fire('Error', 'Passwords do not match', 'error');
           return;
         }
-  
+
         const updatedFields = Object.keys(otherFields).reduce((acc, key) => {
           if (otherFields[key]) acc[key] = otherFields[key];
           return acc;
         }, {});
-  
+
         if (newPassword) {
           updatedFields.newPassword = newPassword;
           updatedFields.oldPassword = oldPassword;
         }
-  
+
         try {
           const response = await axios.put(
             `http://localhost:8080/users/updateUser/${userId}`,
@@ -106,7 +106,7 @@ const UserProfile = () => {
             }
           );
           setUserDetails(response.data.user);
-  
+
           setEditedUserData({
             email: '',
             firstName: '',
@@ -119,7 +119,11 @@ const UserProfile = () => {
           Swal.fire('Saved!', 'Your changes have been saved.', 'success');
         } catch (error) {
           console.error('Failed to update user credentials:', error);
-          Swal.fire('Error', 'Failed to save changes. Please try again.', 'error');
+          Swal.fire(
+            'Error',
+            'Failed to save changes. Please try again.',
+            'error'
+          );
         }
       } else if (result.isDenied) {
         Swal.fire(
@@ -130,24 +134,23 @@ const UserProfile = () => {
       }
     });
   };
-  
 
   return (
     <Box
-    display="flex"
-    flexDirection="column"
-    alignItems="center"
-    justifyContent="center"
-    minHeight="100vh"
-    bgcolor="#f5f5f5"
-    sx={{
-      background: 'radial-gradient(circle, rgba(208,208,208,1) 34%, rgba(148,187,233,1) 100%)', // Radial gradient background
-      minHeight: '100vh', // Full height background
-      color: 'black', // White text
-    }}
-    p={3}
-  >
-      
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
+      minHeight="100vh"
+      bgcolor="#f5f5f5"
+      sx={{
+        background:
+          'radial-gradient(circle, rgba(208,208,208,1) 34%, rgba(148,187,233,1) 100%)', // Radial gradient background
+        minHeight: '100vh', // Full height background
+        color: 'black', // White text
+      }}
+      p={3}
+    >
       <Avatar
         src={userDetails.profilePicture}
         alt="User profile picture"
@@ -234,8 +237,7 @@ const UserProfile = () => {
           display="flex"
           flexDirection="column"
           alignItems="center"
-          bgcolor='' // Linear gradient background color
-
+          bgcolor="" // Linear gradient background color
           p={3}
           borderRadius={2}
           boxShadow={3}

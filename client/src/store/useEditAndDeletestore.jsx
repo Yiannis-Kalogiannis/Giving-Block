@@ -11,7 +11,7 @@ const useEditDeleteStore = create(() => ({
         `http://localhost:8080/services/deleteService/${serviceId}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`, // Corrected headers format
+            Authorization: `Bearer ${localStorage.getItem('token')}`, // Corrected headers format
           },
         }
       );
@@ -19,7 +19,9 @@ const useEditDeleteStore = create(() => ({
       if (response.status === 200) {
         // After deleting, update the services state in the main store
         useServiceStore.getState().setServices((state) => ({
-          services: state.services.filter((service) => service._id !== serviceId),
+          services: state.services.filter(
+            (service) => service._id !== serviceId
+          ),
         }));
       }
     } catch (error) {
@@ -35,7 +37,7 @@ const useEditDeleteStore = create(() => ({
         formData,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
         }
       );
@@ -49,7 +51,7 @@ const useEditDeleteStore = create(() => ({
         }));
       }
     } catch (error) {
-      console.error("Error updating service:", error);
+      console.error('Error updating service:', error);
     }
   },
 }));

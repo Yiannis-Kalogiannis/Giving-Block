@@ -2,10 +2,10 @@ import axios from 'axios';
 import { useState } from 'react';
 import useConversationStore from '../store/chat.store/useConversationStore';
 
-
 const useSendMessage = () => {
   const [loading, setLoading] = useState(false);
-  const { messages, setMessages, selectedConversation } = useConversationStore();
+  const { messages, setMessages, selectedConversation } =
+    useConversationStore();
 
   const sendMessage = async (message) => {
     setLoading(true);
@@ -19,11 +19,14 @@ const useSendMessage = () => {
           },
         }
       );
-  
+
       const newMessage = response.data;
       console.log('New message sent:', newMessage);
-  
-      if (newMessage.receiverId === selectedConversation._id || newMessage.senderId === selectedConversation._id) {
+
+      if (
+        newMessage.receiverId === selectedConversation._id ||
+        newMessage.senderId === selectedConversation._id
+      ) {
         setMessages((prevMessages) => [...prevMessages, newMessage]); // <-- Use functional update
       }
     } catch (error) {
@@ -33,7 +36,7 @@ const useSendMessage = () => {
       setLoading(false);
     }
   };
-  
+
   return { sendMessage, loading };
 };
 

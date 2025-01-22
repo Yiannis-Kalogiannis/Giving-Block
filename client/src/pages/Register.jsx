@@ -275,7 +275,6 @@ function Register() {
         <Box sx={{ marginTop: 2, textAlign: 'center' }}>
           <Typography variant="body2" sx={{ color: 'white' }}>
             Already have an account?{' '}
-            
             <Button onClick={() => navigate('/login')} color="primary">
               Log In
             </Button>

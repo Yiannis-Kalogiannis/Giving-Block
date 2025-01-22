@@ -13,7 +13,7 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import useUserStore from '../store/useUserStore';
 import BlurText from './css/BlurText';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 
 function Login() {
   const navigate = useNavigate();
@@ -50,9 +50,9 @@ function Login() {
 
       if (!email || !password) {
         return Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Please fill in all fields",
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Please fill in all fields',
         });
       }
 
@@ -65,9 +65,9 @@ function Login() {
         const { token, user } = response.data;
         login(token, user);
         Swal.fire({
-          title: (response.data.message),
-          icon: "success",
-          draggable: true
+          title: response.data.message,
+          icon: 'success',
+          draggable: true,
         });
         navigate('/');
         setUserFromToken(token);
@@ -77,15 +77,15 @@ function Login() {
     } catch (error) {
       if (error.response) {
         Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: (error.response.data.message),
+          icon: 'error',
+          title: 'Oops...',
+          text: error.response.data.message,
         });
       } else {
         Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Something went wrong!",
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!',
         });
       }
     }
